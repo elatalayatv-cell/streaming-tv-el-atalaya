@@ -859,9 +859,10 @@ async function loadIPTVPlaylist(feed, idx, total){
       const t = rawLine.trim();
       if(!t) continue;
 
-     if(t.startsWith('#EXTINF:')){
+    if(t.startsWith('#EXTINF:')){
   const groupMatch = t.match(/group-title="([^"]*)"/i);
   const nameAttr   = t.match(/tvg-name="([^"]*)"/i);
+  const logoAttr   = t.match(/tvg-logo="([^"]*)"/i);
   let name = '';
   if(nameAttr && nameAttr[1].trim()) name = nameAttr[1].trim();
   else {
@@ -878,7 +879,8 @@ async function loadIPTVPlaylist(feed, idx, total){
   if(!name) name = 'Canal IPTV';
   current = {
     title: name,
-    meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label
+    meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label,
+    logo: (logoAttr && logoAttr[1]) ? logoAttr[1].trim() : ''
   };
 }
       } else if(t.startsWith('#')){
