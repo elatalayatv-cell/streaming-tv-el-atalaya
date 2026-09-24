@@ -891,7 +891,7 @@ async function loadIPTVPlaylist(feed, idx, total){
         if(seen.has(key)){ current = null; continue; }
         seen.add(key);
         const id = 'iptv-' + slug(feed.id) + '-' + hash(t).toString(36);
-        items.push({ id, title: current.title, meta: current.meta, type: 'live' });
+        items.push({ id, title: current.title, meta: current.meta, logo: current.logo || '', type: 'live' });
         SOURCES[id] = t;
         current = null;
       }
