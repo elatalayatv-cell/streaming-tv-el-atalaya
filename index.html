@@ -143,7 +143,6 @@ body::before{
   padding:6px 10px;border-radius:8px}
 .more:hover{color:var(--acc);background:var(--bg3)}
 
-/* RAIL y GRID con tarjetas más visibles */
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:240px;gap:14px;
   overflow-x:auto;padding:4px 2px 16px;scroll-snap-type:x proximity}
 .rail .card{scroll-snap-align:start}
@@ -184,7 +183,6 @@ body::before{
 .cmeta p{font-size:11.5px;color:var(--muted);margin-top:3px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* Solo hover en dispositivos con mouse */
 @media (hover:hover) and (pointer:fine){
   .card:hover{transform:translateY(-5px)}
   .card:hover .poster{box-shadow:0 20px 42px rgba(0,0,0,.55)}
@@ -429,7 +427,6 @@ const CUSTOM  = LS.get('custom', []);
 const state   = { view:'home', sub:null, q:'' };
 let currentItem = null;
 
-/* Solo categorías IPTV reales + personales */
 const CATALOG = [
   { id:'canales', label:'Canales TV', icon:'📡', subs:[] },
   { id:'personal', label:'Mis Canales', icon:'⭐', subs:[
@@ -835,6 +832,7 @@ const IPTV_FEEDS = [
   { id:'iptv-music',  label:'🎵 Música',      url:'https://iptv-org.github.io/iptv/categories/music.m3u',  type:'live' },
   { id:'iptv-movies', label:'🎬 Películas',   url:'https://iptv-org.github.io/iptv/categories/movies.m3u', type:'live' }
 ];
+
 const iptvOverlay = $('#iptvLoading');
 const iptvTitle   = $('#iptvTitle');
 const iptvMsg     = $('#iptvMsg');
@@ -861,30 +859,30 @@ async function loadIPTVPlaylist(feed, idx, total){
       const t = rawLine.trim();
       if(!t) continue;
 
-    if(t.startsWith('#EXTINF:')){
-  const groupMatch = t.match(/group-title="([^"]*)"/i);
-  const nameAttr   = t.match(/tvg-name="([^"]*)"/i);
-  const logoAttr   = t.match(/tvg-logo="([^"]*)"/i);
-  let name = '';
-  if(nameAttr && nameAttr[1].trim()) name = nameAttr[1].trim();
-  else {
-    let inQuotes = false, lastComma = -1;
-    for(let i = 0; i < t.length; i++){
-      const ch = t[i];
-      if(ch === '"') inQuotes = !inQuotes;
-      else if(ch === ',' && !inQuotes) lastComma = i;
-    }
-    if(lastComma > -1) name = t.substring(lastComma + 1).trim();
-  }
-  if(/Mozilla|Gecko|AppleWebKit|Chrome\/|Safari\/|Firefox\/|KHTML|like\s*Gecko/i.test(name)) name = '';
-  if(name.length > 70) name = name.substring(0, 67) + '...';
-  if(!name) name = 'Canal IPTV';
-  current = {
-    title: name,
-    meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label,
-    logo: (logoAttr && logoAttr[1]) ? logoAttr[1].trim() : ''
-  };
-}
+      if(t.startsWith('#EXTINF:')){
+        const groupMatch = t.match(/group-title="([^"]*)"/i);
+        const nameAttr   = t.match(/tvg-name="([^"]*)"/i);
+        const logoAttr   = t.match(/tvg-logo="([^"]*)"/i);
+        let name = '';
+        if(nameAttr && nameAttr[1].trim()){
+          name = nameAttr[1].trim();
+        } else {
+          let inQuotes = false, lastComma = -1;
+          for(let i = 0; i < t.length; i++){
+            const ch = t[i];
+            if(ch === '"') inQuotes = !inQuotes;
+            else if(ch === ',' && !inQuotes) lastComma = i;
+          }
+          if(lastComma > -1) name = t.substring(lastComma + 1).trim();
+        }
+        if(/Mozilla|Gecko|AppleWebKit|Chrome\/|Safari\/|Firefox\/|KHTML|like\s*Gecko/i.test(name)) name = '';
+        if(name.length > 70) name = name.substring(0, 67) + '...';
+        if(!name) name = 'Canal IPTV';
+        current = {
+          title: name,
+          meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label,
+          logo: (logoAttr && logoAttr[1]) ? logoAttr[1].trim() : ''
+        };
       } else if(t.startsWith('#')){
         continue;
       } else if(current){
