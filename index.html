@@ -859,27 +859,28 @@ async function loadIPTVPlaylist(feed, idx, total){
       const t = rawLine.trim();
       if(!t) continue;
 
-      if(t.startsWith('#EXTINF:')){
-        const groupMatch = t.match(/group-title="([^"]*)"/i);
-        const nameAttr   = t.match(/tvg-name="([^"]*)"/i);
-        let name = '';
-        if(nameAttr && nameAttr[1].trim()) name = nameAttr[1].trim();
-        else {
-          let inQuotes = false, lastComma = -1;
-          for(let i = 0; i < t.length; i++){
-            const ch = t[i];
-            if(ch === '"') inQuotes = !inQuotes;
-            else if(ch === ',' && !inQuotes) lastComma = i;
-          }
-          if(lastComma > -1) name = t.substring(lastComma + 1).trim();
-        }
-        if(/Mozilla|Gecko|AppleWebKit|Chrome\/|Safari\/|Firefox\/|KHTML|like\s*Gecko/i.test(name)) name = '';
-        if(name.length > 70) name = name.substring(0, 67) + '...';
-        if(!name) name = 'Canal IPTV';
-        current = {
-          title: name,
-          meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label
-        };
+     if(t.startsWith('#EXTINF:')){
+  const groupMatch = t.match(/group-title="([^"]*)"/i);
+  const nameAttr   = t.match(/tvg-name="([^"]*)"/i);
+  let name = '';
+  if(nameAttr && nameAttr[1].trim()) name = nameAttr[1].trim();
+  else {
+    let inQuotes = false, lastComma = -1;
+    for(let i = 0; i < t.length; i++){
+      const ch = t[i];
+      if(ch === '"') inQuotes = !inQuotes;
+      else if(ch === ',' && !inQuotes) lastComma = i;
+    }
+    if(lastComma > -1) name = t.substring(lastComma + 1).trim();
+  }
+  if(/Mozilla|Gecko|AppleWebKit|Chrome\/|Safari\/|Firefox\/|KHTML|like\s*Gecko/i.test(name)) name = '';
+  if(name.length > 70) name = name.substring(0, 67) + '...';
+  if(!name) name = 'Canal IPTV';
+  current = {
+    title: name,
+    meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label
+  };
+}
       } else if(t.startsWith('#')){
         continue;
       } else if(current){
