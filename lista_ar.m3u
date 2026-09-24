@@ -1,0 +1,295 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1jz1sw4" group-title="🇦🇷 Argentina",1JZ1SW4
+https://617c5175c970b.streamlock.net:4444/tvcinco/live1/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1xrav7r" group-title="🇦🇷 Argentina",1XRAV7R
+https://panel.host-live.com:19360/cn247tv/cn247tv.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-erukxc" group-title="🇦🇷 Argentina",ERUKXC
+https://g5.vxral-slo.transport.edge-access.net/a12/ngrp:a24-100056_all/playlist.m3u8?sense=true
+#EXTINF:-1 tvg-id="iptv-iptv-ar-15ef8th" group-title="🇦🇷 Argentina",15EF8TH
+https://videostream.shockmedia.com.ar/hls/abtvbariloche/abtvbariloche.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-m8ih8m" group-title="🇦🇷 Argentina",M8IH8M
+https://unlimited1-us.dps.live/airedesantafetv/airedesantafetv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-148t96g" group-title="🇦🇷 Argentina",148T96G
+https://tv.alterna.ar/stream/hls/live.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-6klzu7" group-title="🇦🇷 Argentina",6KLZU7
+https://prepublish.f.qaotic.net/a07/americahls-100056/playlist_720p.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1gxr9d4" group-title="🇦🇷 Argentina",1GXR9D4
+https://stream1.sersat.com/hls/argentinisima.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-tj8wil" group-title="🇦🇷 Argentina",TJ8WIL
+https://streamyes.alsolnet.com/azaharesfm/live/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-ouaz9o" group-title="🇦🇷 Argentina",OUAZ9O
+https://streaming01.mikrolive.tv/bayrestv/live/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1grxt0" group-title="🇦🇷 Argentina",1GRXT0
+https://videostream.shockmedia.com.ar:19360/beatsradio/beatsradio.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-sjgiq3" group-title="🇦🇷 Argentina",SJGIQ3
+https://mp.panelchs.com:1936/8028/ngrp:8028_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-tlqt2m" group-title="🇦🇷 Argentina",TLQT2M
+https://redirector.rudo.video/hls-video/c54ac2799874375c81c1672abb700870537c5223/bravo/bravo.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-ihu1kp" group-title="🇦🇷 Argentina",IHU1KP
+https://vivo.solumedia.com:19360/bvnet/bvnet.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-jk47vn" group-title="🇦🇷 Argentina",JK47VN
+https://stream.arcast.com.ar/casse/casse/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-cycy89" group-title="🇦🇷 Argentina",CYCY89
+https://streamlov.alsolnet.com/cadena103/live/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1dt53pc" group-title="🇦🇷 Argentina",1DT53PC
+https://nd106.republicaservers.com:4433/hls/c6611/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-mak247" group-title="🇦🇷 Argentina",MAK247
+https://stream.arcast.net:4443/gualeguay/gualeguay/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-xkuek" group-title="🇦🇷 Argentina",XKUEK
+https://tv.streamcasthd.com:3641/live/canal2mdplive.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1f21nmu" group-title="🇦🇷 Argentina",1F21NMU
+https://nd106.republicaservers.com:4433/hls/canal2misioness/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-13b6vde" group-title="🇦🇷 Argentina",13B6VDE
+https://edge.enhdtv.com/nexthd/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-robuxg" group-title="🇦🇷 Argentina",ROBUXG
+https://stmvideo6.livecastv.com/agenfor/agenfor/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-z1zb2u" group-title="🇦🇷 Argentina",Z1ZB2U
+https://stream.arcast.com.ar/c3lapampa/ngrp:c3lapampa_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1rn7t03" group-title="🇦🇷 Argentina",1RN7T03
+https://stream.arcast.com.ar/canal3/canal3/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-zcco7n" group-title="🇦🇷 Argentina",ZCCO7N
+https://stream.arcast.com.ar/canal4esquel/canal4esquel/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-ou57j8" group-title="🇦🇷 Argentina",OU57J8
+https://5cd577a3dd8ec.streamlock.net/CANAL4/smil:CANAL4.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-132lz1n" group-title="🇦🇷 Argentina",132LZ1N
+https://iptv.ixfo.com.ar:30443/live/C4POS/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1e0o5nw" group-title="🇦🇷 Argentina",1E0O5NW
+https://streamlov.alsolnet.com/canal4sanjuan/live/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-at3m4e" group-title="🇦🇷 Argentina",AT3M4E
+https://stmvideo6.livecastv.com/canal4/canal4/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1ebipx7" group-title="🇦🇷 Argentina",1EBIPX7
+https://stmvideo3.livecastv.com/canal4vd/canal4vd/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-9ezcn" group-title="🇦🇷 Argentina",9EZCN
+https://stmv4.voxtvhd.com.br/canal5pueblo/canal5pueblo/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-15ay3xv" group-title="🇦🇷 Argentina",15AY3XV
+https://stream.arcast.com.ar/c5sf/c5sf/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-bb9mas" group-title="🇦🇷 Argentina",BB9MAS
+https://videostream.shockmedia.com.ar:19360/canal5alfatvchepes/canal5alfatvchepes.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-t6xx7x" group-title="🇦🇷 Argentina",T6XX7X
+https://iptv.ixfo.com.ar:30443/live/c6digital/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1xxrtlq" group-title="🇦🇷 Argentina",1XXRTLQ
+https://stmvideo6.livecastv.com/vientorecio/vientorecio/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-65nuvc" group-title="🇦🇷 Argentina",65NUVC
+https://stream.arcast.live/canal7jujuy/ngrp:canal7jujuy_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-v25wvg" group-title="🇦🇷 Argentina",V25WVG
+https://stream.arcast.com.ar/c7nq/ngrp:c7nq_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1swlukd" group-title="🇦🇷 Argentina",1SWLUKD
+https://vivo.solumedia.com:19360/cooperativa/cooperativa.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-p97z8l" group-title="🇦🇷 Argentina",P97Z8L
+https://stream.arcast.com.ar/envivo/castv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-3oegg6" group-title="🇦🇷 Argentina",3OEGG6
+https://canal8mdq.unpocodeawita.workers.dev/
+#EXTINF:-1 tvg-id="iptv-iptv-ar-z8enzv" group-title="🇦🇷 Argentina",Z8ENZV
+https://live20.bozztv.com/akamaissh101/ssh101/canal8sanjuan/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-egbily" group-title="🇦🇷 Argentina",EGBILY
+https://617c5175c970b.streamlock.net:4444/9linklivert/smil:9linkmultibr.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1t6rk8h" group-title="🇦🇷 Argentina",1T6RK8H
+https://stream.arcast.live/ahora/ahora/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-13l89p4" group-title="🇦🇷 Argentina",13L89P4
+https://stream.arcast.net:4443/canal10/ngrp:canal10_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-pkntdk" group-title="🇦🇷 Argentina",PKNTDK
+https://g1.mc-hor.transport.edge-access.net/a12/ngrp:canal10mdq-100044_all/Playlist.m3u8?sense=true
+#EXTINF:-1 tvg-id="iptv-iptv-ar-r24ltp" group-title="🇦🇷 Argentina",R24LTP
+https://nd106.republicaservers.com:4433/c7827.mp4
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1f515ao" group-title="🇦🇷 Argentina",1F515AO
+https://genexservicios.com:19360/canal13jujuy/canal13jujuy.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-t58t64" group-title="🇦🇷 Argentina",T58T64
+https://stream.radiosmundiales.com:19360/sanluismas/sanluismas.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-dfxe3r" group-title="🇦🇷 Argentina",DFXE3R
+https://iptv.ixfo.com.ar:30443/c21tv/hd/c21tv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-faidbx" group-title="🇦🇷 Argentina",FAIDBX
+https://5f700d5b2c46f.streamlock.net/canal22/canal22/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-4laltl" group-title="🇦🇷 Argentina",4LALTL
+https://stream-gtlc.telecentro.net.ar/hls/canal26hls/main.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-s1xzlc" group-title="🇦🇷 Argentina",S1XZLC
+https://online.coopmorteros.coop/canal50/vivo.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1oxvc6r" group-title="🇦🇷 Argentina",1OXVC6R
+https://streamconex.com:19360/lacosta/lacosta.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-k3z50n" group-title="🇦🇷 Argentina",K3Z50N
+https://streamconex.com:19360/mardelplata/mardelplata.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1fbg3ub" group-title="🇦🇷 Argentina",1FBG3UB
+https://streamconex.com:19360/puan/puan.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-6nihv7" group-title="🇦🇷 Argentina",6NIHV7
+https://streamconex.com:19360/santaclara-1/santaclara-1.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1y5z3xb" group-title="🇦🇷 Argentina",1Y5Z3XB
+https://streamconex.com:19360/villamaza/villamaza.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1o18q31" group-title="🇦🇷 Argentina",1O18Q31
+https://vivo.solumedia.com:19360/cardinal/cardinal.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-su323w" group-title="🇦🇷 Argentina",SU323W
+https://unlimited1-us.dps.live/perfiltv/perfiltv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1nuo264" group-title="🇦🇷 Argentina",1NUO264
+https://g4.vxral-hor.transport.edge-access.net/a11/ngrp:canal_luz01-100009_all/Playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-kjak9k" group-title="🇦🇷 Argentina",KJAK9K
+https://stream.arcast.net:4443/canal21/ngrp:canal21_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-5fzun1" group-title="🇦🇷 Argentina",5FZUN1
+https://streaming.telered.com.ar/provincial/streaming/mystream.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-jagd2i" group-title="🇦🇷 Argentina",JAGD2I
+https://vs20.live.opencaster.com/canalpulpotv_bdeee6e2/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-l5lqba" group-title="🇦🇷 Argentina",L5LQBA
+https://streaming.telered.com.ar/santa-maria/streaming/mystream.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1wian11" group-title="🇦🇷 Argentina",1WIAN11
+https://livestream.lumpentv.com.ar/hls/lumpen.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-uye2qa" group-title="🇦🇷 Argentina",UYE2QA
+https://tdcserver.com:19360/tdconlione-2/tdconlione-2.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-s94c5d" group-title="🇦🇷 Argentina",S94C5D
+https://videostream.shockmedia.com.ar/hls/canaluniversidadmdp/canaluniversidadmdp.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1uekfbu" group-title="🇦🇷 Argentina",1UEKFBU
+https://unlimited1-us.dps.live/carastv/carastv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1klvz5y" group-title="🇦🇷 Argentina",1KLVZ5Y
+https://stream.arcast.com.ar/canal7catamarca/ngrp:canal7catamarca_all/playlist.m3u8?DVR=
+#EXTINF:-1 tvg-id="iptv-iptv-ar-5yg4nx" group-title="🇦🇷 Argentina",5YG4NX
+https://vivo.solumedia.com:19360/celta/celta.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-rwdntp" group-title="🇦🇷 Argentina",RWDNTP
+https://wowzasrv.chaco.gov.ar/Streamtv/chacotv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-5jsoqt" group-title="🇦🇷 Argentina",5JSOQT
+https://5f700d5b2c46f.streamlock.net/chacratv/chacratv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-7rsgqo" group-title="🇦🇷 Argentina",7RSGQO
+https://srv4.zcast.com.br/chamametv/chamametv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-xjanfg" group-title="🇦🇷 Argentina",XJANFG
+https://lbgo.bozztv.com/ssh101/ssh101/verycoolfgr/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-z03g5b" group-title="🇦🇷 Argentina",Z03G5B
+https://617c5175c970b.streamlock.net:4444/chacodxdtv/livenew/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-179l6yn" group-title="🇦🇷 Argentina",179L6YN
+https://stream.arcast.net:4443/correadigital/canal12/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-iz8nez" group-title="🇦🇷 Argentina",IZ8NEZ
+https://617c5175c970b.streamlock.net:4444/13max2/live13maxtv2026/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-12qcfeq" group-title="🇦🇷 Argentina",12QCFEQ
+https://tv.mediacp.eu:19360/cosmos/cosmos.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1nn8ta8" group-title="🇦🇷 Argentina",1NN8TA8
+https://canaletaplus.com:3922/live/cosmoslive.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-qwco2k" group-title="🇦🇷 Argentina",QWCO2K
+https://cloud.tvomix.com/CUMBIAMIX/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-198irm7" group-title="🇦🇷 Argentina",198IRM7
+https://op-group1-swiftservehd-1.dens.tv/h/h250/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-uh5ng6" group-title="🇦🇷 Argentina",UH5NG6
+https://stream.arcast.com.ar/ecotv/ngrp:ecotv_all/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-4m7yaf" group-title="🇦🇷 Argentina",4M7YAF
+https://iptv.bitred.cl/ELGOURMET_HD/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-mw2z1" group-title="🇦🇷 Argentina",MW2Z1
+https://edgectc.com/CANAL7_MZA/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1lbarxj" group-title="🇦🇷 Argentina",1LBARXJ
+https://iptv.bitred.cl/EUROPAEUROPA_HD/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-12f6bpu" group-title="🇦🇷 Argentina",12F6BPU
+https://6c849fb3.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctbXhfRklGQVBsdXNTcGFuaXNoLTFfSExT/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-pkp9j2" group-title="🇦🇷 Argentina",PKP9J2
+https://stmvideo6.livecastv.com/radioactivasanjuan/radioactivasanjuan/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-uchk1n" group-title="🇦🇷 Argentina",UCHK1N
+https://twitch-m3u8.bastypro112.workers.dev/argentina_12tw/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1hj5x3m" group-title="🇦🇷 Argentina",1HJ5X3M
+https://proxystream.iteltv.com.ar/output/iteltv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1hr0pab" group-title="🇦🇷 Argentina",1HR0PAB
+https://cloud.tvomix.com/KPOPMIX/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1wwp6ux" group-title="🇦🇷 Argentina",1WWP6UX
+https://mdstrm.com/live-stream-playlist/68b74fd1d6512526f1f7c75a.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-al2r06" group-title="🇦🇷 Argentina",AL2R06
+https://vd01.streaminghd.net.ar:3349/live/bzuctkgnlive.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1r4c574" group-title="🇦🇷 Argentina",1R4C574
+https://edge.enhdtv.com/litustv/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-gve4vz" group-title="🇦🇷 Argentina",GVE4VZ
+https://vivo.solumedia.com:19360/masfm/masfm.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1nddilr" group-title="🇦🇷 Argentina",1NDDILR
+https://videostream.shockmedia.com.ar/hls/mercuriotv/mercuriotv.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-cxr9lw" group-title="🇦🇷 Argentina",CXR9LW
+https://streamtv12.ddns.net:5443/LiveApp/streams/193945633734205616732920.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-3ijzno" group-title="🇦🇷 Argentina",3IJZNO
+https://iptv.ixfo.com.ar:30443/live-HD/MISIONES4/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-mjluyk" group-title="🇦🇷 Argentina",MJLUYK
+https://stream-gtlc.telecentro.net.ar/hls/musictophls/0/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1styf50" group-title="🇦🇷 Argentina",1STYF50
+https://videostream.shockmedia.com.ar:19360/neotvdigital/neotvdigital.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-70yxgr" group-title="🇦🇷 Argentina",70YXGR
+https://tv.streamcasthd.com:3031/live/neoxtvlive.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1lu4yqt" group-title="🇦🇷 Argentina",1LU4YQT
+https://ntvcanal7.com.ar:81/dash/stream.mpd
+#EXTINF:-1 tvg-id="iptv-iptv-ar-npzh2r" group-title="🇦🇷 Argentina",NPZH2R
+https://panel.host-live.com:19360/20004/20004.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1gjqpkc" group-title="🇦🇷 Argentina",1GJQPKC
+https://videostream.shockmedia.com.ar:19360/radio1045/radio1045.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1o2qvgw" group-title="🇦🇷 Argentina",1O2QVGW
+https://live2.tensila.com/1-1-1.power-tv/hls/master.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-h5allw" group-title="🇦🇷 Argentina",H5ALLW
+https://videostream.shockmedia.com.ar:19360/quanticatv/quanticatv.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1xdmqfp" group-title="🇦🇷 Argentina",1XDMQFP
+https://tuvideoonline.com.ar:3391/live/radioconexionlive.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-13xl4me" group-title="🇦🇷 Argentina",13XL4ME
+https://radiomaria.inovanex.stream/stream.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-dbvosz" group-title="🇦🇷 Argentina",DBVOSZ
+https://vivo.solumedia.com:19360/realpolitik/realpolitik.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1v9zui9" group-title="🇦🇷 Argentina",1V9ZUI9
+https://5f700d5b2c46f.streamlock.net/sublime/sublime/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1cq8mgd" group-title="🇦🇷 Argentina",1CQ8MGD
+https://media.neuquen.gov.ar/rtn/television/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-rc4cjy" group-title="🇦🇷 Argentina",RC4CJY
+https://iptv.ixfo.com.ar:30443/live/RadioUpTvStreaming/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-16rzhsz" group-title="🇦🇷 Argentina",16RZHSZ
+https://live.enhdtv.com:8081/radioiguazutv/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-ehgpjf" group-title="🇦🇷 Argentina",EHGPJF
+https://media.neuquen.gov.ar/rtn/television/media.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1f5rr5j" group-title="🇦🇷 Argentina",1F5RR5J
+https://stream.radiosmundiales.com/hls/sanluismas/sanluismas.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1aeljle" group-title="🇦🇷 Argentina",1AELJLE
+https://iptv.ixfo.com.ar:30443/live/sanpedrotv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1tsd7j4" group-title="🇦🇷 Argentina",1TSD7J4
+https://canalsantaferts.argtelemax.workers.dev/
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1e31ilb" group-title="🇦🇷 Argentina",1E31ILB
+https://live20.bozztv.com/giatv/giatv-canal30tda/canal30tda/chunks.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1wnz36j" group-title="🇦🇷 Argentina",1WNZ36J
+https://player.videohost.click/senillosatv/senillosatv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1fwkjl" group-title="🇦🇷 Argentina",1FWKJL
+https://vivo.solumedia.com:19360/sicarditv/sicarditv.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-13zd8yd" group-title="🇦🇷 Argentina",13ZD8YD
+https://stmv6.voxtvhd.com.br/solivetv/solivetv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1bxyi0g" group-title="🇦🇷 Argentina",1BXYI0G
+https://live20.bozztv.com/akamaissh101/ssh101/somosentrerios/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1dm77gj" group-title="🇦🇷 Argentina",1DM77GJ
+https://stream.t5satelital.blog/hls/t5satelitalweb.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-c6616e" group-title="🇦🇷 Argentina",C6616E
+https://lbgo.bozztv.com/ssh101/ssh101/tele6/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-lccnvn" group-title="🇦🇷 Argentina",LCCNVN
+https://lbgo.bozztv.com/giatv/giatv-teleposadastv/teleposadastv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1svaksa" group-title="🇦🇷 Argentina",1SVAKSA
+https://videohd.live:19360/8016/8016.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-n5g4te" group-title="🇦🇷 Argentina",N5G4TE
+https://smt-usr-edge01.sensa.com.ar/output/ARR2/TelefeRosarioH/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1d11ggj" group-title="🇦🇷 Argentina",1D11GGJ
+https://canal11saltatv.unpocodeawita.workers.dev/
+#EXTINF:-1 tvg-id="iptv-iptv-ar-un0fzw" group-title="🇦🇷 Argentina",UN0FZW
+https://g2.mc-hor.transport.edge-access.net/a05/ngrp:elochotv-100168_all/Playlist.m3u8?sense=true
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1ym69jy" group-title="🇦🇷 Argentina",1YM69JY
+https://stream-gtlc.telecentro.net.ar/hls/telemaxhls/main.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1h39c3" group-title="🇦🇷 Argentina",1H39C3
+https://cdn1.tvlin.net/open/telesol/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1job7g3" group-title="🇦🇷 Argentina",1JOB7G3
+https://5f700d5b2c46f.streamlock.net/thecabinn/thecabinn/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1olj3dm" group-title="🇦🇷 Argentina",1OLJ3DM
+https://videohd.live:19360/8008/8008.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-19h24xm" group-title="🇦🇷 Argentina",19H24XM
+https://stmv1.voxtvhd.com.br/canal72tv2/canal72tv2/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-7kar72" group-title="🇦🇷 Argentina",7KAR72
+https://w2.manasat.com/tvmana-ar/smil:tvmana-ar.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-19eok3" group-title="🇦🇷 Argentina",19EOK3
+https://nd106.republicaservers.com/hls/c8094/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-fulpqf" group-title="🇦🇷 Argentina",FULPQF
+https://canadaremar2.todostreaming.es/live/argentina-web.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-qdgx3g" group-title="🇦🇷 Argentina",QDGX3G
+https://stratus.stream.cespi.unlp.edu.ar/hls/tvunlp.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-15irnw7" group-title="🇦🇷 Argentina",15IRNW7
+https://cdn.mycloudstream.io/hls/live/broadcast/xundwjvp/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-95ri97" group-title="🇦🇷 Argentina",95RI97
+https://vivo.solumedia.com:19360/uniteve/uniteve.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-kdcah1" group-title="🇦🇷 Argentina",KDCAH1
+https://cloud.tvomix.com/URBANMIX/index.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1ahy8mc" group-title="🇦🇷 Argentina",1AHY8MC
+https://micanal.ovh/livestreams/515.AUTOOAAZ721F.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-b11pw1" group-title="🇦🇷 Argentina",B11PW1
+https://5f700d5b2c46f.streamlock.net/vertv/vertv/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-1swpty7" group-title="🇦🇷 Argentina",1SWPTY7
+https://srs.unsj.edu.ar/live/xama/xama.flv
+#EXTINF:-1 tvg-id="iptv-iptv-ar-cqin85" group-title="🇦🇷 Argentina",CQIN85
+https://stmv6.voxtvhd.com.br/cineaccion/cineaccion/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-13bbs45" group-title="🇦🇷 Argentina",13BBS45
+https://stmv6.voxtvhd.com.br/xtremacartoons/xtremacartoons/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-r0z429" group-title="🇦🇷 Argentina",R0Z429
+https://stmv6.voxtvhd.com.br/cineclasico/cineclasico/playlist.m3u8
+#EXTINF:-1 tvg-id="iptv-iptv-ar-erurjp" group-title="🇦🇷 Argentina",ERURJP
+https://stmv6.voxtvhd.com.br/cineterror/cineterror/playlist.m3u8
