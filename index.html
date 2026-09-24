@@ -977,8 +977,12 @@ function toast(msg){
    IPTV — Carga de canales públicos (parser robusto)
    ========================================================= */
 const IPTV_FEEDS = [
-  { id:'iptv-mio',    label:'⭐ Mi Lista',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_https.m3u', type:'live' },
-  { id:'iptv-movies', label:'🎬 Películas',    url:'https://iptv-org.github.io/iptv/categories/movies.m3u', type:'live' }
+  { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_ar.m3u',     type:'live' },
+  { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_news.m3u',   type:'live' },
+  { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_sports.m3u', type:'live' },
+  { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_music.m3u',  type:'live' },
+  { id:'iptv-otros',  label:'📺 Otros',       url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_otros.m3u',  type:'live' },
+  { id:'iptv-movies', label:'🎬 Películas',   url:'https://iptv-org.github.io/iptv/categories/movies.m3u', type:'live' }
 ];
 
 const iptvOverlay = $('#iptvLoading');
