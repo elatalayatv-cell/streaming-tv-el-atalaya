@@ -512,7 +512,7 @@ function cardHTML(it){
     <div class="poster" style="${posterStyle(it)}">
       ${it.type==='live' ? '<span class="live">● EN VIVO</span>' : ''}
       ${tieneFuente ? '<span class="src-ok"></span>' : ''}
-      ${esIPTV ? '<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:42px;opacity:.16;z-index:1">📺</span>' : ''}
+      ${esIPTV ? '<span style="...">📺</span>' : ''}
       <span class="ptitle">${esc(it.title)}</span>
       <span class="play">▶</span>
     </div>
