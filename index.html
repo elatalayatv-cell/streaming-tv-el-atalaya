@@ -508,11 +508,14 @@ function posterStyle(it){
 function cardHTML(it){
   const tieneFuente = !!SOURCES[it.id];
   const esIPTV = it.id && it.id.startsWith('iptv-');
+  const logo = it.logo
+    ? `<img src="${esc(it.logo)}" alt="" loading="lazy" onerror="this.style.display='none'" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:55%;max-height:55%;object-fit:contain;z-index:2;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))">`
+    : (esIPTV ? '<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:42px;opacity:.16;z-index:1">📺</span>' : '');
   return `<article class="card ${it.type}" data-id="${it.id}">
     <div class="poster" style="${posterStyle(it)}">
       ${it.type==='live' ? '<span class="live">● EN VIVO</span>' : ''}
       ${tieneFuente ? '<span class="src-ok"></span>' : ''}
-      ${esIPTV ? '<span style="...">📺</span>' : ''}
+      ${logo}
       <span class="ptitle">${esc(it.title)}</span>
       <span class="play">▶</span>
     </div>
