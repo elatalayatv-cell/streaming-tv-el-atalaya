@@ -7,201 +7,288 @@
 <link rel="icon" type="image/png" href="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png">
 <style>
 :root{
-  --bg:#080b11; --bg2:#0f141e; --bg3:#161d2b; --bg4:#1e2637;
-  --line:#242e42; --txt:#e9eef8; --muted:#8794ab;
-  --acc:#ffb020; --acc2:#ff6a3d; --live:#ff2d55;
-  --r:14px; --sh:0 18px 50px rgba(0,0,0,.55);
+  --bg:#07080d; --bg2:#0d1017; --bg3:#141822; --bg4:#1c2230;
+  --line:rgba(255,255,255,.06); --line2:rgba(255,255,255,.1);
+  --txt:#eef2f9; --muted:#7d8ba4;
+  --acc:#ffb020; --acc2:#ff5c33; --live:#ff2d55;
+  --r:14px; --r2:11px;
+  --sh:0 20px 50px rgba(0,0,0,.5);
+  --glow:0 0 40px rgba(255,176,32,.25);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;overflow-x:hidden}
-::-webkit-scrollbar{width:10px;height:10px}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:'Inter','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(1000px 500px at 10% -10%, rgba(255,176,32,.08), transparent 60%),
+    radial-gradient(800px 500px at 100% 20%, rgba(255,92,51,.06), transparent 60%);
+}
+::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#2a3549;border-radius:20px;border:2px solid var(--bg)}
-::-webkit-scrollbar-thumb:hover{background:#3a4860}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:20px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.15)}
 
-.topbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:16px;
-  padding:12px 20px;background:rgba(8,11,17,.88);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line)}
-.burger{display:none;background:none;border:1px solid var(--line);color:var(--txt);
-  font-size:18px;width:40px;height:40px;border-radius:10px;cursor:pointer}
-.brand{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;color:inherit;flex-shrink:0}
-.logo{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;
-  background:linear-gradient(140deg,var(--acc),var(--acc2));
-  box-shadow:0 0 28px rgba(255,176,32,.45);overflow:hidden;padding:2px;flex-shrink:0;transition:transform .25s}
-.brand:hover .logo{transform:scale(1.05) rotate(-2deg)}
+.topbar{
+  position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:16px;
+  padding:14px 24px;background:rgba(7,8,13,.78);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid var(--line);
+}
+.burger{display:none;background:none;border:1px solid var(--line2);
+  color:var(--txt);font-size:18px;width:42px;height:42px;
+  border-radius:11px;cursor:pointer;transition:.2s}
+.burger:hover{background:var(--bg3)}
+.brand{display:flex;align-items:center;gap:12px;cursor:pointer;
+  text-decoration:none;color:inherit;flex-shrink:0}
+.logo{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  box-shadow:var(--glow);overflow:hidden;padding:2px;flex-shrink:0;
+  transition:transform .3s cubic-bezier(.2,.8,.3,1)}
+.brand:hover .logo{transform:scale(1.06) rotate(-3deg)}
 .logo img{width:100%;height:100%;object-fit:contain;border-radius:11px;display:block}
-.brand-txt{font-size:19px;font-weight:800;letter-spacing:1.6px;line-height:1}
-.brand-txt b{color:var(--acc)}
-.brand-sub{font-size:9.5px;letter-spacing:3px;color:var(--muted);margin-top:5px;font-weight:600;display:block}
+.brand-txt{font-size:17px;font-weight:800;letter-spacing:.4px;line-height:1}
+.brand-txt b{background:linear-gradient(100deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-sub{font-size:9px;letter-spacing:2.5px;color:var(--muted);
+  margin-top:5px;font-weight:600;display:block}
 
-.search{flex:1;max-width:520px;position:relative}
-.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+.search{flex:1;max-width:540px;position:relative}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);
   width:17px;height:17px;stroke:var(--muted);fill:none;stroke-width:2}
-.search input{width:100%;padding:11px 14px 11px 41px;border-radius:11px;border:1px solid var(--line);
-  background:var(--bg3);color:var(--txt);font-size:14px;outline:none;transition:.2s}
-.search input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(255,176,32,.12)}
-.top-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.clock{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;
-  padding:7px 13px;border:1px solid var(--line);border-radius:10px;background:var(--bg3)}
-.btn{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--bg3);
-  color:var(--txt);font-size:13.5px;font-weight:600;cursor:pointer;transition:.18s;
-  display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
-.btn:hover{background:var(--bg4);border-color:#33415c}
-.btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#0a0d13;border:none}
-.btn.primary:hover{filter:brightness(1.1)}
-.btn.sm{padding:7px 12px;font-size:12.5px}
+.search input{width:100%;padding:12px 16px 12px 44px;border-radius:12px;
+  border:1px solid var(--line2);background:var(--bg3);color:var(--txt);
+  font-size:14px;outline:none;transition:.25s}
+.search input:focus{border-color:var(--acc);
+  box-shadow:0 0 0 3px rgba(255,176,32,.1);background:var(--bg2)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.clock{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;
+  padding:8px 14px;border:1px solid var(--line2);border-radius:11px;background:var(--bg3)}
+.btn{padding:11px 16px;border-radius:11px;border:1px solid var(--line2);
+  background:var(--bg3);color:var(--txt);font-size:13.5px;font-weight:600;
+  cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:7px;
+  white-space:nowrap;font-family:inherit}
+.btn:hover{background:var(--bg4);border-color:rgba(255,255,255,.15)}
+.btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:#0a0d13;border:none;box-shadow:0 8px 24px rgba(255,140,40,.25)}
+.btn.primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn.sm{padding:8px 13px;font-size:12.5px}
 
 .app{display:flex;min-height:calc(100vh - 78px)}
-.sidebar{width:250px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--line);
-  padding:18px 12px 40px;position:sticky;top:78px;height:calc(100vh - 78px);overflow-y:auto}
-.nav-group{font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);
-  font-weight:800;margin:20px 12px 8px;display:flex;align-items:center;gap:8px}
+.sidebar{width:260px;flex-shrink:0;background:var(--bg2);
+  border-right:1px solid var(--line);padding:20px 14px 40px;
+  position:sticky;top:78px;height:calc(100vh - 78px);overflow-y:auto}
+.nav-group{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--muted);font-weight:800;margin:22px 14px 8px;
+  display:flex;align-items:center;gap:8px}
 .nav-group:first-child{margin-top:0}
-.nav-item{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:9px;border:none;
-  background:transparent;color:#b7c2d4;font-size:13.5px;cursor:pointer;transition:.15s;
-  font-family:inherit;margin-bottom:2px}
+.nav-item{display:block;width:100%;text-align:left;padding:10px 13px;
+  border-radius:10px;border:none;background:transparent;color:#a4b0c5;
+  font-size:13.5px;cursor:pointer;transition:.15s;font-family:inherit;
+  margin-bottom:2px;position:relative}
 .nav-item:hover{background:var(--bg3);color:#fff}
 .nav-item.active{background:linear-gradient(90deg,rgba(255,176,32,.18),transparent);
-  color:var(--acc);font-weight:700;box-shadow:inset 3px 0 0 var(--acc)}
-.nav-item.live-dot::after{content:'●';color:var(--live);font-size:9px;margin-left:7px;animation:blink 1.4s infinite}
-@keyframes blink{50%{opacity:.25}}
+  color:var(--acc);font-weight:700}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;
+  width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--acc),var(--acc2))}
+.nav-item .count{float:right;color:var(--muted);font-size:11px;
+  font-weight:500;opacity:.7}
 
-.main{flex:1;padding:22px 26px 70px;min-width:0}
+.main{flex:1;padding:26px 30px 80px;min-width:0}
 
-.hero{border-radius:20px;padding:34px 32px;margin-bottom:30px;position:relative;overflow:hidden;
-  background:radial-gradient(900px 320px at 12% 0%, rgba(255,176,32,.20), transparent 62%),
-    radial-gradient(700px 320px at 92% 110%, rgba(255,106,61,.20), transparent 60%),
-    linear-gradient(120deg,#131a27,#0c111a);
-  border:1px solid var(--line)}
-.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,176,32,.14),transparent 68%)}
-.hero-logo{width:100px;height:100px;border-radius:22px;display:grid;place-items:center;
+.hero{border-radius:22px;padding:38px 36px;margin-bottom:34px;
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(700px 300px at 15% 0%, rgba(255,176,32,.16), transparent 65%),
+    radial-gradient(600px 300px at 90% 110%, rgba(255,92,51,.14), transparent 60%),
+    linear-gradient(135deg,#101521,#0a0e17);
+  border:1px solid var(--line2)}
+.hero::after{content:'';position:absolute;right:-80px;top:-80px;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,176,32,.12),transparent 68%);
+  pointer-events:none}
+.hero-logo{width:88px;height:88px;border-radius:22px;display:grid;place-items:center;
   background:linear-gradient(140deg,var(--acc),var(--acc2));
-  box-shadow:0 0 45px rgba(255,176,32,.5);overflow:hidden;padding:4px;margin-bottom:20px;
-  position:relative;z-index:2;transition:transform .3s}
-.hero-logo:hover{transform:scale(1.06) rotate(-2deg)}
+  box-shadow:var(--glow);overflow:hidden;padding:4px;margin-bottom:22px;
+  position:relative;z-index:2;transition:transform .35s cubic-bezier(.2,.8,.3,1)}
+.hero-logo:hover{transform:scale(1.08) rotate(-3deg)}
 .hero-logo img{width:100%;height:100%;object-fit:contain;border-radius:18px;display:block}
-.hero h1{font-size:31px;font-weight:900;letter-spacing:-.5px;margin-bottom:9px;position:relative;z-index:2}
+.hero h1{font-size:34px;font-weight:900;letter-spacing:-.8px;
+  margin-bottom:10px;position:relative;z-index:2;line-height:1.1}
 .hero h1 span{background:linear-gradient(100deg,var(--acc),var(--acc2));
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{color:var(--muted);font-size:14.5px;max-width:640px;line-height:1.65;position:relative;z-index:2}
-.hero-stats{display:flex;gap:26px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:2}
-.stat b{display:block;font-size:23px;color:var(--acc);font-weight:800}
-.stat span{font-size:11.5px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.hero p{color:var(--muted);font-size:14.5px;max-width:640px;
+  line-height:1.65;position:relative;z-index:2}
+.hero-stats{display:flex;gap:32px;margin-top:26px;flex-wrap:wrap;
+  position:relative;z-index:2}
+.stat b{display:block;font-size:26px;font-weight:800;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1}
+.stat span{font-size:11px;color:var(--muted);letter-spacing:1.2px;
+  text-transform:uppercase;margin-top:6px;display:block}
 
-.row{margin-bottom:36px}
-.row-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px}
-.row-head h3{font-size:17.5px;font-weight:800;display:flex;align-items:center;gap:10px}
-.row-head h3::before{content:'';width:4px;height:19px;border-radius:3px;background:linear-gradient(var(--acc),var(--acc2))}
-.more{background:none;border:none;color:var(--muted);font-size:12.5px;cursor:pointer;font-weight:600;font-family:inherit;transition:.15s}
-.more:hover{color:var(--acc)}
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:186px;gap:15px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x proximity}
+.row{margin-bottom:40px}
+.row-head{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;gap:12px}
+.row-head h3{font-size:18px;font-weight:800;display:flex;align-items:center;gap:11px}
+.row-head h3::before{content:'';width:4px;height:20px;border-radius:3px;
+  background:linear-gradient(var(--acc),var(--acc2))}
+.more{background:none;border:none;color:var(--muted);font-size:12.5px;
+  cursor:pointer;font-weight:600;font-family:inherit;transition:.15s;
+  padding:6px 10px;border-radius:8px}
+.more:hover{color:var(--acc);background:var(--bg3)}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:240px;gap:16px;
+  overflow-x:auto;padding:4px 2px 16px;scroll-snap-type:x proximity}
 .rail .card{scroll-snap-align:start}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:17px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:16px}
 
-.card{cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.3,1)}
-.card:hover{transform:translateY(-6px)}
-.poster{position:relative;border-radius:var(--r);overflow:hidden;display:flex;
-  align-items:flex-end;padding:13px;border:1px solid rgba(255,255,255,.07);box-shadow:0 10px 26px rgba(0,0,0,.4)}
-.card.vod .poster{aspect-ratio:2/3}
-.card.live .poster{aspect-ratio:16/9}
-.poster::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.82))}
-.ptitle{position:relative;font-size:13.5px;font-weight:800;line-height:1.28;text-shadow:0 2px 10px rgba(0,0,0,.9);z-index:2}
-.card.live .ptitle{font-size:12.5px}
+.card{cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.3,1)}
+.card:hover{transform:translateY(-5px)}
+.poster{position:relative;border-radius:var(--r);overflow:hidden;
+  aspect-ratio:16/9;display:flex;align-items:flex-end;padding:13px;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 12px 30px rgba(0,0,0,.4);transition:box-shadow .25s}
+.card:hover .poster{box-shadow:0 20px 42px rgba(0,0,0,.55)}
+.poster::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.88));z-index:1}
+.ptitle{position:relative;font-size:13px;font-weight:800;line-height:1.3;
+  text-shadow:0 2px 12px rgba(0,0,0,.9);z-index:2;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden}
 .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.6);
-  width:46px;height:46px;border-radius:50%;background:rgba(255,176,32,.94);color:#0a0d13;
-  display:grid;place-items:center;font-size:16px;opacity:0;transition:.25s;z-index:3;
-  box-shadow:0 8px 24px rgba(0,0,0,.5);padding-left:3px}
+  width:46px;height:46px;border-radius:50%;background:rgba(255,176,32,.95);
+  color:#0a0d13;display:grid;place-items:center;font-size:15px;
+  opacity:0;transition:.28s cubic-bezier(.2,.8,.3,1);z-index:3;
+  box-shadow:0 10px 28px rgba(0,0,0,.5);padding-left:3px}
 .card:hover .play{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.live{position:absolute;top:9px;left:9px;background:var(--live);color:#fff;font-size:9.5px;
-  font-weight:800;padding:3.5px 8px;border-radius:6px;letter-spacing:.8px;z-index:3;box-shadow:0 0 14px rgba(255,45,85,.6)}
-.src-ok{position:absolute;top:9px;right:9px;width:9px;height:9px;border-radius:50%;background:#22e07a;box-shadow:0 0 10px #22e07a;z-index:3}
-.cmeta{padding:10px 3px 0}
-.cmeta h4{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cmeta p{font-size:11.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.live{position:absolute;top:10px;left:10px;background:var(--live);color:#fff;
+  font-size:9.5px;font-weight:800;padding:4px 9px;border-radius:7px;
+  letter-spacing:.8px;z-index:3;box-shadow:0 0 16px rgba(255,45,85,.5);
+  animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.65}}
+.src-ok{position:absolute;top:10px;right:10px;width:9px;height:9px;
+  border-radius:50%;background:#22e07a;box-shadow:0 0 12px #22e07a;z-index:3}
+.cmeta{padding:11px 4px 0}
+.cmeta h4{font-size:13px;font-weight:700;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.cmeta p{font-size:11.5px;color:var(--muted);margin-top:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
-  background:rgba(4,6,10,.86);backdrop-filter:blur(6px);padding:22px}
+.modal{position:fixed;inset:0;z-index:200;display:none;
+  align-items:center;justify-content:center;background:rgba(4,6,10,.88);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:22px}
 .modal.open{display:flex;animation:fade .2s}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.box{background:var(--bg2);border:1px solid var(--line);border-radius:18px;width:100%;
-  box-shadow:var(--sh);animation:pop .25s cubic-bezier(.2,.9,.3,1);max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
-@keyframes pop{from{transform:scale(.94) translateY(14px);opacity:0}}
+.box{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;
+  width:100%;box-shadow:var(--sh);animation:pop .3s cubic-bezier(.2,.9,.3,1);
+  max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+@keyframes pop{from{transform:scale(.94) translateY(18px);opacity:0}}
 .box.player{max-width:1080px}
-.box.panel{max-width:880px}
-.mhead{display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:15px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+.box.panel{max-width:900px}
+.mhead{display:flex;align-items:center;justify-content:space-between;
+  gap:14px;padding:16px 22px;border-bottom:1px solid var(--line);flex-shrink:0}
 .mhead .mhead-logo{width:42px;height:42px;border-radius:11px;flex-shrink:0;
-  background:linear-gradient(140deg,var(--acc),var(--acc2));padding:2px;overflow:hidden;display:grid;place-items:center}
+  background:linear-gradient(140deg,var(--acc),var(--acc2));padding:2px;
+  overflow:hidden;display:grid;place-items:center}
 .mhead .mhead-logo img{width:100%;height:100%;object-fit:contain;border-radius:9px}
 .mhead .mhead-info{flex:1;min-width:0}
-.mhead h3{font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mhead small{display:block;color:var(--muted);font-size:11.5px;font-weight:500;margin-top:3px}
+.mhead h3{font-size:16px;font-weight:800;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.mhead small{display:block;color:var(--muted);font-size:11.5px;
+  font-weight:500;margin-top:3px}
 .x{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;
-  width:34px;height:34px;border-radius:9px;transition:.15s;flex-shrink:0}
+  width:36px;height:36px;border-radius:10px;transition:.15s;flex-shrink:0}
 .x:hover{background:var(--bg4);color:#fff}
 .mbody{padding:0;overflow-y:auto}
-.frame{background:#000;aspect-ratio:16/9;width:100%;display:grid;place-items:center;position:relative}
+.frame{background:#000;aspect-ratio:16/9;width:100%;display:grid;
+  place-items:center;position:relative}
 .frame video,.frame iframe{width:100%;height:100%;border:none;display:block;background:#000}
-.no-src{text-align:center;padding:34px 26px;color:var(--muted)}
-.no-src .ic{font-size:40px;margin-bottom:12px;opacity:.75}
-.no-src h4{color:var(--txt);font-size:16px;margin-bottom:7px}
-.no-src p{font-size:13px;line-height:1.6;max-width:430px;margin:0 auto}
-.srcbar{display:flex;gap:9px;padding:14px 18px;border-top:1px solid var(--line);background:var(--bg3);flex-wrap:wrap}
-.srcbar input{flex:1;min-width:220px;padding:10px 13px;border-radius:9px;border:1px solid var(--line);
-  background:var(--bg);color:var(--txt);font-size:13px;outline:none;font-family:inherit}
+.no-src{text-align:center;padding:38px 26px;color:var(--muted)}
+.no-src .ic{font-size:42px;margin-bottom:14px;opacity:.7}
+.no-src h4{color:var(--txt);font-size:16px;margin-bottom:8px;font-weight:700}
+.no-src p{font-size:13px;line-height:1.6;max-width:440px;margin:0 auto}
+.srcbar{display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--line);
+  background:var(--bg3);flex-wrap:wrap}
+.srcbar input{flex:1;min-width:220px;padding:11px 14px;border-radius:10px;
+  border:1px solid var(--line2);background:var(--bg);color:var(--txt);
+  font-size:13px;outline:none;font-family:inherit}
 .srcbar input:focus{border-color:var(--acc)}
-.pinfo{padding:16px 20px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.pinfo{padding:16px 22px;font-size:13.5px;color:var(--muted);line-height:1.6}
 
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:20px}
-.pgrid h4{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--acc);margin-bottom:14px;font-weight:800}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
-.field input,.field select{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line);
-  background:var(--bg3);color:var(--txt);font-size:13px;outline:none;font-family:inherit}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:22px}
+.pgrid h4{font-size:12px;text-transform:uppercase;letter-spacing:1.3px;
+  color:var(--acc);margin-bottom:16px;font-weight:800}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--muted);
+  margin-bottom:7px;font-weight:600}
+.field input,.field select{width:100%;padding:11px 13px;border-radius:10px;
+  border:1px solid var(--line2);background:var(--bg3);color:var(--txt);
+  font-size:13px;outline:none;font-family:inherit}
 .field input:focus,.field select:focus{border-color:var(--acc)}
-.clist{max-height:290px;overflow-y:auto;display:flex;flex-direction:column;gap:7px}
-.citem{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg3);
-  border:1px solid var(--line);border-radius:9px;font-size:12.5px}
+.clist{max-height:300px;overflow-y:auto;display:flex;
+  flex-direction:column;gap:8px}
+.citem{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:var(--bg3);border:1px solid var(--line2);border-radius:10px;
+  font-size:12.5px}
 .citem span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.citem .del{background:none;border:none;color:#ff5b6e;cursor:pointer;font-size:15px;padding:2px 5px;border-radius:6px}
+.citem .del{background:none;border:none;color:#ff5b6e;cursor:pointer;
+  font-size:15px;padding:2px 6px;border-radius:6px}
 .citem .del:hover{background:rgba(255,91,110,.14)}
-.pfoot{padding:15px 20px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;background:var(--bg3)}
-.empty{color:var(--muted);font-size:12.5px;font-style:italic;padding:10px 2px}
+.pfoot{padding:16px 22px;border-top:1px solid var(--line);
+  display:flex;gap:10px;flex-wrap:wrap;background:var(--bg3)}
+.empty{color:var(--muted);font-size:12.5px;font-style:italic;padding:12px 2px}
 
-.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,80px);z-index:400;
-  background:linear-gradient(135deg,var(--acc),var(--acc2));color:#0a0d13;padding:12px 22px;
-  border-radius:11px;font-weight:800;font-size:13.5px;opacity:0;transition:.3s;
-  box-shadow:0 14px 40px rgba(0,0,0,.5);pointer-events:none;max-width:90vw;text-align:center}
+.toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,100px);
+  z-index:400;background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:#0a0d13;padding:13px 24px;border-radius:12px;font-weight:800;
+  font-size:13.5px;opacity:0;transition:.35s cubic-bezier(.2,.8,.3,1);
+  box-shadow:0 16px 44px rgba(0,0,0,.5);pointer-events:none;
+  max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
-.sect-head{margin-bottom:20px}
-.sect-head h2{font-size:23px;font-weight:900}
-.sect-head p{color:var(--muted);font-size:13px;margin-top:5px}
-.foot{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:11.5px;line-height:1.7;text-align:center}
-.foot-logo{width:52px;height:52px;border-radius:13px;margin:0 auto 12px;
-  background:linear-gradient(140deg,var(--acc),var(--acc2));padding:2px;overflow:hidden;
-  display:grid;place-items:center;box-shadow:0 0 24px rgba(255,176,32,.4)}
+.sect-head{margin-bottom:22px}
+.sect-head h2{font-size:24px;font-weight:900;letter-spacing:-.4px;
+  display:flex;align-items:center;gap:12px}
+.sect-head p{color:var(--muted);font-size:13px;margin-top:6px}
+
+.foot{margin-top:48px;padding-top:26px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:11.5px;line-height:1.8;text-align:center}
+.foot-logo{width:52px;height:52px;border-radius:13px;margin:0 auto 14px;
+  background:linear-gradient(140deg,var(--acc),var(--acc2));padding:2px;
+  overflow:hidden;display:grid;place-items:center;box-shadow:var(--glow)}
 .foot-logo img{width:100%;height:100%;object-fit:contain;border-radius:11px}
 
-.iptv-loading{position:fixed;inset:0;z-index:300;background:rgba(4,6,10,.92);backdrop-filter:blur(8px);
+.iptv-loading{position:fixed;inset:0;z-index:300;background:rgba(4,6,10,.94);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   display:none;place-items:center;padding:22px}
 .iptv-loading.show{display:grid;animation:fade .25s}
-.iptv-card{background:var(--bg2);border:1px solid var(--line);border-radius:18px;
-  padding:34px 40px;max-width:420px;text-align:center;box-shadow:var(--sh)}
-.iptv-card .spin{width:58px;height:58px;margin:0 auto 18px;border-radius:50%;
-  border:4px solid rgba(255,176,32,.18);border-top-color:var(--acc);animation:spin 1s linear infinite}
+.iptv-card{background:var(--bg2);border:1px solid var(--line2);
+  border-radius:20px;padding:38px 44px;max-width:440px;text-align:center;
+  box-shadow:var(--sh)}
+.iptv-card .spin{width:60px;height:60px;margin:0 auto 20px;border-radius:50%;
+  border:4px solid rgba(255,176,32,.18);border-top-color:var(--acc);
+  animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.iptv-card h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.iptv-card h3{font-size:18px;font-weight:800;margin-bottom:10px}
 .iptv-card p{color:var(--muted);font-size:13px;line-height:1.6}
-.iptv-card .bar{margin-top:18px;height:6px;border-radius:4px;background:var(--bg4);overflow:hidden}
-.iptv-card .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2));
+.iptv-card .bar{margin-top:20px;height:6px;border-radius:4px;
+  background:var(--bg4);overflow:hidden}
+.iptv-card .bar i{display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
   transition:width .3s;border-radius:4px}
 
 @media(max-width:960px){
   .burger{display:grid;place-items:center}
-  .sidebar{position:fixed;left:0;top:78px;z-index:80;transform:translateX(-100%);transition:transform .28s;box-shadow:var(--sh)}
+  .sidebar{position:fixed;left:0;top:78px;z-index:80;
+    transform:translateX(-100%);transition:transform .3s;box-shadow:var(--sh)}
   .sidebar.open{transform:translateX(0)}
   .search{max-width:none}
   .clock{display:none}
@@ -209,18 +296,20 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-app
   .brand-sub{display:none}
 }
 @media(max-width:640px){
-  .topbar{padding:10px 13px;gap:10px}
-  .brand-txt{font-size:15px;letter-spacing:1px}
+  .topbar{padding:10px 14px;gap:10px}
+  .brand-txt{font-size:15px;letter-spacing:.2px}
   .logo{width:42px;height:42px;border-radius:11px}
-  .main{padding:16px 14px 60px}
-  .hero{padding:24px 20px}
-  .hero h1{font-size:22px}
-  .hero-logo{width:76px;height:76px;border-radius:18px;margin-bottom:14px}
+  .main{padding:18px 16px 60px}
+  .hero{padding:26px 22px}
+  .hero h1{font-size:23px}
+  .hero-logo{width:72px;height:72px;border-radius:18px;margin-bottom:16px}
+  .hero-stats{gap:20px}
+  .stat b{font-size:20px}
   .btn#btnPanel span,.btn#btnIPTV span{display:none}
-  .rail{grid-auto-columns:148px}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:13px}
+  .rail{grid-auto-columns:180px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:13px}
   .sidebar{top:70px;height:calc(100vh - 70px)}
-  .iptv-card{padding:26px 22px}
+  .iptv-card{padding:28px 24px}
 }
 </style>
 </head>
@@ -237,7 +326,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-app
   </a>
   <div class="search">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-    <input id="search" type="text" placeholder="Buscar series, películas, canales, deportes...">
+    <input id="search" type="text" placeholder="Buscar canales...">
   </div>
   <div class="top-right">
     <span class="clock" id="clock">--:--:--</span>
@@ -264,8 +353,8 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-app
     <div class="mbody">
       <div class="frame" id="pFrame"></div>
       <div class="srcbar">
-        <input id="pSrc" type="text" placeholder="Pegá la URL del stream: https://... (m3u8, mp4 o embed)">
-        <button class="btn primary" id="pSave">💾 Guardar fuente</button>
+        <input id="pSrc" type="text" placeholder="Pegá la URL del stream: https://...">
+        <button class="btn primary" id="pSave">💾 Guardar</button>
         <button class="btn" id="pClear">🗑 Quitar</button>
       </div>
       <div class="pinfo" id="pInfo"></div>
@@ -278,31 +367,30 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-app
     <div class="mhead">
       <div class="mhead-logo"><img src="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png" alt="EL ATALAYA TV"></div>
       <div class="mhead-info">
-        <h3>⚙ Panel de Control — EL ATALAYA TV</h3>
-        <small>Agregá tus propios canales y contenidos. Se guardan en este navegador.</small>
+        <h3>⚙ Panel de Control</h3>
+        <small>Agregá tus propios canales. Se guardan en este navegador.</small>
       </div>
       <button class="x" data-close>✕</button>
     </div>
     <div class="mbody">
       <div class="pgrid">
         <div>
-          <h4>➕ Agregar contenido</h4>
-          <div class="field"><label>Nombre</label><input id="cTitle" placeholder="Ej: Canal Local HD"></div>
-          <div class="field"><label>Categoría</label><select id="cSub"></select></div>
-          <div class="field"><label>URL del stream (m3u8 / mp4 / embed)</label><input id="cUrl" placeholder="https://..."></div>
-          <button class="btn primary" id="cAdd" style="width:100%;justify-content:center">Agregar al catálogo</button>
+          <h4>➕ Agregar canal</h4>
+          <div class="field"><label>Nombre</label><input id="cTitle" placeholder="Ej: Mi Canal HD"></div>
+          <div class="field"><label>URL del stream</label><input id="cUrl" placeholder="https://..."></div>
+          <button class="btn primary" id="cAdd" style="width:100%;justify-content:center">Agregar</button>
         </div>
         <div>
-          <h4>📋 Mis contenidos</h4>
+          <h4>📋 Mis canales</h4>
           <div class="clist" id="cList"></div>
         </div>
       </div>
     </div>
     <div class="pfoot">
-      <button class="btn sm" id="expBtn">⬇ Exportar configuración</button>
-      <button class="btn sm" id="impBtn">⬆ Importar configuración</button>
+      <button class="btn sm" id="expBtn">⬇ Exportar</button>
+      <button class="btn sm" id="impBtn">⬆ Importar</button>
       <input type="file" id="impFile" accept=".json" hidden>
-      <button class="btn sm" id="resetBtn" style="margin-left:auto;color:#ff5b6e">⟲ Restablecer todo</button>
+      <button class="btn sm" id="resetBtn" style="margin-left:auto;color:#ff5b6e">⟲ Restablecer</button>
     </div>
   </div>
 </div>
@@ -310,8 +398,8 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-app
 <div class="iptv-loading" id="iptvLoading">
   <div class="iptv-card">
     <div class="spin"></div>
-    <h3 id="iptvTitle">📡 Cargando canales IPTV...</h3>
-    <p id="iptvMsg">Descargando listas públicas de canales. Esto puede tardar unos segundos.</p>
+    <h3 id="iptvTitle">📡 Cargando canales...</h3>
+    <p id="iptvMsg">Descargando listas...</p>
     <div class="bar"><i id="iptvBar"></i></div>
   </div>
 </div>
@@ -320,9 +408,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-app
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
 <script>
-/* =========================================================
-   EL ATALAYA TV — Motor de la aplicación
-   ========================================================= */
 const $  = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -338,199 +423,14 @@ const CUSTOM  = LS.get('custom', []);
 const state   = { view:'home', sub:null, q:'' };
 let currentItem = null;
 
-/* =========================================================
-   CATÁLOGO
-   ========================================================= */
+/* Solo categorías IPTV reales + personales */
 const CATALOG = [
-  { id:'series', label:'Series', icon:'📺', subs:[
-    { id:'series-50', label:'Series Años 50', type:'vod', items:[
-      ["The Twilight Zone","1959 · Ciencia Ficción"],
-      ["Perry Mason","1957 · Drama Legal"],
-      ["El Zorro","1957 · Aventura"],
-      ["Lassie","1954 · Familiar"],
-      ["Bonanza","1959 · Western"],
-      ["Maverick","1957 · Western"],
-      ["Rin Tin Tin","1954 · Aventura"],
-      ["Father Knows Best","1954 · Comedia"],
-      ["The Lone Ranger","1949 · Western"],
-      ["Alfred Hitchcock Presenta","1955 · Suspenso"]
-    ]},
-    { id:'series-70', label:'Series Años 70', type:'vod', items:[
-      ["M*A*S*H","1972 · Comedia Dramática"],
-      ["Starsky y Hutch","1975 · Policial"],
-      ["El Increíble Hulk","1977 · Acción"],
-      ["CHiPs","1977 · Policial"],
-      ["Kojak","1973 · Policial"],
-      ["Los Ángeles de Charlie","1976 · Acción"],
-      ["Dallas","1978 · Drama"],
-      ["La Mujer Biónica","1976 · Ciencia Ficción"],
-      ["Kung Fu","1972 · Aventura"],
-      ["El Hombre Nuclear","1973 · Ciencia Ficción"],
-      ["Baretta","1975 · Policial"],
-      ["Fantasy Island","1977 · Fantasía"]
-    ]},
-    { id:'series-90', label:'Series Años 90', type:'vod', items:[
-      ["Friends","1994 · Comedia"],
-      ["Expediente X","1993 · Ciencia Ficción"],
-      ["Buffy la Cazavampiros","1997 · Fantasía"],
-      ["Seinfeld","1989 · Comedia"],
-      ["ER Emergencias","1994 · Drama Médico"],
-      ["El Príncipe de Bel-Air","1990 · Comedia"],
-      ["Los Simpson","1989 · Animación"],
-      ["Beverly Hills 90210","1990 · Drama Juvenil"],
-      ["Frasier","1993 · Comedia"],
-      ["Sabrina Cosas de Brujas","1996 · Fantasía"],
-      ["Xena Princesa Guerrera","1995 · Aventura"],
-      ["Twin Peaks","1990 · Misterio"]
-    ]},
-    { id:'series-2000', label:'Series Años 2000', type:'vod', items:[
-      ["Lost","2004 · Misterio"],
-      ["24","2001 · Acción"],
-      ["Los Soprano","1999 · Drama"],
-      ["CSI Las Vegas","2000 · Policial"],
-      ["Anatomía de Grey","2005 · Drama Médico"],
-      ["Doctor House","2004 · Drama Médico"],
-      ["The Wire","2002 · Drama"],
-      ["Prison Break","2005 · Acción"],
-      ["Héroes","2006 · Ciencia Ficción"],
-      ["Dexter","2006 · Thriller"],
-      ["Cómo Conocí a tu Madre","2005 · Comedia"],
-      ["The Office","2005 · Comedia"]
-    ]}
-  ]},
-  { id:'peliculas', label:'Películas', icon:'🎬', subs:[
-    { id:'pelis-viejas', label:'Películas Viejas', type:'vod', items:[
-      ["Casablanca","1942 · Drama Romántico"],
-      ["Lo que el Viento se Llevó","1939 · Drama Épico"],
-      ["El Padrino","1972 · Drama Criminal"],
-      ["Psicosis","1960 · Suspenso"],
-      ["Cantando Bajo la Lluvia","1952 · Musical"],
-      ["2001 Odisea del Espacio","1968 · Ciencia Ficción"],
-      ["Tiburón","1975 · Suspenso"],
-      ["El Exorcista","1973 · Terror"],
-      ["Vértigo","1958 · Suspenso"],
-      ["Metrópolis","1927 · Ciencia Ficción"],
-      ["Lo Que el Cielo Espera","1955 · Drama"],
-      ["12 Hombres en Pugna","1957 · Drama Judicial"],
-      ["La Novicia Rebelde","1965 · Musical"],
-      ["El Bueno, el Malo y el Feo","1966 · Western"],
-      ["Ben-Hur","1959 · Épico"],
-      ["La Ventana Indiscreta","1954 · Suspenso"]
-    ]},
-    { id:'pelis-nuevas', label:'Películas Nuevas', type:'vod', items:[
-      ["Dune","2021 · Ciencia Ficción"],
-      ["Oppenheimer","2023 · Drama Histórico"],
-      ["Interstellar","2014 · Ciencia Ficción"],
-      ["El Origen","2010 · Ciencia Ficción"],
-      ["Mad Max Fury Road","2015 · Acción"],
-      ["Parásitos","2019 · Thriller"],
-      ["Joker","2019 · Drama"],
-      ["Avengers Endgame","2019 · Superhéroes"],
-      ["El Caballero de la Noche","2008 · Acción"],
-      ["Whiplash","2014 · Drama Musical"],
-      ["Blade Runner 2049","2017 · Ciencia Ficción"],
-      ["Top Gun Maverick","2022 · Acción"]
-    ]}
-  ]},
-  { id:'canales', label:'Canales TV', icon:'📡', subs:[
-    { id:'canales-ar', label:'Canales de Argentina', type:'live', items:[
-      ["Telefe","Canal 11 · Buenos Aires"],
-      ["El Trece","Canal 13 · Buenos Aires"],
-      ["América TV","Canal 2 · Buenos Aires"],
-      ["TV Pública","Canal 7 · Nacional"],
-      ["Canal 9","Buenos Aires"],
-      ["Net TV","Buenos Aires"],
-      ["Crónica HD","Noticias 24h"],
-      ["C5N","Noticias 24h"],
-      ["TN Todo Noticias","Noticias 24h"],
-      ["A24","Noticias 24h"],
-      ["La Nación +","Noticias"],
-      ["IP Noticias","Noticias"],
-      ["El Nueve Litoral","Santa Fe"],
-      ["Canal 10 Córdoba","Córdoba"],
-      ["Canal 7 Mendoza","Mendoza"],
-      ["LU92 Mar del Plata","Mar del Plata"]
-    ]},
-    { id:'canales-mundo', label:'Canales del Mundo', type:'live', items:[
-      ["BBC World News","Reino Unido"],
-      ["CNN International","Estados Unidos"],
-      ["DW Deutsche Welle","Alemania"],
-      ["France 24 Español","Francia"],
-      ["Euronews Español","Europa"],
-      ["Al Jazeera English","Qatar"],
-      ["TVE La 1","España"],
-      ["Antena 3","España"],
-      ["Telemundo","EE.UU. / Latino"],
-      ["Univision","EE.UU. / Latino"],
-      ["RAI 1","Italia"],
-      ["NHK World","Japón"],
-      ["ABC Australia","Australia"],
-      ["CGTN","China"],
-      ["RT Actualidad","Internacional"],
-      ["TV Chile","Chile"],
-      ["Caracol TV","Colombia"],
-      ["TV Azteca","México"],
-      ["Las Estrellas","México"],
-      ["TV Perú","Perú"]
-    ]}
-  ]},
-  { id:'futbol', label:'Fútbol', icon:'⚽', subs:[
-    { id:'futbol-tv', label:'Canales de Fútbol', type:'live', items:[
-      ["TyC Sports","Argentina · 24h"],
-      ["TyC Sports Internacional","Argentina · Global"],
-      ["ESPN Premium","Argentina · Fútbol"],
-      ["ESPN","Argentina · Deportes"],
-      ["Fox Sports","Argentina · Deportes"],
-      ["DSports","Argentina · Deportes"],
-      ["TNT Sports","Argentina · Fútbol"],
-      ["Gol TV","Latinoamérica"],
-      ["DirecTV Sports","Latinoamérica"],
-      ["La Liga TV","España"],
-      ["Premier League TV","Inglaterra"],
-      ["Serie A TV","Italia"],
-      ["Bundesliga TV","Alemania"],
-      ["Ligue 1 TV","Francia"],
-      ["Conmebol TV","Sudamérica"],
-      ["FIFA+","Mundial · Global"]
-    ]}
-  ]},
-  { id:'noticias', label:'Noticias', icon:'📰', subs:[
-    { id:'noticias-24', label:'Noticias 24 Horas', type:'live', items:[
-      ["TN Todo Noticias","Argentina · 24h"],
-      ["C5N","Argentina · 24h"],
-      ["Crónica TV","Argentina · 24h"],
-      ["A24","Argentina · 24h"],
-      ["La Nación +","Argentina · 24h"],
-      ["CNN en Español","Internacional"],
-      ["BBC Mundo","Internacional"],
-      ["DW Español","Internacional"],
-      ["France 24 Español","Internacional"],
-      ["Euronews Español","Internacional"],
-      ["Bloomberg TV","Economía"],
-      ["CNBC","Economía"],
-      ["Milenio TV","México"],
-      ["NTN24","Colombia"],
-      ["T13","Chile"],
-      ["El Comercio TV","Perú"]
-    ]}
-  ]},
-  { id:'personal', label:'Mis Contenidos', icon:'⭐', subs:[
-    { id:'personal-vod',  label:'Mis Series y Películas', type:'vod',  items:[] },
-    { id:'personal-live', label:'Mis Canales',            type:'live', items:[] }
+  { id:'canales', label:'Canales TV', icon:'📡', subs:[] },
+  { id:'personal', label:'Mis Canales', icon:'⭐', subs:[
+    { id:'personal-live', label:'⭐ Mis Canales', type:'live', items:[] }
   ]}
 ];
 
-/* Normalizar items (arrays → objetos) */
-CATALOG.forEach(cat => cat.subs.forEach(sub => {
-  sub.items = sub.items.map(it => Array.isArray(it)
-    ? { title: it[0], meta: it[1] || '' }
-    : { title: it.title, meta: it.meta || '', id: it.id, type: it.type }
-  );
-}));
-
-/* =========================================================
-   INDEXACIÓN
-   ========================================================= */
 const INDEX = {};
 function buildIndex(){
   for(const k in INDEX) delete INDEX[k];
@@ -545,39 +445,34 @@ function buildIndex(){
 buildIndex();
 
 function loadCustom(){
-  const subVod  = CATALOG.find(c=>c.id==='personal').subs[0];
-  const subLive = CATALOG.find(c=>c.id==='personal').subs[1];
-  subVod.items = []; subLive.items = [];
+  const subLive = CATALOG.find(c=>c.id==='personal').subs[0];
+  subLive.items = [];
   CUSTOM.forEach((c,i) => {
-    const target = c.sub === 'personal-live' ? subLive : subVod;
     const item = {
       id: 'custom-' + i + '-' + slug(c.title),
       title: c.title,
-      meta: c.sub === 'personal-live' ? 'Canal propio' : 'Contenido propio',
-      type: target.type
+      meta: 'Canal propio',
+      type: 'live'
     };
-    target.items.push(item);
+    subLive.items.push(item);
     SOURCES[item.id] = c.url;
   });
   buildIndex();
 }
 loadCustom();
 
-/* =========================================================
-   NAVEGACIÓN LATERAL
-   ========================================================= */
 const sidebar = $('#sidebar');
 function renderNav(){
   let h = `<button class="nav-item ${state.view==='home'?'active':''}" data-view="home">🏠 Inicio</button>`;
   CATALOG.forEach(cat => {
-    if(!cat.subs.some(s=>s.items.length)) return;
+    const totalCat = cat.subs.reduce((a,s)=>a+s.items.length,0);
+    if(!totalCat) return;
     h += `<div class="nav-group">${cat.icon} ${esc(cat.label)}</div>`;
     cat.subs.forEach(sub => {
       if(!sub.items.length) return;
-      const liveCls = sub.type === 'live' ? ' live-dot' : '';
-      const active  = state.view==='sub' && state.sub===sub.id ? ' active' : '';
-      h += `<button class="nav-item${liveCls}${active}" data-sub="${sub.id}">
-              ${esc(sub.label)} <span style="opacity:.45;font-size:11px">(${sub.items.length})</span>
+      const active = state.view==='sub' && state.sub===sub.id ? ' active' : '';
+      h += `<button class="nav-item${active}" data-sub="${sub.id}">
+              ${esc(sub.label)} <span class="count">${sub.items.length}</span>
             </button>`;
     });
   });
@@ -594,16 +489,11 @@ sidebar.addEventListener('click', e => {
   sidebar.classList.remove('open');
 });
 
-/* =========================================================
-   TARJETAS (paleta elegante + ícono IPTV)
-   ========================================================= */
 function posterStyle(it){
   const palettes = [
-    ['#161e2e','#243248'], ['#1e1626','#322442'],
-    ['#16201e','#243430'], ['#241c16','#3a2c22'],
-    ['#1c1624','#2c2438'], ['#241618','#3a2226'],
-    ['#16202a','#243244'], ['#221a26','#362a3c'],
-    ['#1a2220','#2a3632'], ['#281a1a','#3e2a2a']
+    ['#1a2130','#283347'],['#221a2a','#362846'],['#1a2422','#283831'],
+    ['#28201a','#3e3026'],['#201a28','#302840'],['#281a1c','#40262a'],
+    ['#1a242e','#283648'],['#261e2a','#3a2e40'],['#1e2826','#2e3c38'],['#2c1e1e','#422e2e']
   ];
   const [c1, c2] = palettes[ hash(it.title) % palettes.length ];
   return `background:linear-gradient(150deg, ${c1}, ${c2})`;
@@ -615,8 +505,8 @@ function cardHTML(it){
   return `<article class="card ${it.type}" data-id="${it.id}">
     <div class="poster" style="${posterStyle(it)}">
       ${it.type==='live' ? '<span class="live">● EN VIVO</span>' : ''}
-      ${tieneFuente ? '<span class="src-ok" title="Fuente configurada"></span>' : ''}
-      ${esIPTV ? '<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:38px;opacity:.18;z-index:1">📺</span>' : ''}
+      ${tieneFuente ? '<span class="src-ok"></span>' : ''}
+      ${esIPTV ? '<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:42px;opacity:.16;z-index:1">📺</span>' : ''}
       <span class="ptitle">${esc(it.title)}</span>
       <span class="play">▶</span>
     </div>
@@ -627,9 +517,6 @@ function cardHTML(it){
   </article>`;
 }
 
-/* =========================================================
-   RENDER PRINCIPAL
-   ========================================================= */
 const main = $('#main');
 
 function renderMain(){
@@ -639,9 +526,9 @@ function renderMain(){
 }
 
 function renderHome(){
-  const totalItems  = Object.keys(INDEX).length;
-  const totalCanales= CATALOG.filter(c=>['canales','futbol','noticias'].includes(c.id))
-                             .reduce((a,c)=>a+c.subs.reduce((b,s)=>b+s.items.length,0),0);
+  const totalItems = Object.keys(INDEX).length;
+  const canales = CATALOG.find(c=>c.id==='canales');
+  const totalCanales = canales.subs.reduce((a,s)=>a+s.items.length,0);
 
   let html = `
   <section class="hero">
@@ -649,12 +536,10 @@ function renderHome(){
       <img src="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png" alt="EL ATALAYA TV">
     </div>
     <h1>Bienvenido a <span>EL ATALAYA TV</span></h1>
-    <p>Tu punto de observación del entretenimiento. Series clásicas de los años 50, 70, 90 y 2000,
-       películas viejas y nuevas, canales de Argentina y del mundo, fútbol en vivo y noticias 24 horas.</p>
+    <p>Canales de TV en vivo de Argentina y del mundo. Noticias 24 horas, deportes, música y películas.</p>
     <div class="hero-stats">
-      <div class="stat"><b>${totalItems}</b><span>Contenidos</span></div>
-      <div class="stat"><b>${totalCanales}</b><span>Canales en vivo</span></div>
-      <div class="stat"><b>${CATALOG.length}</b><span>Categorías</span></div>
+      <div class="stat"><b>${totalCanales}</b><span>Canales</span></div>
+      <div class="stat"><b>${canales.subs.length}</b><span>Categorías</span></div>
       <div class="stat"><b>24/7</b><span>Online</span></div>
     </div>
   </section>`;
@@ -664,10 +549,10 @@ function renderHome(){
     html += `
     <section class="row">
       <div class="row-head">
-        <h3>${cat.icon} ${esc(sub.label)}</h3>
+        <h3>${esc(sub.label)}</h3>
         <button class="more" data-goto="${sub.id}">Ver todo (${sub.items.length}) →</button>
       </div>
-      <div class="rail">${sub.items.slice(0,16).map(cardHTML).join('')}</div>
+      <div class="rail">${sub.items.slice(0,12).map(cardHTML).join('')}</div>
     </section>`;
   }));
 
@@ -675,8 +560,7 @@ function renderHome(){
     <div class="foot-logo">
       <img src="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png" alt="EL ATALAYA TV">
     </div>
-    EL ATALAYA TV · Panel de streaming personal &nbsp;|&nbsp; Las fuentes de video las configura el usuario
-    desde el <b>Panel ⚙</b>. Verificá siempre que contás con los derechos para reproducir cada contenido.
+    EL ATALAYA TV · Streaming personal
   </div>`;
 
   main.innerHTML = html;
@@ -690,7 +574,7 @@ function renderSub(subId){
   main.innerHTML = `
   <div class="sect-head">
     <h2>${cat.icon} ${esc(sub.label)}</h2>
-    <p>${sub.items.length} contenidos disponibles · Hacé clic en cualquiera para reproducirlo</p>
+    <p>${sub.items.length} canales disponibles</p>
   </div>
   <div class="grid">${sub.items.map(cardHTML).join('')}</div>`;
 }
@@ -703,21 +587,17 @@ function renderSearch(){
   main.innerHTML = `
   <div class="sect-head">
     <h2>🔍 Resultados para "${esc(state.q)}"</h2>
-    <p>${results.length} coincidencia${results.length===1?'':'s'} encontrada${results.length===1?'':'s'}</p>
+    <p>${results.length} coincidencia${results.length===1?'':'s'}</p>
   </div>
   ${results.length
     ? `<div class="grid">${results.slice(0,120).map(cardHTML).join('')}</div>`
     : `<div class="no-src"><div class="ic">🛰️</div><h4>Sin resultados</h4>
-       <p>Probá con otro término: "Friends", "Telefe", "Dune", "noticias"...</p></div>`}`;
+       <p>Probá con otro término.</p></div>`}`;
 }
 
-/* =========================================================
-   EVENTOS DE TARJETAS
-   ========================================================= */
 document.addEventListener('click', e => {
   const card = e.target.closest('.card');
   if(card){ playItem(INDEX[card.dataset.id]); return; }
-
   const more = e.target.closest('[data-goto]');
   if(more){
     state.view='sub'; state.sub = more.dataset.goto; state.q='';
@@ -726,9 +606,6 @@ document.addEventListener('click', e => {
   }
 });
 
-/* =========================================================
-   REPRODUCTOR
-   ========================================================= */
 const playerModal = $('#playerModal');
 
 function playItem(it){
@@ -740,7 +617,6 @@ function playItem(it){
   $('#pMeta').textContent  = it.meta || '';
   $('#pInfo').innerHTML = `
     <b>Categoría:</b> ${esc(it.sub)} &nbsp;·&nbsp;
-    <b>Tipo:</b> ${it.type === 'live' ? 'Señal en vivo' : 'Video on demand'} &nbsp;·&nbsp;
     <b>Estado:</b> ${url ? '<span style="color:#22e07a">fuente configurada</span>'
                          : '<span style="color:#ffb020">sin fuente</span>'}`;
   $('#pSrc').value = url;
@@ -758,9 +634,7 @@ function buildPlayer(it, url){
       <div class="no-src">
         <div class="ic">📡</div>
         <h4>Sin fuente configurada</h4>
-        <p>Pegá abajo la URL del stream (archivo <b>.m3u8</b>, <b>.mp4</b> o un enlace
-           <b>embed/iframe</b>) y presioná <b>Guardar fuente</b>.<br>
-           Queda almacenada en este navegador para las próximas visitas.</p>
+        <p>Este canal no tiene URL asignada.</p>
       </div>`;
     return;
   }
@@ -779,16 +653,15 @@ function buildPlayer(it, url){
       hls.attachMedia(v);
       hls.on(window.Hls.Events.ERROR, (_, d) => {
         if(d.fatal) frame.innerHTML =
-          `<div class="no-src"><div class="ic">⚠️</div><h4>No se pudo cargar el stream</h4>
-           <p>Verificá que la URL sea válida y que el servidor permita CORS. Puede que el canal
-              esté caído o requiera un Referer especial.</p></div>`;
+          `<div class="no-src"><div class="ic">⚠️</div><h4>No se pudo cargar</h4>
+           <p>El canal puede estar caído, bloqueado por región o sin permisos CORS.</p></div>`;
       });
     } else {
       v.src = url;
       v.onerror = () => {
         frame.innerHTML = `<div class="no-src"><div class="ic">⚠️</div>
           <h4>Error al reproducir</h4>
-          <p>El navegador no pudo cargar este stream. Probá con otro formato o revisá la URL.</p></div>`;
+          <p>No se pudo cargar este stream.</p></div>`;
       };
     }
   } else {
@@ -808,8 +681,6 @@ $('#pSave').addEventListener('click', () => {
   SOURCES[currentItem.id] = url;
   LS.set('sources', SOURCES);
   buildPlayer(currentItem, url);
-  $('#pInfo').innerHTML = `<b>Categoría:</b> ${esc(currentItem.sub)} &nbsp;·&nbsp;
-    <b>Estado:</b> <span style="color:#22e07a">fuente guardada correctamente</span>`;
   toast('✅ Fuente guardada');
   renderMain(); renderNav();
 });
@@ -824,9 +695,6 @@ $('#pClear').addEventListener('click', () => {
   renderMain(); renderNav();
 });
 
-/* =========================================================
-   MODALES
-   ========================================================= */
 function openModal(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
 function closeModal(m){ m.classList.remove('open'); document.body.style.overflow='';
   const f = m.querySelector('.frame'); if(f) f.innerHTML=''; }
@@ -840,50 +708,33 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Escape') $$('.modal.open').forEach(closeModal);
 });
 
-/* =========================================================
-   PANEL DE CONTROL
-   ========================================================= */
 const panelModal = $('#panelModal');
-
 $('#btnPanel').addEventListener('click', () => {
-  fillSubSelect();
-  renderCustomList();
-  openModal(panelModal);
+  renderCustomList(); openModal(panelModal);
 });
-
-function fillSubSelect(){
-  const sel = $('#cSub');
-  sel.innerHTML = `
-    <option value="personal-vod">⭐ Mis Series y Películas (VOD)</option>
-    <option value="personal-live">⭐ Mis Canales (en vivo)</option>`;
-}
 
 $('#cAdd').addEventListener('click', () => {
   const title = $('#cTitle').value.trim();
-  const sub   = $('#cSub').value;
   const url   = $('#cUrl').value.trim();
-
   if(!title){ toast('⚠️ Ingresá un nombre'); return; }
   if(!url){   toast('⚠️ Ingresá una URL');  return; }
-
-  CUSTOM.push({ title, sub, url });
+  CUSTOM.push({ title, sub:'personal-live', url });
   LS.set('custom', CUSTOM);
-
   $('#cTitle').value = ''; $('#cUrl').value = '';
   loadCustom(); renderCustomList(); renderNav(); renderMain();
-  toast('✅ Contenido agregado');
+  toast('✅ Canal agregado');
 });
 
 function renderCustomList(){
   const box = $('#cList');
   if(!CUSTOM.length){
-    box.innerHTML = `<div class="empty">Todavía no agregaste contenidos propios.</div>`;
+    box.innerHTML = `<div class="empty">Todavía no agregaste canales propios.</div>`;
     return;
   }
   box.innerHTML = CUSTOM.map((c,i) => `
     <div class="citem">
-      <span title="${esc(c.url)}">${c.sub === 'personal-live' ? '📡' : '🎬'} ${esc(c.title)}</span>
-      <button class="del" data-del="${i}" title="Eliminar">✕</button>
+      <span title="${esc(c.url)}">📡 ${esc(c.title)}</span>
+      <button class="del" data-del="${i}">✕</button>
     </div>`).join('');
 }
 
@@ -926,16 +777,13 @@ $('#impFile').addEventListener('change', e => {
 });
 
 $('#resetBtn').addEventListener('click', () => {
-  if(!confirm('¿Borrar TODAS las fuentes, contenidos personalizados y canales IPTV?')) return;
+  if(!confirm('¿Borrar TODAS las fuentes y canales propios?')) return;
   localStorage.removeItem('atalaya_sources');
   localStorage.removeItem('atalaya_custom');
   localStorage.removeItem('atalaya_iptv_loaded');
   location.reload();
 });
 
-/* =========================================================
-   BUSCADOR
-   ========================================================= */
 let searchTimer;
 $('#search').addEventListener('input', e => {
   clearTimeout(searchTimer);
@@ -947,9 +795,6 @@ $('#search').addEventListener('input', e => {
   }, 220);
 });
 
-/* =========================================================
-   TOPBAR / UI
-   ========================================================= */
 $('#burger').addEventListener('click', () => sidebar.classList.toggle('open'));
 $('#brand').addEventListener('click', () => {
   state.view='home'; state.sub=null; state.q='';
@@ -973,15 +818,12 @@ function toast(msg){
   toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
 }
 
-/* =========================================================
-   IPTV — Carga de canales públicos (parser robusto)
-   ========================================================= */
+/* ============ IPTV ============ */
 const IPTV_FEEDS = [
   { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_ar.m3u',     type:'live' },
   { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_news.m3u',   type:'live' },
   { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_sports.m3u', type:'live' },
   { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_music.m3u',  type:'live' },
-  { id:'iptv-otros',  label:'📺 Otros',       url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/lista_otros.m3u',  type:'live' },
   { id:'iptv-movies', label:'🎬 Películas',   url:'https://iptv-org.github.io/iptv/categories/movies.m3u', type:'live' }
 ];
 
@@ -995,14 +837,13 @@ function showIptvOverlay(show){ iptvOverlay.classList.toggle('show', show); }
 async function loadIPTVPlaylist(feed, idx, total){
   try{
     iptvTitle.textContent = '📡 Cargando ' + feed.label + '...';
-    iptvMsg.textContent = 'Descargando lista pública... (' + (idx+1) + '/' + total + ')';
+    iptvMsg.textContent = 'Descargando lista... (' + (idx+1) + '/' + total + ')';
     iptvBar.style.width = (idx / total * 100) + '%';
 
     const res = await fetch(feed.url, { cache:'no-store' });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
 
-    // Split robusto: soporta CRLF, LF y CR
     const lines = text.split(/\r?\n|\r/);
     let current = null;
     const items = [];
@@ -1015,12 +856,9 @@ async function loadIPTVPlaylist(feed, idx, total){
       if(t.startsWith('#EXTINF:')){
         const groupMatch = t.match(/group-title="([^"]*)"/i);
         const nameAttr   = t.match(/tvg-name="([^"]*)"/i);
-
-        // Obtener el nombre: preferir tvg-name, si no, texto tras la ÚLTIMA coma fuera de comillas
         let name = '';
-        if(nameAttr && nameAttr[1].trim()){
-          name = nameAttr[1].trim();
-        } else {
+        if(nameAttr && nameAttr[1].trim()) name = nameAttr[1].trim();
+        else {
           let inQuotes = false, lastComma = -1;
           for(let i = 0; i < t.length; i++){
             const ch = t[i];
@@ -1029,30 +867,20 @@ async function loadIPTVPlaylist(feed, idx, total){
           }
           if(lastComma > -1) name = t.substring(lastComma + 1).trim();
         }
-
-        // Descartar basura de User-Agent que se cuela
-        if(/Mozilla|Gecko|AppleWebKit|Chrome\/|Safari\/|Firefox\/|KHTML|like\s*Gecko/i.test(name)){
-          name = '';
-        }
+        if(/Mozilla|Gecko|AppleWebKit|Chrome\/|Safari\/|Firefox\/|KHTML|like\s*Gecko/i.test(name)) name = '';
         if(name.length > 70) name = name.substring(0, 67) + '...';
         if(!name) name = 'Canal IPTV';
-
         current = {
           title: name,
           meta: (groupMatch && groupMatch[1]) ? groupMatch[1].trim() : feed.label
         };
-
       } else if(t.startsWith('#')){
-        // Ignorar #EXTVLCOPT, #EXTGRP, #KODIPROP, #EXTM3U, etc.
         continue;
-
       } else if(current){
         if(!/^https?:\/\//i.test(t)){ current = null; continue; }
-
         const key = current.title + '|' + t;
         if(seen.has(key)){ current = null; continue; }
         seen.add(key);
-
         const id = 'iptv-' + slug(feed.id) + '-' + hash(t).toString(36);
         items.push({ id, title: current.title, meta: current.meta, type: 'live' });
         SOURCES[id] = t;
@@ -1060,7 +888,6 @@ async function loadIPTVPlaylist(feed, idx, total){
       }
     }
 
-    // Insertar/actualizar subcategoría en "Canales TV"
     const cat = CATALOG.find(c => c.id === 'canales');
     let sub = cat.subs.find(s => s.id === feed.id);
     if(!sub){
@@ -1091,11 +918,11 @@ async function runIPTVLoad(){
   renderMain();
 
   iptvTitle.textContent = '✅ ¡Listo!';
-  iptvMsg.textContent = totalCargados + ' canales cargados correctamente.';
+  iptvMsg.textContent = totalCargados + ' canales cargados.';
   iptvBar.style.width = '100%';
   setTimeout(() => {
     showIptvOverlay(false);
-    toast('📡 ' + totalCargados + ' canales IPTV cargados');
+    toast('📡 ' + totalCargados + ' canales cargados');
   }, 900);
 }
 
@@ -1105,14 +932,11 @@ async function autoLoadIPTV(){
 }
 
 $('#btnIPTV').addEventListener('click', async () => {
-  if(!confirm('¿Recargar todos los canales IPTV públicos?\n\nEsto puede tardar unos segundos.')) return;
+  if(!confirm('¿Recargar todos los canales?')) return;
   LS.set('iptv_loaded', false);
   await runIPTVLoad();
 });
 
-/* =========================================================
-   INICIO
-   ========================================================= */
 renderNav();
 renderMain();
 autoLoadIPTV();
