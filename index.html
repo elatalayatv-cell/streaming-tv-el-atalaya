@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -801,12 +800,12 @@ async function runIPTVLoad(){
     toast('📡 ' + totalCargados + ' canales cargados');
   }, 900);
 }
+/* ⭐ CAMBIO: ahora SIEMPRE recarga al entrar (sin preguntar ni esperar) */
 async function autoLoadIPTV(){
-  if(LS.get('iptv_loaded', false)) return;
   await runIPTVLoad();
 }
+/* ⭐ CAMBIO: el botón IPTV ya no pregunta, recarga directo */
 $('#btnIPTV').addEventListener('click', async () => {
-  if(!confirm('¿Recargar todos los canales?')) return;
   LS.set('iptv_loaded', false);
   await runIPTVLoad();
 });
