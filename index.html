@@ -805,10 +805,7 @@ async function autoLoadIPTV(){
   await runIPTVLoad();
 }
 /* ⭐ CAMBIO: el botón IPTV ya no pregunta, recarga directo */
-$('#btnIPTV').addEventListener('click', async () => {
-  LS.set('iptv_loaded', false);
-  await runIPTVLoad();
-});
+
 renderNav();
 renderMain();
 autoLoadIPTV();
