@@ -1,0 +1,25 @@
+{
+  "name": "EL ATALAYA TV — Streaming Online",
+  "short_name": "EL ATALAYA TV",
+  "description": "Canales de TV en vivo, noticias, deportes, música y películas.",
+  "start_url": "/streaming-tv-el-atalaya/",
+  "scope": "/streaming-tv-el-atalaya/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#07080d",
+  "theme_color": "#ffb020",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
