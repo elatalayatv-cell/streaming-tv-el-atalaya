@@ -331,27 +331,42 @@ function renderNav(){
   let h = `<button class="nav-item ${state.view==='home'?'active':''}" data-view="home">🏠 Inicio</button>`;
   CATALOG.forEach(cat => {
     const totalCat = cat.subs.reduce((a,s)=>a+s.items.length,0);
-    if(!totalCat) return;
+    if(!totalCat && cat.id !== 'canales') return;
     h += `<div class="nav-group">${cat.icon} ${esc(cat.label)}</div>`;
     cat.subs.forEach(sub => {
-      if(!sub.items.length) return;
+      // Mostrar si tiene items o si es una categoría IPTV lazy (aún sin cargar)
+      const esLazyPendiente = sub.esLazy && sub.items.length === 0;
+      if(!sub.items.length && !esLazyPendiente) return;
       const active = state.view==='sub' && state.sub===sub.id ? ' active' : '';
+      const countText = esLazyPendiente ? '⏳' : sub.items.length;
       h += `<button class="nav-item${active}" data-sub="${sub.id}">
-              ${esc(sub.label)} <span class="count">${sub.items.length}</span>
+              ${esc(sub.label)} <span class="count">${countText}</span>
             </button>`;
     });
   });
   sidebar.innerHTML = h;
 }
-sidebar.addEventListener('click', e => {
+sidebar.addEventListener('click', async e => {
   const item = e.target.closest('.nav-item');
   if(!item) return;
   if(item.dataset.view === 'home'){ state.view='home'; state.sub=null; state.q=''; }
-  else { state.view='sub'; state.sub=item.dataset.sub; state.q=''; }
+  else {
+    state.view='sub'; state.sub=item.dataset.sub; state.q='';
+    // Si es una categoría lazy sin cargar → cargarla
+    const sub = buscarSub(state.sub);
+    if(sub && sub.esLazy && sub.items.length === 0){
+      await cargarFeedIndividual(state.sub);
+    }
+  }
   $('#search').value = '';
   renderNav(); renderMain(); window.scrollTo({top:0,behavior:'smooth'});
   sidebar.classList.remove('open');
 });
+function buscarSub(subId){
+  let found = null;
+  CATALOG.forEach(c => c.subs.forEach(s => { if(s.id === subId) found = s; }));
+  return found;
+}
 function posterStyle(it){
   const palettes = [
     ['#1a2130','#283347'],['#221a2a','#362846'],['#1a2422','#283831'],
@@ -478,12 +493,17 @@ function renderSearch(){
     : `<div class="no-src"><div class="ic">🛰️</div><h4>Sin resultados</h4>
        <p>Probá con otro término.</p></div>`}`;
 }
-document.addEventListener('click', e => {
+document.addEventListener('click', async e => {
   const card = e.target.closest('.card');
   if(card){ playItem(INDEX[card.dataset.id]); return; }
   const more = e.target.closest('[data-goto]');
   if(more){
     state.view='sub'; state.sub = more.dataset.goto; state.q='';
+    // Si es lazy y no está cargada → cargar
+    const sub = buscarSub(state.sub);
+    if(sub && sub.esLazy && sub.items.length === 0){
+      await cargarFeedIndividual(state.sub);
+    }
     $('#search').value=''; renderNav(); renderMain();
     window.scrollTo({top:0,behavior:'smooth'});
   }
@@ -682,43 +702,60 @@ function toast(msg){
   toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
 }
 /* ============ IPTV ============ */
+/* lazy:true = se carga solo cuando tocás la categoría */
+/* lazy:false = se carga al entrar */
 const IPTV_FEEDS = [
-  { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_ar.m3u',     type:'live' },
-  { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_news.m3u',   type:'live' },
-  { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_sports.m3u', type:'live' },
-  { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_music.m3u',  type:'live' },
-  { id:'iptv-movies', label:'🎬 Películas',   url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_movies.m3u', type:'live' },
-  { id:'iptv-kids',      label:'🧸 Infantil',      url:'https://iptv-org.github.io/iptv/categories/kids.m3u',      type:'live' },
-  { id:'iptv-docs',      label:'📽️ Documentales',  url:'https://iptv-org.github.io/iptv/categories/documentary.m3u', type:'live' },
-  { id:'iptv-series',    label:'🎭 Series',        url:'https://iptv-org.github.io/iptv/categories/series.m3u',      type:'live' },
-  { id:'iptv-religious', label:'🙏 Religiosos',    url:'https://iptv-org.github.io/iptv/categories/religious.m3u',   type:'live' },
-  { id:'iptv-us', label:'🇺🇸 Estados Unidos', url:'https://iptv-org.github.io/iptv/countries/us.m3u', type:'live' },
-  { id:'iptv-mx', label:'🇲🇽 México',         url:'https://iptv-org.github.io/iptv/countries/mx.m3u', type:'live' },
-  { id:'iptv-br', label:'🇧🇷 Brasil',         url:'https://iptv-org.github.io/iptv/countries/br.m3u', type:'live' },
-  { id:'iptv-co', label:'🇨🇴 Colombia',       url:'https://iptv-org.github.io/iptv/countries/co.m3u', type:'live' },
-  { id:'iptv-cl', label:'🇨🇱 Chile',          url:'https://iptv-org.github.io/iptv/countries/cl.m3u', type:'live' },
-  { id:'iptv-pe', label:'🇵🇪 Perú',           url:'https://iptv-org.github.io/iptv/countries/pe.m3u', type:'live' },
-  { id:'iptv-uy', label:'🇺🇾 Uruguay',        url:'https://iptv-org.github.io/iptv/countries/uy.m3u', type:'live' },
-  { id:'iptv-py', label:'🇵🇾 Paraguay',       url:'https://iptv-org.github.io/iptv/countries/py.m3u', type:'live' },
-  { id:'iptv-es', label:'🇪🇸 España',         url:'https://iptv-org.github.io/iptv/countries/es.m3u', type:'live' },
-  { id:'iptv-gb', label:'🇬🇧 Reino Unido',    url:'https://iptv-org.github.io/iptv/countries/gb.m3u', type:'live' },
-  { id:'iptv-fr', label:'🇫🇷 Francia',        url:'https://iptv-org.github.io/iptv/countries/fr.m3u', type:'live' },
-  { id:'iptv-de', label:'🇩🇪 Alemania',       url:'https://iptv-org.github.io/iptv/countries/de.m3u', type:'live' },
-  { id:'iptv-it', label:'🇮🇹 Italia',         url:'https://iptv-org.github.io/iptv/countries/it.m3u', type:'live' },
-  { id:'iptv-pt', label:'🇵🇹 Portugal',       url:'https://iptv-org.github.io/iptv/countries/pt.m3u', type:'live' },
-  { id:'iptv-jp', label:'🇯🇵 Japón',          url:'https://iptv-org.github.io/iptv/countries/jp.m3u', type:'live' },
-  { id:'iptv-kr', label:'🇰🇷 Corea del Sur',  url:'https://iptv-org.github.io/iptv/countries/kr.m3u', type:'live' },
-  { id:'iptv-in', label:'🇮🇳 India',          url:'https://iptv-org.github.io/iptv/countries/in.m3u', type:'live' },
-  { id:'iptv-tr', label:'🇹🇷 Turquía',        url:'https://iptv-org.github.io/iptv/countries/tr.m3u', type:'live' },
-  { id:'iptv-au', label:'🇦🇺 Australia',      url:'https://iptv-org.github.io/iptv/countries/au.m3u', type:'live' },
-  { id:'iptv-za', label:'🇿🇦 Sudáfrica',      url:'https://iptv-org.github.io/iptv/countries/za.m3u', type:'live' },
-  { id:'iptv-privada', label:'⭐ Mi Lista Premium', url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/mi_lista_privada.m3u', type:'live' }
+  { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_ar.m3u',     type:'live', lazy:false },
+  { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_news.m3u',   type:'live', lazy:false },
+  { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_sports.m3u', type:'live', lazy:false },
+  { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_music.m3u',  type:'live', lazy:false },
+  { id:'iptv-movies', label:'🎬 Películas',   url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_movies.m3u', type:'live', lazy:false },
+  { id:'iptv-privada', label:'⭐ Mi Lista Premium', url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/mi_lista_privada.m3u', type:'live', lazy:false },
+
+  /* --- Lazy: se cargan al tocar la categoría --- */
+  { id:'iptv-kids',      label:'🧸 Infantil',      url:'https://iptv-org.github.io/iptv/categories/kids.m3u',      type:'live', lazy:true },
+  { id:'iptv-docs',      label:'📽️ Documentales',  url:'https://iptv-org.github.io/iptv/categories/documentary.m3u', type:'live', lazy:true },
+  { id:'iptv-series',    label:'🎭 Series',        url:'https://iptv-org.github.io/iptv/categories/series.m3u',      type:'live', lazy:true },
+  { id:'iptv-religious', label:'🙏 Religiosos',    url:'https://iptv-org.github.io/iptv/categories/religious.m3u',   type:'live', lazy:true },
+  { id:'iptv-us', label:'🇺🇸 Estados Unidos', url:'https://iptv-org.github.io/iptv/countries/us.m3u', type:'live', lazy:true },
+  { id:'iptv-mx', label:'🇲🇽 México',         url:'https://iptv-org.github.io/iptv/countries/mx.m3u', type:'live', lazy:true },
+  { id:'iptv-br', label:'🇧🇷 Brasil',         url:'https://iptv-org.github.io/iptv/countries/br.m3u', type:'live', lazy:true },
+  { id:'iptv-co', label:'🇨🇴 Colombia',       url:'https://iptv-org.github.io/iptv/countries/co.m3u', type:'live', lazy:true },
+  { id:'iptv-cl', label:'🇨🇱 Chile',          url:'https://iptv-org.github.io/iptv/countries/cl.m3u', type:'live', lazy:true },
+  { id:'iptv-pe', label:'🇵🇪 Perú',           url:'https://iptv-org.github.io/iptv/countries/pe.m3u', type:'live', lazy:true },
+  { id:'iptv-uy', label:'🇺🇾 Uruguay',        url:'https://iptv-org.github.io/iptv/countries/uy.m3u', type:'live', lazy:true },
+  { id:'iptv-py', label:'🇵🇾 Paraguay',       url:'https://iptv-org.github.io/iptv/countries/py.m3u', type:'live', lazy:true },
+  { id:'iptv-es', label:'🇪🇸 España',         url:'https://iptv-org.github.io/iptv/countries/es.m3u', type:'live', lazy:true },
+  { id:'iptv-gb', label:'🇬🇧 Reino Unido',    url:'https://iptv-org.github.io/iptv/countries/gb.m3u', type:'live', lazy:true },
+  { id:'iptv-fr', label:'🇫🇷 Francia',        url:'https://iptv-org.github.io/iptv/countries/fr.m3u', type:'live', lazy:true },
+  { id:'iptv-de', label:'🇩🇪 Alemania',       url:'https://iptv-org.github.io/iptv/countries/de.m3u', type:'live', lazy:true },
+  { id:'iptv-it', label:'🇮🇹 Italia',         url:'https://iptv-org.github.io/iptv/countries/it.m3u', type:'live', lazy:true },
+  { id:'iptv-pt', label:'🇵🇹 Portugal',       url:'https://iptv-org.github.io/iptv/countries/pt.m3u', type:'live', lazy:true },
+  { id:'iptv-jp', label:'🇯🇵 Japón',          url:'https://iptv-org.github.io/iptv/countries/jp.m3u', type:'live', lazy:true },
+  { id:'iptv-kr', label:'🇰🇷 Corea del Sur',  url:'https://iptv-org.github.io/iptv/countries/kr.m3u', type:'live', lazy:true },
+  { id:'iptv-in', label:'🇮🇳 India',          url:'https://iptv-org.github.io/iptv/countries/in.m3u', type:'live', lazy:true },
+  { id:'iptv-tr', label:'🇹🇷 Turquía',        url:'https://iptv-org.github.io/iptv/countries/tr.m3u', type:'live', lazy:true },
+  { id:'iptv-au', label:'🇦🇺 Australia',      url:'https://iptv-org.github.io/iptv/countries/au.m3u', type:'live', lazy:true },
+  { id:'iptv-za', label:'🇿🇦 Sudáfrica',      url:'https://iptv-org.github.io/iptv/countries/za.m3u', type:'live', lazy:true }
 ];
 const iptvOverlay = $('#iptvLoading');
 const iptvTitle   = $('#iptvTitle');
 const iptvMsg     = $('#iptvMsg');
 const iptvBar     = $('#iptvBar');
 function showIptvOverlay(show){ iptvOverlay.classList.toggle('show', show); }
+/* Pre-crear las sub-categorías vacías para feeds lazy */
+function initLazySubs(){
+  const cat = CATALOG.find(c => c.id === 'canales');
+  IPTV_FEEDS.forEach(feed => {
+    let sub = cat.subs.find(s => s.id === feed.id);
+    if(!sub){
+      sub = { id: feed.id, label: feed.label, type: 'live', items: [] };
+      cat.subs.push(sub);
+    }
+    sub.esLazy = !!feed.lazy;
+  });
+}
+initLazySubs();
 async function loadIPTVPlaylist(feed, idx, total){
   try{
     iptvTitle.textContent = '📡 Cargando ' + feed.label + '...';
@@ -778,6 +815,7 @@ async function loadIPTVPlaylist(feed, idx, total){
       cat.subs.push(sub);
     }
     sub.items = items;
+    sub.esLazy = !!feed.lazy;
     iptvBar.style.width = ((idx+1) / total * 100) + '%';
     return items.length;
   }catch(err){
@@ -785,11 +823,30 @@ async function loadIPTVPlaylist(feed, idx, total){
     return 0;
   }
 }
+/* Cargar una sola categoría (para lazy) */
+async function cargarFeedIndividual(feedId){
+  const feed = IPTV_FEEDS.find(f => f.id === feedId);
+  if(!feed) return;
+  showIptvOverlay(true);
+  iptvBar.style.width = '20%';
+  const n = await loadIPTVPlaylist(feed, 0, 1);
+  iptvBar.style.width = '100%';
+  LS.set('sources', SOURCES);
+  buildIndex();
+  iptvTitle.textContent = '✅ ¡Listo!';
+  iptvMsg.textContent = n + ' canales cargados.';
+  setTimeout(() => {
+    showIptvOverlay(false);
+    toast('✅ ' + feed.label + ': ' + n + ' canales');
+  }, 600);
+}
+/* Carga inicial: solo feeds NO lazy */
 async function runIPTVLoad(){
   showIptvOverlay(true);
+  const feedsCargar = IPTV_FEEDS.filter(f => !f.lazy);
   let totalCargados = 0;
-  for(let i=0; i<IPTV_FEEDS.length; i++){
-    const n = await loadIPTVPlaylist(IPTV_FEEDS[i], i, IPTV_FEEDS.length);
+  for(let i=0; i<feedsCargar.length; i++){
+    const n = await loadIPTVPlaylist(feedsCargar[i], i, feedsCargar.length);
     totalCargados += n;
   }
   LS.set('sources', SOURCES);
@@ -805,8 +862,8 @@ async function runIPTVLoad(){
     toast('📡 ' + totalCargados + ' canales cargados');
   }, 900);
 }
-/* Recarga automática al entrar */
 async function autoLoadIPTV(){
+  if(LS.get('iptv_loaded', false)) return;
   await runIPTVLoad();
 }
 renderNav();
