@@ -826,27 +826,44 @@ function toast(msg){
 
 /* ============ IPTV ============ */
 const IPTV_FEEDS = [
-  // --- TUS LISTAS VERIFICADAS ---
+  // --- TUS LISTAS VERIFICADAS (No borrar) ---
   { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_ar.m3u',     type:'live' },
   { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_news.m3u',   type:'live' },
   { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_sports.m3u', type:'live' },
   { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_music.m3u',  type:'live' },
   { id:'iptv-movies', label:'🎬 Películas',   url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_movies.m3u', type:'live' },
-
-  // --- CATEGORÍAS NUEVAS ---
   { id:'iptv-kids',      label:'🧸 Infantil',      url:'https://iptv-org.github.io/iptv/categories/kids.m3u',      type:'live' },
   { id:'iptv-docs',      label:'📽️ Documentales',  url:'https://iptv-org.github.io/iptv/categories/documentary.m3u', type:'live' },
   { id:'iptv-series',    label:'🎭 Series',        url:'https://iptv-org.github.io/iptv/categories/series.m3u',      type:'live' },
   { id:'iptv-religious', label:'🙏 Religiosos',    url:'https://iptv-org.github.io/iptv/categories/religious.m3u',   type:'live' },
 
-  // --- INTERNACIONALES (ejemplos, puedes agregar más) ---
-  { id:'iptv-es', label:'🇪🇸 España',      url:'https://iptv-org.github.io/iptv/countries/es.m3u', type:'live' },
-  { id:'iptv-mx', label:'🇲🇽 México',      url:'https://iptv-org.github.io/iptv/countries/mx.m3u', type:'live' },
-  { id:'iptv-co', label:'🇨🇴 Colombia',    url:'https://iptv-org.github.io/iptv/countries/co.m3u', type:'live' },
-  { id:'iptv-cl', label:'🇨🇱 Chile',       url:'https://iptv-org.github.io/iptv/countries/cl.m3u', type:'live' },
-  { id:'iptv-pe', label:'🇵🇪 Perú',        url:'https://iptv-org.github.io/iptv/countries/pe.m3u', type:'live' },
+  // --- CANALES INTERNACIONALES (Puedes agregar más) ---
+  // América
   { id:'iptv-us', label:'🇺🇸 Estados Unidos', url:'https://iptv-org.github.io/iptv/countries/us.m3u', type:'live' },
-
+  { id:'iptv-mx', label:'🇲🇽 México',         url:'https://iptv-org.github.io/iptv/countries/mx.m3u', type:'live' },
+  { id:'iptv-br', label:'🇧🇷 Brasil',         url:'https://iptv-org.github.io/iptv/countries/br.m3u', type:'live' },
+  { id:'iptv-co', label:'🇨🇴 Colombia',       url:'https://iptv-org.github.io/iptv/countries/co.m3u', type:'live' },
+  { id:'iptv-cl', label:'🇨🇱 Chile',          url:'https://iptv-org.github.io/iptv/countries/cl.m3u', type:'live' },
+  { id:'iptv-pe', label:'🇵🇪 Perú',           url:'https://iptv-org.github.io/iptv/countries/pe.m3u', type:'live' },
+  { id:'iptv-uy', label:'🇺🇾 Uruguay',        url:'https://iptv-org.github.io/iptv/countries/uy.m3u', type:'live' },
+  { id:'iptv-py', label:'🇵🇾 Paraguay',       url:'https://iptv-org.github.io/iptv/countries/py.m3u', type:'live' },
+  // Europa
+  { id:'iptv-es', label:'🇪🇸 España',         url:'https://iptv-org.github.io/iptv/countries/es.m3u', type:'live' },
+  { id:'iptv-gb', label:'🇬🇧 Reino Unido',    url:'https://iptv-org.github.io/iptv/countries/gb.m3u', type:'live' },
+  { id:'iptv-fr', label:'🇫🇷 Francia',        url:'https://iptv-org.github.io/iptv/countries/fr.m3u', type:'live' },
+  { id:'iptv-de', label:'🇩🇪 Alemania',       url:'https://iptv-org.github.io/iptv/countries/de.m3u', type:'live' },
+  { id:'iptv-it', label:'🇮🇹 Italia',         url:'https://iptv-org.github.io/iptv/countries/it.m3u', type:'live' },
+  { id:'iptv-pt', label:'🇵🇹 Portugal',       url:'https://iptv-org.github.io/iptv/countries/pt.m3u', type:'live' },
+  // Asia
+  { id:'iptv-jp', label:'🇯🇵 Japón',          url:'https://iptv-org.github.io/iptv/countries/jp.m3u', type:'live' },
+  { id:'iptv-kr', label:'🇰🇷 Corea del Sur',  url:'https://iptv-org.github.io/iptv/countries/kr.m3u', type:'live' },
+  { id:'iptv-in', label:'🇮🇳 India',          url:'https://iptv-org.github.io/iptv/countries/in.m3u', type:'live' },
+  { id:'iptv-tr', label:'🇹🇷 Turquía',        url:'https://iptv-org.github.io/iptv/countries/tr.m3u', type:'live' },
+  // Oceanía
+  { id:'iptv-au', label:'🇦🇺 Australia',      url:'https://iptv-org.github.io/iptv/countries/au.m3u', type:'live' },
+  // África
+  { id:'iptv-za', label:'🇿🇦 Sudáfrica',      url:'https://iptv-org.github.io/iptv/countries/za.m3u', type:'live' }
+];
   // --- LISTA COMPLETA (24/7) ---
   // Descomenta la siguiente línea si quieres TODOS los canales (puede ser lento)
   // { id:'iptv-all', label:'🌎 Todos los canales', url:'https://iptv-org.github.io/iptv/index.m3u', type:'live' }
