@@ -138,6 +138,89 @@ body::before{
 .stat span{font-size:11px;color:var(--muted);letter-spacing:1.2px;
   text-transform:uppercase;margin-top:6px;display:block}
 
+/* ===== Tarjetas destacadas (estilo premium) ===== */
+.featured-grid{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:16px;
+  margin-bottom:36px;
+}
+.fcard{
+  border-radius:20px;
+  padding:26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  border:1px solid rgba(255,255,255,.08);
+  min-height:170px;
+}
+.fcard:hover{
+  transform:translateY(-4px) scale(1.01);
+  box-shadow:0 20px 40px -10px rgba(0,0,0,.6);
+}
+.fcard-tv{
+  grid-row:span 2;
+  min-height:356px;
+  background:linear-gradient(135deg,#7f1d1d 0%,#18181b 100%);
+  border-color:rgba(239,68,68,.3);
+}
+.fcard-tv:hover{box-shadow:0 0 30px rgba(239,68,68,.25);}
+.fcard-movies{
+  background:linear-gradient(135deg,#4c1d95 0%,#18181b 100%);
+  border-color:rgba(139,92,246,.3);
+}
+.fcard-movies:hover{box-shadow:0 0 30px rgba(139,92,246,.25);}
+.fcard-series{
+  background:linear-gradient(135deg,#0f766e 0%,#18181b 100%);
+  border-color:rgba(20,184,166,.3);
+}
+.fcard-series:hover{box-shadow:0 0 30px rgba(20,184,166,.25);}
+.fcard-icon{
+  position:absolute;
+  top:26px;left:26px;
+  width:42px;height:42px;
+  display:grid;place-items:center;
+  opacity:.85;
+}
+.fcard-icon svg{width:38px;height:38px;fill:#fff;}
+.fcard-title{
+  font-size:24px;
+  font-weight:800;
+  color:#fff;
+  letter-spacing:-.02em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+  position:relative;z-index:2;
+}
+.fcard-tv .fcard-title{font-size:32px;}
+.fcard-sub{
+  font-size:13px;
+  color:rgba(255,255,255,.75);
+  font-weight:400;
+  position:relative;z-index:2;
+}
+.fcard-count{
+  position:absolute;
+  top:26px;right:26px;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 11px;
+  border-radius:20px;
+  z-index:2;
+  border:1px solid rgba(255,255,255,.1);
+}
+@media(max-width:900px){
+  .featured-grid{grid-template-columns:1fr;}
+  .fcard-tv{grid-row:span 1;min-height:220px;}
+}
+
 .row{margin-bottom:36px}
 .row-head{display:flex;align-items:center;justify-content:space-between;
   margin-bottom:14px;gap:12px}
@@ -579,6 +662,9 @@ function renderHome(){
   const totalItems = Object.keys(INDEX).length;
   const canales = CATALOG.find(c=>c.id==='canales');
   const totalCanales = canales.subs.reduce((a,s)=>a+s.items.length,0);
+  const subAR = canales.subs.find(s=>s.id==='iptv-ar');
+  const subMovies = canales.subs.find(s=>s.id==='iptv-movies');
+  const subSeries = canales.subs.find(s=>s.id==='iptv-series');
 
   let html = `
   <section class="hero">
@@ -591,6 +677,35 @@ function renderHome(){
       <div class="stat"><b>${totalCanales}</b><span>Canales</span></div>
       <div class="stat"><b>${canales.subs.length}</b><span>Categorías</span></div>
       <div class="stat"><b>24/7</b><span>Online</span></div>
+    </div>
+  </section>
+
+  <section class="featured-grid">
+    <div class="fcard fcard-tv" data-goto="iptv-ar">
+      <div class="fcard-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 6h-7.59l3.29-3.29L16 2l-4 4-4-4-.71.71L10.59 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 14H3V8h18v12zM9 10v8l7-4z"/></svg>
+      </div>
+      <span class="fcard-count">${(subAR?.items.length)||0} canales</span>
+      <div class="fcard-title">TV en Vivo</div>
+      <div class="fcard-sub">Señal en directo de Argentina</div>
+    </div>
+
+    <div class="fcard fcard-movies" data-goto="iptv-movies">
+      <div class="fcard-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4zM4 8h16v10H4V8z"/></svg>
+      </div>
+      <span class="fcard-count">${(subMovies?.items.length)||0} canales</span>
+      <div class="fcard-title">Películas</div>
+      <div class="fcard-sub">Cine las 24 horas</div>
+    </div>
+
+    <div class="fcard fcard-series" data-goto="iptv-series">
+      <div class="fcard-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zM9 7v8l7-4z"/></svg>
+      </div>
+      <span class="fcard-count">${(subSeries?.items.length)||0} canales</span>
+      <div class="fcard-title">Series</div>
+      <div class="fcard-sub">Temporadas completas</div>
     </div>
   </section>`;
 
@@ -879,8 +994,6 @@ const IPTV_FEEDS = [
   { id:'iptv-docs',      label:'📽️ Documentales',  url:'https://iptv-org.github.io/iptv/categories/documentary.m3u', type:'live' },
   { id:'iptv-series',    label:'🎭 Series',        url:'https://iptv-org.github.io/iptv/categories/series.m3u',      type:'live' },
   { id:'iptv-religious', label:'🙏 Religiosos',    url:'https://iptv-org.github.io/iptv/categories/religious.m3u',   type:'live' },
-
-  // --- CANALES INTERNACIONALES ---
   { id:'iptv-us', label:'🇺🇸 Estados Unidos', url:'https://iptv-org.github.io/iptv/countries/us.m3u', type:'live' },
   { id:'iptv-mx', label:'🇲🇽 México',         url:'https://iptv-org.github.io/iptv/countries/mx.m3u', type:'live' },
   { id:'iptv-br', label:'🇧🇷 Brasil',         url:'https://iptv-org.github.io/iptv/countries/br.m3u', type:'live' },
