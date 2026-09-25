@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EL ATALAYA — Streaming Tv Online</title>
 <link rel="icon" type="image/png" href="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffb020">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EL ATALAYA TV">
 <style>
 :root{
   --bg:#07080d; --bg2:#0d1017; --bg3:#141822; --bg4:#1c2230;
@@ -362,8 +368,8 @@ body::before{
   <a class="brand" id="brand">
     <span class="logo"><img src="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png" alt="EL ATALAYA TV"></span>
     <span>
-      <span class="brand-txt">EL ATALAYA <b></b></span>
-      <span class="brand-sub">STREAMING TV ONLINE</span>
+      <span class="brand-txt">EL ATALAYA <b>TV</b></span>
+      <span class="brand-sub">STREAMING ONLINE</span>
     </span>
   </a>
   <div class="search">
@@ -604,7 +610,7 @@ function renderHome(){
     <div class="foot-logo">
       <img src="https://i.postimg.cc/KzXFGHjG/Chat-GPT-Image-13-sept-2026-11-02-16.png" alt="EL ATALAYA TV">
     </div>
-    EL ATALAYA  · Streaming tv
+    EL ATALAYA · Streaming tv
   </div>`;
 
   main.innerHTML = html;
@@ -864,7 +870,6 @@ function toast(msg){
 
 /* ============ IPTV ============ */
 const IPTV_FEEDS = [
-  // --- TUS LISTAS VERIFICADAS (No borrar) ---
   { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_ar.m3u',     type:'live' },
   { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_news.m3u',   type:'live' },
   { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_sports.m3u', type:'live' },
@@ -876,7 +881,6 @@ const IPTV_FEEDS = [
   { id:'iptv-religious', label:'🙏 Religiosos',    url:'https://iptv-org.github.io/iptv/categories/religious.m3u',   type:'live' },
 
   // --- CANALES INTERNACIONALES ---
-  // América
   { id:'iptv-us', label:'🇺🇸 Estados Unidos', url:'https://iptv-org.github.io/iptv/countries/us.m3u', type:'live' },
   { id:'iptv-mx', label:'🇲🇽 México',         url:'https://iptv-org.github.io/iptv/countries/mx.m3u', type:'live' },
   { id:'iptv-br', label:'🇧🇷 Brasil',         url:'https://iptv-org.github.io/iptv/countries/br.m3u', type:'live' },
@@ -885,21 +889,17 @@ const IPTV_FEEDS = [
   { id:'iptv-pe', label:'🇵🇪 Perú',           url:'https://iptv-org.github.io/iptv/countries/pe.m3u', type:'live' },
   { id:'iptv-uy', label:'🇺🇾 Uruguay',        url:'https://iptv-org.github.io/iptv/countries/uy.m3u', type:'live' },
   { id:'iptv-py', label:'🇵🇾 Paraguay',       url:'https://iptv-org.github.io/iptv/countries/py.m3u', type:'live' },
-  // Europa
   { id:'iptv-es', label:'🇪🇸 España',         url:'https://iptv-org.github.io/iptv/countries/es.m3u', type:'live' },
   { id:'iptv-gb', label:'🇬🇧 Reino Unido',    url:'https://iptv-org.github.io/iptv/countries/gb.m3u', type:'live' },
   { id:'iptv-fr', label:'🇫🇷 Francia',        url:'https://iptv-org.github.io/iptv/countries/fr.m3u', type:'live' },
   { id:'iptv-de', label:'🇩🇪 Alemania',       url:'https://iptv-org.github.io/iptv/countries/de.m3u', type:'live' },
   { id:'iptv-it', label:'🇮🇹 Italia',         url:'https://iptv-org.github.io/iptv/countries/it.m3u', type:'live' },
   { id:'iptv-pt', label:'🇵🇹 Portugal',       url:'https://iptv-org.github.io/iptv/countries/pt.m3u', type:'live' },
-  // Asia
   { id:'iptv-jp', label:'🇯🇵 Japón',          url:'https://iptv-org.github.io/iptv/countries/jp.m3u', type:'live' },
   { id:'iptv-kr', label:'🇰🇷 Corea del Sur',  url:'https://iptv-org.github.io/iptv/countries/kr.m3u', type:'live' },
   { id:'iptv-in', label:'🇮🇳 India',          url:'https://iptv-org.github.io/iptv/countries/in.m3u', type:'live' },
   { id:'iptv-tr', label:'🇹🇷 Turquía',        url:'https://iptv-org.github.io/iptv/countries/tr.m3u', type:'live' },
-  // Oceanía
   { id:'iptv-au', label:'🇦🇺 Australia',      url:'https://iptv-org.github.io/iptv/countries/au.m3u', type:'live' },
-  // África
   { id:'iptv-za', label:'🇿🇦 Sudáfrica',      url:'https://iptv-org.github.io/iptv/countries/za.m3u', type:'live' }
 ];
 
@@ -1019,6 +1019,15 @@ $('#btnIPTV').addEventListener('click', async () => {
 renderNav();
 renderMain();
 autoLoadIPTV();
+
+/* ============ PWA Service Worker ============ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('✅ PWA SW registrado:', reg.scope))
+      .catch(err => console.log('❌ Error SW:', err));
+  });
+}
 </script>
 </body>
 </html>
