@@ -184,7 +184,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;ba
   .hero-logo{width:72px;height:72px;border-radius:18px;margin-bottom:16px}
   .hero-stats{gap:20px}
   .stat b{font-size:20px}
-  .btn#btnPanel span,.btn#btnIPTV span{display:none}
+  .btn#btnPanel span{display:none}
   .rail{grid-auto-columns:200px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:13px}
   .sidebar{top:70px;height:calc(100vh - 70px)}
@@ -208,7 +208,6 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;ba
   </div>
   <div class="top-right">
     <span class="clock" id="clock">--:--:--</span>
-    <button class="btn" id="btnIPTV">📡 <span>IPTV</span></button>
     <button class="btn" id="btnPanel">⚙ <span>Panel</span></button>
   </div>
 </header>
@@ -579,7 +578,13 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Escape') $$('.modal.open').forEach(closeModal);
 });
 const panelModal = $('#panelModal');
+/* 🔒 PANEL PROTEGIDO CON CONTRASEÑA */
 $('#btnPanel').addEventListener('click', () => {
+  const pass = prompt('🔒 Contraseña del Panel:');
+  if(pass !== 'atalaya2026'){
+    toast('❌ Contraseña incorrecta');
+    return;
+  }
   renderCustomList(); openModal(panelModal);
 });
 $('#cAdd').addEventListener('click', () => {
@@ -800,12 +805,10 @@ async function runIPTVLoad(){
     toast('📡 ' + totalCargados + ' canales cargados');
   }, 900);
 }
-/* ⭐ CAMBIO: ahora SIEMPRE recarga al entrar (sin preguntar ni esperar) */
+/* Recarga automática al entrar */
 async function autoLoadIPTV(){
   await runIPTVLoad();
 }
-/* ⭐ CAMBIO: el botón IPTV ya no pregunta, recarga directo */
-
 renderNav();
 renderMain();
 autoLoadIPTV();
