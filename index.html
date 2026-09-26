@@ -334,7 +334,6 @@ function renderNav(){
     if(!totalCat && cat.id !== 'canales') return;
     h += `<div class="nav-group">${cat.icon} ${esc(cat.label)}</div>`;
     cat.subs.forEach(sub => {
-      // Mostrar si tiene items o si es una categoría IPTV lazy (aún sin cargar)
       const esLazyPendiente = sub.esLazy && sub.items.length === 0;
       if(!sub.items.length && !esLazyPendiente) return;
       const active = state.view==='sub' && state.sub===sub.id ? ' active' : '';
@@ -352,7 +351,6 @@ sidebar.addEventListener('click', async e => {
   if(item.dataset.view === 'home'){ state.view='home'; state.sub=null; state.q=''; }
   else {
     state.view='sub'; state.sub=item.dataset.sub; state.q='';
-    // Si es una categoría lazy sin cargar → cargarla
     const sub = buscarSub(state.sub);
     if(sub && sub.esLazy && sub.items.length === 0){
       await cargarFeedIndividual(state.sub);
@@ -499,7 +497,6 @@ document.addEventListener('click', async e => {
   const more = e.target.closest('[data-goto]');
   if(more){
     state.view='sub'; state.sub = more.dataset.goto; state.q='';
-    // Si es lazy y no está cargada → cargar
     const sub = buscarSub(state.sub);
     if(sub && sub.esLazy && sub.items.length === 0){
       await cargarFeedIndividual(state.sub);
@@ -598,7 +595,6 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Escape') $$('.modal.open').forEach(closeModal);
 });
 const panelModal = $('#panelModal');
-/* 🔒 PANEL PROTEGIDO CON CONTRASEÑA */
 $('#btnPanel').addEventListener('click', () => {
   const pass = prompt('🔒 Contraseña del Panel:');
   if(pass !== 'atalaya2026'){
@@ -702,17 +698,18 @@ function toast(msg){
   toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
 }
 /* ============ IPTV ============ */
-/* lazy:true = se carga solo cuando tocás la categoría */
+/* lazy:true = se carga al tocar la categoría */
 /* lazy:false = se carga al entrar */
 const IPTV_FEEDS = [
   { id:'iptv-ar',     label:'🇦🇷 Argentina',  url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_ar.m3u',     type:'live', lazy:false },
-  { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_news.m3u',   type:'live', lazy:false },
-  { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_sports.m3u', type:'live', lazy:false },
-  { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_music.m3u',  type:'live', lazy:false },
-  { id:'iptv-movies', label:'🎬 Películas',   url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_movies.m3u', type:'live', lazy:false },
-  { id:'iptv-privada', label:'⭐ Mi Lista Premium', url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/mi_lista_privada.m3u', type:'live', lazy:false },
 
-  /* --- Lazy: se cargan al tocar la categoría --- */
+  /* --- Todo lo demás es lazy: se carga al tocar --- */
+  { id:'iptv-news',   label:'📰 Noticias',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_news.m3u',   type:'live', lazy:true },
+  { id:'iptv-sports', label:'⚽ Deportes',    url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_sports.m3u', type:'live', lazy:true },
+  { id:'iptv-music',  label:'🎵 Música',      url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_music.m3u',  type:'live', lazy:true },
+  { id:'iptv-movies', label:'🎬 Películas',   url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/clean_movies.m3u', type:'live', lazy:true },
+  { id:'iptv-privada', label:'⭐ Mi Lista Premium', url:'https://raw.githubusercontent.com/elatalayatv-cell/streaming-tv-el-atalaya/refs/heads/main/mi_lista_privada.m3u', type:'live', lazy:true },
+
   { id:'iptv-kids',      label:'🧸 Infantil',      url:'https://iptv-org.github.io/iptv/categories/kids.m3u',      type:'live', lazy:true },
   { id:'iptv-docs',      label:'📽️ Documentales',  url:'https://iptv-org.github.io/iptv/categories/documentary.m3u', type:'live', lazy:true },
   { id:'iptv-series',    label:'🎭 Series',        url:'https://iptv-org.github.io/iptv/categories/series.m3u',      type:'live', lazy:true },
@@ -743,7 +740,6 @@ const iptvTitle   = $('#iptvTitle');
 const iptvMsg     = $('#iptvMsg');
 const iptvBar     = $('#iptvBar');
 function showIptvOverlay(show){ iptvOverlay.classList.toggle('show', show); }
-/* Pre-crear las sub-categorías vacías para feeds lazy */
 function initLazySubs(){
   const cat = CATALOG.find(c => c.id === 'canales');
   IPTV_FEEDS.forEach(feed => {
@@ -761,9 +757,12 @@ async function loadIPTVPlaylist(feed, idx, total){
     iptvTitle.textContent = '📡 Cargando ' + feed.label + '...';
     iptvMsg.textContent = 'Descargando lista... (' + (idx+1) + '/' + total + ')';
     iptvBar.style.width = (idx / total * 100) + '%';
-    const res = await fetch(feed.url, { cache:'no-store' });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    const res = await fetch(feed.url, { cache:'no-store', signal: controller.signal });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
+    clearTimeout(timer);
     const lines = text.split(/\r?\n|\r/);
     let current = null;
     const items = [];
@@ -823,7 +822,6 @@ async function loadIPTVPlaylist(feed, idx, total){
     return 0;
   }
 }
-/* Cargar una sola categoría (para lazy) */
 async function cargarFeedIndividual(feedId){
   const feed = IPTV_FEEDS.find(f => f.id === feedId);
   if(!feed) return;
@@ -840,7 +838,6 @@ async function cargarFeedIndividual(feedId){
     toast('✅ ' + feed.label + ': ' + n + ' canales');
   }, 600);
 }
-/* Carga inicial: solo feeds NO lazy */
 async function runIPTVLoad(){
   showIptvOverlay(true);
   const feedsCargar = IPTV_FEEDS.filter(f => !f.lazy);
@@ -869,55 +866,14 @@ async function autoLoadIPTV(){
 renderNav();
 renderMain();
 autoLoadIPTV();
-// Service Worker para EL ATALAYA TV
-const CACHE_NAME = 'atalaya-tv-v2';
-const CACHE_FILES = [
-  '/streaming-tv-el-atalaya/',
-  '/streaming-tv-el-atalaya/index.html',
-  '/streaming-tv-el-atalaya/manifest.json'
-];
-
-// Instalación: cachear archivos básicos
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(CACHE_FILES))
-      .then(() => self.skipWaiting())
-  );
-});
-
-// Activación: limpiar cachés viejas
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => {
-        if(key !== CACHE_NAME) return caches.delete(key);
-      })
-    )).then(() => self.clients.claim())
-  );
-});
-
-// Fetch: responder desde caché si está disponible
-self.addEventListener('fetch', (event) => {
-  // No cachear streams ni listas M3U (siempre online)
-  const url = event.request.url;
-  if(url.endsWith('.m3u8') || url.endsWith('.m3u') || url.includes('iptv-org') || url.includes('raw.githubusercontent')){
-    return;
-  }
-
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request).then(response => {
-        // Solo cachear respuestas válidas de nuestro origen
-        if(response.status === 200 && url.startsWith(self.location.origin)){
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      });
-    }).catch(() => caches.match('/streaming-tv-el-atalaya/index.html'))
-  );
-});
+/* ============ PWA Service Worker ============ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('✅ PWA SW registrado:', reg.scope))
+      .catch(err => console.log('❌ Error SW:', err));
+  });
+}
 </script>
 </body>
 </html>
