@@ -112,6 +112,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .toast.show{transform:translate(-50%,0);opacity:1}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99;backdrop-filter:blur(4px)}
 .overlay.open{display:block}
+.pin-modal{position:fixed;inset:0;z-index:2000;background:rgba(2,3,8,.95);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:20px}
+.pin-modal.open{display:flex;animation:fadeIn .2s ease}
+.pin-box{width:100%;max-width:360px;background:linear-gradient(160deg,#0d1019,#08090f);border:1px solid var(--border);border-radius:18px;padding:28px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.9)}
+.pin-box .lock{font-size:56px;margin-bottom:12px;display:block;filter:drop-shadow(0 8px 20px rgba(255,213,0,.4))}
+.pin-box h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;color:#fff}
+.pin-box p{font-size:12.5px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.pin-box input{width:100%;padding:14px 18px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;color:#fff;font-size:16px;text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:4px;outline:none;margin-bottom:16px}
+.pin-box input:focus{border-color:rgba(255,213,0,.5);box-shadow:0 0 0 4px rgba(255,213,0,.1)}
+.pin-box .pin-btns{display:flex;gap:10px}
+.pin-box .pin-btn{flex:1;padding:12px;border-radius:11px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;transition:.2s;border:none}
+.pin-box .pin-btn.cancel{background:rgba(255,255,255,.06);color:#b8c4dc;border:1px solid var(--border)}
+.pin-box .pin-btn.ok{background:linear-gradient(135deg,#ffd500,#ffa500);color:#0a0d16;box-shadow:0 8px 22px rgba(255,213,0,.35)}
+.pin-box .pin-btn:hover{transform:translateY(-1px)}
 @media(max-width:1000px){
   .sidebar{transform:translateX(-100%)}
   .sidebar.open{transform:translateX(0);box-shadow:12px 0 40px rgba(0,0,0,.7)}
@@ -179,7 +192,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <button class="pc-close" id="pClose">✕</button>
     </div>
     <div class="player-stage" id="pStage">
-      <video id="video" playsinline crossorigin="anonymous"></video>
+      <video id="video" playsinline></video>
       <div class="pc-controls" id="pControls">
         <div class="pc-bar" id="pcBar"><div class="pc-played" id="pcPlayed"></div></div>
         <div class="pc-btns">
@@ -199,6 +212,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   </div>
 </div>
 
+<div class="pin-modal" id="pinModal">
+  <div class="pin-box">
+    <span class="lock">🔞</span>
+    <h3>Categoría para adultos</h3>
+    <p>Ingresá el PIN para acceder a este contenido</p>
+    <input type="password" id="pinInput" maxlength="10" inputmode="numeric" placeholder="••••">
+    <div class="pin-btns">
+      <button class="pin-btn cancel" id="pinCancel">Cancelar</button>
+      <button class="pin-btn ok" id="pinOk">Desbloquear</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -206,7 +232,9 @@ const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const KEYS = {channels:'atalaya_channels',favorites:'atalaya_favorites',recents:'atalaya_recents',settings:'atalaya_settings'};
 
-/* ⚡ PROXY para HTTP→HTTPS - AHORA USA TU VPS PROPIO */
+const PIN_ADULTOS = '1234';
+let adultUnlocked = sessionStorage.getItem('adult_ok') === '1';
+
 const PROXY_URL = 'https://elatalayatvoficial.elatalaya.com.ar/proxy?url=';
 function proxify(url){
   if(!url) return url;
@@ -240,11 +268,14 @@ function toast(msg, ic='✅'){
   toastT = setTimeout(()=>t.classList.remove('show'), 2500);
 }
 
-/* ⚡ CARGAR CANALES DESDE EL SERVIDOR */
+function esCategoriaAdulto(cat){
+  return /xxx|adult|porno|\+18|18\+|erotic|hentai/i.test(cat || '');
+}
+
 async function loadChannels(){
   try {
     $('#loadTxt').textContent = 'Descargando canales...';
-  const response = await fetch('https://elatalayatvoficial.elatalaya.com.ar/channels.json?v=' + Date.now());
+    const response = await fetch('https://elatalayatvoficial.elatalaya.com.ar/channels.json?v=' + Date.now());
     if(!response.ok) throw new Error('HTTP ' + response.status);
     const data = await response.json();
     channels = data.channels || data;
@@ -253,22 +284,7 @@ async function loadChannels(){
     return true;
   } catch(err){
     console.error('Error cargando channels.json:', err);
-    // Fallback a localStorage
-    try {
-      const raw = localStorage.getItem(KEYS.channels);
-      if(raw){
-        if(raw.startsWith('__LZ__')){
-          const d = LZString.decompressFromUTF16(raw.slice(6));
-          channels = d ? JSON.parse(d) : [];
-        } else {
-          channels = JSON.parse(raw);
-        }
-        $('#loadTxt').textContent = '⚠️ Usando datos locales: ' + channels.length;
-        console.log('⚠️ Fallback a localStorage:', channels.length);
-        return true;
-      }
-    } catch(e){}
-    $('#loadTxt').innerHTML = '❌ No se pudieron cargar los canales.<br>Subí channels.json al servidor.';
+    $('#loadTxt').innerHTML = '❌ No se pudieron cargar los canales.<br>Revisá tu conexión.';
     return false;
   }
 }
@@ -358,7 +374,19 @@ function buildSidebar(){
   $('#sidebarNav').innerHTML = html;
   $$('.cat-btn').forEach(btn => {
     btn.onclick = () => {
-      currentCat = btn.dataset.cat;
+      const cat = btn.dataset.cat;
+      if(esCategoriaAdulto(cat) && !adultUnlocked){
+        pedirPin(() => {
+          currentCat = cat;
+          currentPage = 0;
+          buildSidebar();
+          renderContent();
+          closeSidebar();
+          window.scrollTo({top:0,behavior:'smooth'});
+        });
+        return;
+      }
+      currentCat = cat;
       currentPage = 0;
       buildSidebar();
       renderContent();
@@ -368,10 +396,52 @@ function buildSidebar(){
   });
 }
 
+function pedirPin(callback){
+  const modal = $('#pinModal');
+  const input = $('#pinInput');
+  modal.classList.add('open');
+  input.value = '';
+  setTimeout(() => input.focus(), 100);
+
+  function limpiar(){
+    modal.classList.remove('open');
+    $('#pinOk').onclick = null;
+    $('#pinCancel').onclick = null;
+    input.onkeydown = null;
+  }
+
+  function intentar(){
+    if(input.value === PIN_ADULTOS){
+      adultUnlocked = true;
+      sessionStorage.setItem('adult_ok', '1');
+      toast('🔓 Categoría desbloqueada', '✅');
+      limpiar();
+      callback();
+    } else {
+      toast('PIN incorrecto', '⛔');
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  $('#pinOk').onclick = intentar;
+  $('#pinCancel').onclick = limpiar;
+  input.onkeydown = e => {
+    if(e.key === 'Enter') intentar();
+    if(e.key === 'Escape') limpiar();
+  };
+}
+
 function getFiltered(){
-  if(currentCat === '__fav__') return favorites.map(id => channels.find(c => c.id === id)).filter(Boolean);
-  if(currentCat === '__all__') return channels;
-  return channels.filter(c => c.cat === currentCat);
+  let list;
+  if(currentCat === '__fav__') list = favorites.map(id => channels.find(c => c.id === id)).filter(Boolean);
+  else if(currentCat === '__all__') list = channels;
+  else list = channels.filter(c => c.cat === currentCat);
+
+  if(!adultUnlocked){
+    list = list.filter(c => !esCategoriaAdulto(c.cat));
+  }
+  return list;
 }
 
 function renderContent(){
@@ -583,7 +653,9 @@ $('#searchBtn').onclick = () => {
 $('#searchInput').addEventListener('input', e => {
   const q = e.target.value.trim().toLowerCase();
   if(!q){ renderContent(); return; }
-  const m = channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q)).slice(0, 200);
+  let m = channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q));
+  if(!adultUnlocked) m = m.filter(c => !esCategoriaAdulto(c.cat));
+  m = m.slice(0, 200);
   $('#viewTitle').textContent = `🔍 "${e.target.value}"`;
   const content = $('#content');
   if(!m.length){
@@ -618,7 +690,6 @@ document.addEventListener('keydown', e => {
   else if(e.key === 'Escape') closePlayer();
 });
 
-/* ⚡ INICIO */
 (async () => {
   clock();
   const ok = await loadChannels();
