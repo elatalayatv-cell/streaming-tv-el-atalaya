@@ -244,7 +244,7 @@ function toast(msg, ic='✅'){
 async function loadChannels(){
   try {
     $('#loadTxt').textContent = 'Descargando canales...';
-    const response = await fetch('channels.json?v=' + Date.now());
+  const response = await fetch('https://elatalayatvoficial.elatalaya.com.ar/channels.json?v=' + Date.now());
     if(!response.ok) throw new Error('HTTP ' + response.status);
     const data = await response.json();
     channels = data.channels || data;
