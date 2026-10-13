@@ -234,6 +234,7 @@ const KEYS = {channels:'atalaya_channels',favorites:'atalaya_favorites',recents:
 
 const PIN_ADULTOS = '1234';
 let adultUnlocked = sessionStorage.getItem('adult_ok') === '1';
+let adultosCargados = false;
 
 const PROXY_URL = 'https://elatalayatvoficial.elatalaya.com.ar/proxy?url=';
 function proxify(url){
@@ -280,11 +281,30 @@ async function loadChannels(){
     const data = await response.json();
     channels = data.channels || data;
     $('#loadTxt').textContent = '✅ ' + channels.length + ' canales cargados';
-    console.log('✅ Canales cargados desde el servidor:', channels.length);
+    console.log('✅ Canales cargados:', channels.length);
     return true;
   } catch(err){
-    console.error('Error cargando channels.json:', err);
-    $('#loadTxt').innerHTML = '❌ No se pudieron cargar los canales.<br>Revisá tu conexión.';
+    console.error('Error:', err);
+    $('#loadTxt').innerHTML = '❌ No se pudieron cargar los canales.';
+    return false;
+  }
+}
+
+async function cargarAdultos(){
+  if(adultosCargados) return true;
+  try {
+    const r = await fetch('https://elatalayatvoficial.elatalaya.com.ar/channels-adult.json?v=' + Date.now());
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    const adultos = data.channels || data;
+    const ids = new Set(channels.map(c => c.id));
+    adultos.forEach(c => { if(!ids.has(c.id)) channels.push(c); });
+    adultosCargados = true;
+    console.log('🔞 Adultos cargados:', adultos.length);
+    return true;
+  } catch(err){
+    console.error('Error cargando adultos:', err);
+    toast('No se pudieron cargar los canales adultos', '⚠️');
     return false;
   }
 }
@@ -410,13 +430,18 @@ function pedirPin(callback){
     input.onkeydown = null;
   }
 
-  function intentar(){
+  async function intentar(){
     if(input.value === PIN_ADULTOS){
       adultUnlocked = true;
       sessionStorage.setItem('adult_ok', '1');
-      toast('🔓 Categoría desbloqueada', '✅');
       limpiar();
-      callback();
+      toast('🔓 Descargando...', '⏳');
+      const ok = await cargarAdultos();
+      if(ok){
+        toast('🔓 Desbloqueado', '✅');
+        buildSidebar();
+        callback();
+      }
     } else {
       toast('PIN incorrecto', '⛔');
       input.value = '';
@@ -437,10 +462,6 @@ function getFiltered(){
   if(currentCat === '__fav__') list = favorites.map(id => channels.find(c => c.id === id)).filter(Boolean);
   else if(currentCat === '__all__') list = channels;
   else list = channels.filter(c => c.cat === currentCat);
-
-  if(!adultUnlocked){
-    list = list.filter(c => !esCategoriaAdulto(c.cat));
-  }
   return list;
 }
 
@@ -653,9 +674,7 @@ $('#searchBtn').onclick = () => {
 $('#searchInput').addEventListener('input', e => {
   const q = e.target.value.trim().toLowerCase();
   if(!q){ renderContent(); return; }
-  let m = channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q));
-  if(!adultUnlocked) m = m.filter(c => !esCategoriaAdulto(c.cat));
-  m = m.slice(0, 200);
+  const m = channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q)).slice(0, 200);
   $('#viewTitle').textContent = `🔍 "${e.target.value}"`;
   const content = $('#content');
   if(!m.length){
@@ -694,6 +713,7 @@ document.addEventListener('keydown', e => {
   clock();
   const ok = await loadChannels();
   if(ok){
+    if(adultUnlocked) await cargarAdultos();
     buildSidebar();
     renderContent();
     console.log(`✅ ${channels.length} canales · ${getCategories().length} categorías`);
