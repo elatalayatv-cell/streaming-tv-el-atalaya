@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATALAYA STREAMING TV· Panel</title>
+<title>ATALAYA STREAMING TV · Panel</title>
 <link rel="icon" type="image/png" href="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png">
 <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -94,7 +94,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <p>ATALAYA STREAMING TV · Acceso restringido</p>
     <div class="field"><input type="password" id="pass" placeholder="Contraseña"></div>
     <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;padding:14px">🔓 Entrar</button>
-    <div class="hint" style="text-align:center;margin-top:16px"></b></div>
+    <div class="hint" style="text-align:center;margin-top:16px"><b>Contraseña:</b> atalaya2026</div>
   </div>
 </div>
 
@@ -168,17 +168,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
     <div class="panel" data-panel="backup">
       <div class="block">
-        <h3><span class="ic">💾</span> Exportar / Importar</h3>
-        <div class="desc">Guardá toda tu configuración en un archivo JSON.</div>
+        <h3><span class="ic">💾</span> Guardar y Respaldar</h3>
+        <div class="desc">Guardá los cambios en el servidor para que todos los usuarios los vean, o descargá un backup completo.</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
-          <button class="btn btn-primary" id="publishBtn">🌐 Publicar channels.json</button>
-          <button class="btn" id="exportBtn">📤 Exportar backup completo</button>
+          <button class="btn btn-primary" id="publishBtn">💾 Guardar en servidor</button>
+          <button class="btn" id="exportBtn">📤 Exportar backup</button>
           <button class="btn" id="importBtn">📥 Importar backup</button>
           <input type="file" id="importFile" accept=".json" style="display:none">
         </div>
         <div class="hint">
-          <b>Publicar</b> descarga un <code>channels.json</code> listo para subir a tu servidor.
-          Reemplazá el archivo viejo y todos los usuarios verán los cambios al recargar.
+          <b>Guardar en servidor</b> publica los cambios en <code>channels.json</code> al instante. Los usuarios los ven al recargar la app.
         </div>
         <h3 style="margin-top:22px"><span class="ic">⚠️</span> Zona de peligro</h3>
         <div class="desc">Acciones irreversibles.</div>
@@ -197,21 +196,16 @@ const KEYS = {channels:'atalaya_channels',favorites:'atalaya_favorites',recents:
 const PASS = 'atalaya2026';
 const PAGE_SIZE = 100;
 const LZ = '__LZ__';
+const SAVE_URL = 'https://elatalayatvoficial.elatalaya.com.ar/admin/save-channels';
+const SAVE_TOKEN = 'Atalaya2026AdminToken!xyz';
 
-/* ═══ COMPRESIÓN LZ-STRING ═══ */
 function saveRaw(key, data){
   try {
     const json = JSON.stringify(data);
     const comp = LZ + LZString.compressToUTF16(json);
-    if(comp.length < 4 * 1024 * 1024){
-      localStorage.setItem(key, comp);
-      return true;
-    }
+    if(comp.length < 4 * 1024 * 1024){ localStorage.setItem(key, comp); return true; }
     return false;
-  } catch(e){
-    console.error('Error guardando:', e);
-    return false;
-  }
+  } catch(e){ console.error('Error guardando:', e); return false; }
 }
 
 function loadRaw(key, fallback){
@@ -223,10 +217,7 @@ function loadRaw(key, fallback){
       return d ? JSON.parse(d) : fallback;
     }
     return JSON.parse(raw);
-  } catch(e){
-    console.error('Error cargando:', e);
-    return fallback;
-  }
+  } catch(e){ console.error('Error cargando:', e); return fallback; }
 }
 
 let channels = loadRaw(KEYS.channels, []);
@@ -235,55 +226,32 @@ let editingId = null;
 let listPage = 0;
 let lastFiltered = [];
 
-/* ═══ SEED DESDE channels.json ═══ */
 async function seedFromJSON(){
-  if(channels.length > 0) return;          // ya hay datos locales
+  if(channels.length > 0) return;
   try {
-    const r = await fetch('channels.json', { cache: 'no-store' });
+    const r = await fetch('https://elatalayatvoficial.elatalaya.com.ar/channels.json', { cache: 'no-store' });
     if(!r.ok) return;
     const data = await r.json();
     const arr = Array.isArray(data) ? data : (data.channels || []);
     if(!arr.length) return;
     channels = arr;
     saveCh();
-    toast(`📦 ${arr.length} canales cargados de channels.json`, '⬇️');
-  } catch(e){
-    console.warn('No se pudo cargar channels.json:', e);
-  }
+    toast(`📦 ${arr.length} canales cargados desde el servidor`, '⬇️');
+  } catch(e){ console.warn('No se pudo cargar channels.json:', e); }
 }
 
 function saveCh(){
   if(saveRaw(KEYS.channels, channels)) return;
-
-  const reducido = channels.map(c => ({
-    id: c.id, name: c.name, cat: c.cat,
-    emoji: c.emoji, url: c.url, live: c.live
-  }));
-  if(saveRaw(KEYS.channels, reducido)){
-    channels = reducido;
-    toast('Guardado en modo reducido (sin logos)', '⚠️');
-    return;
-  }
-
+  const reducido = channels.map(c => ({id: c.id, name: c.name, cat: c.cat, emoji: c.emoji, url: c.url, live: c.live}));
+  if(saveRaw(KEYS.channels, reducido)){ channels = reducido; toast('Guardado en modo reducido (sin logos)', '⚠️'); return; }
   if(channels.length > 30000){
-    const subset = channels.slice(0, 30000).map(c => ({
-      id: c.id, name: c.name, cat: c.cat,
-      emoji: c.emoji, url: c.url, live: c.live
-    }));
-    if(saveRaw(KEYS.channels, subset)){
-      channels = subset;
-      toast('Solo se guardaron 30.000 canales', '⚠️');
-      return;
-    }
+    const subset = channels.slice(0, 30000).map(c => ({id: c.id, name: c.name, cat: c.cat, emoji: c.emoji, url: c.url, live: c.live}));
+    if(saveRaw(KEYS.channels, subset)){ channels = subset; toast('Solo se guardaron 30.000 canales', '⚠️'); return; }
   }
-
   toast('ERROR: Lista demasiado grande', '❌');
 }
 
-function saveAll(){
-  saveCh();
-  localStorage.setItem(KEYS.favorites, JSON.stringify(favorites));
-}
+function saveAll(){ saveCh(); localStorage.setItem(KEYS.favorites, JSON.stringify(favorites)); }
 
 let toastTimer;
 function toast(msg, icon='✅'){
@@ -346,24 +314,19 @@ function updateStats(){
 function renderList(){
   const q = ($('#searchList')?.value || '').toLowerCase();
   lastFiltered = q ? channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q)) : channels;
-
   $('#listCount').textContent = lastFiltered.length;
   $('#catsList').innerHTML = [...new Set(channels.map(c => c.cat))].sort().map(c => `<option value="${esc(c)}">`).join('');
-
   const list = $('#list');
   if(!lastFiltered.length){
     list.innerHTML = '<div class="empty"><span class="big">📭</span><p>No hay canales.</p></div>';
     $('#pagination').innerHTML = '';
     return;
   }
-
   const totalPages = Math.ceil(lastFiltered.length / PAGE_SIZE);
   if(listPage >= totalPages) listPage = totalPages - 1;
   if(listPage < 0) listPage = 0;
-
   const start = listPage * PAGE_SIZE;
   const page = lastFiltered.slice(start, start + PAGE_SIZE);
-
   list.innerHTML = page.map(c => `
     <div class="item">
       <div class="av">${c.logo ? `<img src="${esc(c.logo)}" loading="lazy" onerror="this.style.display='none';this.parentNode.textContent='${c.emoji||'📺'}'">` : (c.emoji||'📺')}</div>
@@ -374,10 +337,8 @@ function renderList(){
       </div>
     </div>
   `).join('');
-
   $$('[data-edit]').forEach(b => b.onclick = () => editChannel(b.dataset.edit));
   $$('[data-del]').forEach(b => b.onclick = () => deleteChannel(b.dataset.del));
-
   if(totalPages > 1){
     $('#pagination').innerHTML = `
       <div class="pagination">
@@ -387,9 +348,7 @@ function renderList(){
         <button class="btn" onclick="changePage(1)" ${listPage >= totalPages - 1 ? 'disabled' : ''}>Siguiente →</button>
         <button class="btn" onclick="changePage(999)" ${listPage >= totalPages - 1 ? 'disabled' : ''}>Última »</button>
       </div>`;
-  } else {
-    $('#pagination').innerHTML = '';
-  }
+  } else { $('#pagination').innerHTML = ''; }
 }
 
 function changePage(delta){
@@ -448,7 +407,6 @@ function deleteChannel(id){
   toast('Eliminado', '🗑️');
 }
 
-/* ═══ PARSER M3U (FIX: quita atributos antes de buscar la coma) ═══ */
 function parseM3U(text){
   const lines = text.split(/\r?\n/);
   const out = []; let pending = null;
@@ -460,7 +418,6 @@ function parseM3U(text){
       const re = /([a-zA-Z0-9-]+)="([^"]*)"/g;
       let m;
       while((m = re.exec(line)) !== null) attrs[m[1]] = m[2];
-      // Sacar primero los atributos (pueden contener comas adentro)
       const sinAttrs = line.replace(/[a-zA-Z0-9-]+="[^"]*"/g, '');
       const nm = sinAttrs.match(/,(.+)$/);
       const name = (nm ? nm[1] : attrs['tvg-name'] || 'Canal').trim();
@@ -503,23 +460,18 @@ function processM3U(text){
   if(!parsed.length){ toast('No se encontraron canales', '⚠️'); return; }
   const prog = $('#prog'), bar = $('#progBar');
   prog.classList.add('on'); bar.style.width = '20%';
-
   setTimeout(() => {
     let added = 0;
     const ex = new Set(channels.map(c => c.name.toLowerCase()+'|'+c.url));
     bar.style.width = '50%';
-
     if(channels.length > 0) saveCh();
-
     parsed.forEach(c => {
       const k = c.name.toLowerCase()+'|'+c.url;
       if(!ex.has(k)){ channels.push(c); ex.add(k); added++; }
     });
-
     bar.style.width = '75%';
     saveCh();
     bar.style.width = '100%';
-
     setTimeout(() => { prog.classList.remove('on'); bar.style.width = '0'; }, 800);
     toast(`${added} canales agregados · Total: ${channels.length}`, '📥');
     listPage = 0;
@@ -543,21 +495,34 @@ $('#m3uFile').onchange = e => {
   e.target.value = '';
 };
 
-/* ═══ PUBLICAR channels.json (solo canales) ═══ */
-$('#publishBtn').onclick = () => {
-  if(!channels.length){ toast('No hay canales para publicar', '⚠️'); return; }
-  const payload = { channels };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url;
-  a.download = 'channels.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('channels.json descargado · subilo al servidor', '🌐');
+$('#publishBtn').onclick = async () => {
+  if(!channels.length){ toast('No hay canales para guardar', '⚠️'); return; }
+  const btn = $('#publishBtn');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Guardando...';
+  try {
+    const r = await fetch(SAVE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: SAVE_TOKEN, channels })
+    });
+    if(!r.ok){
+      const txt = await r.text();
+      throw new Error('HTTP ' + r.status + ' - ' + txt);
+    }
+    const data = await r.json();
+    toast(`✅ ${data.count} canales guardados en el servidor`, '🌐');
+    btn.innerHTML = '✅ Guardado';
+    setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 2000);
+  } catch(err){
+    console.error('Error guardando:', err);
+    toast('❌ Error: ' + err.message, '⚠️');
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+  }
 };
 
-/* ═══ EXPORT / IMPORT BACKUP COMPLETO ═══ */
 $('#exportBtn').onclick = () => {
   const data = {channels, favorites:loadRaw(KEYS.favorites,[]), recents:loadRaw(KEYS.recents,[]), settings:loadRaw(KEYS.settings,{}), exportedAt:new Date().toISOString(), version:2};
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
@@ -601,10 +566,9 @@ $('#wipeBtn').onclick = () => {
 };
 
 async function init(){
-  await seedFromJSON();   // ← primera vez trae los canales del channels.json
+  await seedFromJSON();
   updateStats();
   renderList();
-  console.log(`⚙️ Panel · ${channels.length} canales · Comprimido: ${localStorage.getItem(KEYS.channels)?.startsWith(LZ) ? 'SÍ' : 'NO'}`);
 }
 checkLogin();
 </script>
