@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ATALAYA STREAMING TV</title>
+<title>EL ATALAYA STREAMING TV</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
@@ -128,31 +129,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .pin-box .pin-btn:hover{transform:translateY(-1px)}
 
 /* ═══ FOCO TV (D-pad) ═══ */
-.focused {
-  outline: none !important;
-  box-shadow: 0 0 0 4px #ffd500, 0 0 30px rgba(255,213,0,.7), 0 20px 50px rgba(0,0,0,.7) !important;
-  z-index: 10;
-  position: relative;
+.focused{
+  outline:none !important;
+  box-shadow:0 0 0 4px #ffd500, 0 0 30px rgba(255,213,0,.7), 0 20px 50px rgba(0,0,0,.7) !important;
+  z-index:10;
+  position:relative;
 }
-.poster.focused {
-  transform: scale(1.06) translateY(-4px);
-  border-color: #ffd500 !important;
-}
-.cat-btn.focused {
-  background: linear-gradient(90deg, rgba(255,213,0,.35), rgba(255,165,0,.18)) !important;
-  color: #fff !important;
-  transform: translateX(4px);
-}
-.hbtn.focused, .pc-btn.focused, .load-more.focused, .pc-close.focused {
-  background: #ffd500 !important;
-  color: #0a0d16 !important;
-  border-color: #ffd500 !important;
-  transform: scale(1.08);
-}
-.menu-btn.focused {
-  background: #ffd500 !important;
-  color: #0a0d16 !important;
-}
+.poster.focused{transform:scale(1.06) translateY(-4px); border-color:#ffd500 !important;}
+.cat-btn.focused{background:linear-gradient(90deg,rgba(255,213,0,.35),rgba(255,165,0,.18)) !important; color:#fff !important; transform:translateX(4px);}
+.hbtn.focused,.pc-btn.focused,.load-more.focused,.pc-close.focused{background:#ffd500 !important; color:#0a0d16 !important; border-color:#ffd500 !important; transform:scale(1.08);}
+.menu-btn.focused{background:#ffd500 !important; color:#0a0d16 !important;}
 
 @media(max-width:1000px){
   .sidebar{transform:translateX(-100%)}
@@ -176,22 +162,22 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   .player-stage{flex:1;aspect-ratio:auto}
 }
 
-/* ═══ TV MODE (pantalla grande) ═══ */
-body.tv-mode .grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px; }
-body.tv-mode .poster-overlay h4 { font-size: 15px; }
-body.tv-mode .poster-overlay .meta { font-size: 11px; }
-body.tv-mode .poster-img .ph { font-size: 72px; }
-body.tv-mode .cat-btn { font-size: 14.5px; padding: 13px 16px; }
-body.tv-mode .cat-btn .ico { font-size: 18px; width: 24px; }
-body.tv-mode .header-title { font-size: 24px; }
-body.tv-mode .clock b { font-size: 22px; }
-body.tv-mode .clock small { font-size: 12px; }
-body.tv-mode .content { padding: 32px 40px 80px; }
-body.tv-mode .sidebar { width: 320px; }
-body.tv-mode .main { margin-left: 320px; }
-body.tv-mode .poster-fav { width: 40px; height: 40px; font-size: 18px; opacity: 1; transform: scale(1); }
-body.tv-mode .poster-play::before { width: 80px; height: 80px; }
-body.tv-mode .poster-play span { font-size: 32px; }
+/* ═══ TV MODE ═══ */
+body.tv-mode .grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px}
+body.tv-mode .poster-overlay h4{font-size:15px}
+body.tv-mode .poster-overlay .meta{font-size:11px}
+body.tv-mode .poster-img .ph{font-size:72px}
+body.tv-mode .cat-btn{font-size:14.5px;padding:13px 16px}
+body.tv-mode .cat-btn .ico{font-size:18px;width:24px}
+body.tv-mode .header-title{font-size:24px}
+body.tv-mode .clock b{font-size:22px}
+body.tv-mode .clock small{font-size:12px}
+body.tv-mode .content{padding:32px 40px 80px}
+body.tv-mode .sidebar{width:320px}
+body.tv-mode .main{margin-left:320px}
+body.tv-mode .poster-fav{width:40px;height:40px;font-size:18px;opacity:1;transform:scale(1)}
+body.tv-mode .poster-play::before{width:80px;height:80px}
+body.tv-mode .poster-play span{font-size:32px}
 </style>
 </head>
 <body>
@@ -282,7 +268,7 @@ const PIN_ADULTOS = '1234';
 let adultUnlocked = sessionStorage.getItem('adult_ok') === '1';
 let adultosCargados = false;
 
-/* Detectar TV/mouse (pantalla grande sin touch) */
+/* Detectar TV (pantalla grande sin touch) */
 const isTVMode = window.innerWidth >= 1280 && !('ontouchstart' in window);
 if(isTVMode) document.body.classList.add('tv-mode');
 
@@ -323,33 +309,15 @@ function esCategoriaAdulto(cat){
   return /xxx|adult|porno|\+18|18\+|erotic|hentai/i.test(cat || '');
 }
 
-/* ═══════════════════════════════════════════
-   SISTEMA DE FOCO TV (D-PAD)
-   ═══════════════════════════════════════════ */
+/* ═══ FOCO TV (D-PAD) ═══ */
 let focusedEl = null;
 let focusList = [];
 
-function getFocusables(){
-  const all = [];
-  // Prioridad 1: elementos en vista principal
-  document.querySelectorAll('#sidebarNav .cat-btn, .hbtn, .menu-btn, .load-more, .poster-fav, .poster-play').forEach(el => {
-    if(el.offsetParent !== null && el.getBoundingClientRect().width > 0) all.push(el);
-  });
-  return all;
-}
-
 function rebuildFocusList(){
-  // Solo poster y cat-btn y hbtn principales
   const list = [];
-  document.querySelectorAll('#sidebarNav .cat-btn').forEach(el => {
-    if(el.offsetParent !== null) list.push(el);
-  });
-  document.querySelectorAll('.hbtn, .menu-btn').forEach(el => {
-    if(el.offsetParent !== null && el.getBoundingClientRect().width > 0) list.push(el);
-  });
-  document.querySelectorAll('.content .poster').forEach(el => {
-    list.push(el);
-  });
+  document.querySelectorAll('#sidebarNav .cat-btn').forEach(el => { if(el.offsetParent !== null) list.push(el); });
+  document.querySelectorAll('.hbtn, .menu-btn').forEach(el => { if(el.offsetParent !== null && el.getBoundingClientRect().width > 0) list.push(el); });
+  document.querySelectorAll('.content .poster').forEach(el => list.push(el));
   const lm = document.querySelector('.load-more');
   if(lm) list.push(lm);
   focusList = list;
@@ -371,10 +339,7 @@ function setFocus(el, scroll = true){
 function moveFocus(direction){
   if(!focusList.length) rebuildFocusList();
   if(!focusList.length) return;
-  if(!focusedEl || !focusList.includes(focusedEl)){
-    setFocus(focusList[0]);
-    return;
-  }
+  if(!focusedEl || !focusList.includes(focusedEl)){ setFocus(focusList[0]); return; }
   const cur = focusedEl.getBoundingClientRect();
   const ccx = cur.left + cur.width/2;
   const ccy = cur.top + cur.height/2;
@@ -385,8 +350,7 @@ function moveFocus(direction){
     if(r.width === 0 || r.height === 0) return;
     const cx = r.left + r.width/2;
     const cy = r.top + r.height/2;
-    const dx = cx - ccx;
-    const dy = cy - ccy;
+    const dx = cx - ccx, dy = cy - ccy;
     let valid = false;
     if(direction === 'right' && dx > 5) valid = true;
     if(direction === 'left' && dx < -5) valid = true;
@@ -394,27 +358,19 @@ function moveFocus(direction){
     if(direction === 'up' && dy < -5) valid = true;
     if(!valid) return;
     let primary, secondary;
-    if(direction === 'left' || direction === 'right'){
-      primary = Math.abs(dx); secondary = Math.abs(dy);
-    } else {
-      primary = Math.abs(dy); secondary = Math.abs(dx);
-    }
+    if(direction === 'left' || direction === 'right'){ primary = Math.abs(dx); secondary = Math.abs(dy); }
+    else { primary = Math.abs(dy); secondary = Math.abs(dx); }
     const score = primary + secondary * 2.2;
     if(score < bestScore){ bestScore = score; best = el; }
   });
   if(best) setFocus(best);
 }
 
-function activateFocus(){
-  if(focusedEl) focusedEl.click();
-}
+function activateFocus(){ if(focusedEl) focusedEl.click(); }
 
-/* Detectar con qué dispositivo interactúa el usuario */
 document.addEventListener('mousedown', e => {
-  if(e.target.closest('.poster, .cat-btn, .hbtn, .menu-btn, .load-more, .pc-btn')){
-    const el = e.target.closest('.poster, .cat-btn, .hbtn, .menu-btn, .load-more, .pc-btn');
-    setFocus(el, false);
-  }
+  const el = e.target.closest('.poster, .cat-btn, .hbtn, .menu-btn, .load-more, .pc-btn');
+  if(el) setFocus(el, false);
 }, true);
 
 /* ═══ CLOCK ═══ */
@@ -728,9 +684,7 @@ function openPlayer(id){
           video.muted = false;
           video.volume = (settings.volume || 80) / 100;
         }, 300);
-      }).catch(err => {
-        showBigPlay(video);
-      });
+      }).catch(err => { showBigPlay(video); });
     }
   }
   
@@ -753,7 +707,6 @@ function openPlayer(id){
   
   showControls();
   
-  // Foco al botón de play en TV
   setTimeout(() => {
     if(focusedEl) focusedEl.classList.remove('focused');
     focusedEl = $('#pcPlay');
@@ -876,12 +829,25 @@ $('#menuBtn').onclick = () => {
 };
 $('#overlay').onclick = closeSidebar;
 
+/* ═══ PREVENIR QUE BACK CIERRE LA APP (Android TV) ═══ */
+history.pushState({ page: 'home' }, '');
+window.addEventListener('popstate', () => {
+  history.pushState({ page: 'home' }, '');
+
+  if($('#playerModal').classList.contains('open')){ closePlayer(); return; }
+  if($('#pinModal').classList.contains('open')){ $('#pinCancel').click(); return; }
+  if($('#sidebar').classList.contains('open')){ closeSidebar(); return; }
+  if($('#searchWrap').classList.contains('open')){ $('#searchWrap').classList.remove('open'); return; }
+
+  toast('Usá el botón Inicio para salir', '🏠');
+});
+
 /* ═══ TECLADO (D-PAD) ═══ */
 document.addEventListener('keydown', e => {
   const playerOpen = $('#playerModal').classList.contains('open');
   const pinOpen = $('#pinModal').classList.contains('open');
 
-  if(pinOpen) return; // el input maneja sus teclas
+  if(pinOpen) return;
 
   if(playerOpen){
     const v = $('#video');
@@ -890,21 +856,18 @@ document.addEventListener('keydown', e => {
     if(e.key === 'ArrowRight'){ e.preventDefault(); v.currentTime += 10; return; }
     if(e.key.toLowerCase() === 'm'){ v.muted = !v.muted; updateVolIcon(); return; }
     if(e.key === 'Escape' || e.key === 'Backspace'){ e.preventDefault(); closePlayer(); return; }
-
-    // Navegar entre botones del player
     if(e.key === 'ArrowUp' || e.key === 'ArrowDown'){
       e.preventDefault();
       const buttons = $$('#pControls .pc-btn');
       if(!buttons.length) return;
       const current = buttons.indexOf(focusedEl);
-      let next = current < 0 ? 0 : (current + (e.key === 'ArrowRight' ? 1 : e.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
+      let next = current < 0 ? 0 : (current + (e.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
       setFocus(buttons[next], false);
       return;
     }
     return;
   }
 
-  // Navegación normal TV
   if(e.key === 'ArrowUp'){ e.preventDefault(); moveFocus('up'); }
   else if(e.key === 'ArrowDown'){ e.preventDefault(); moveFocus('down'); }
   else if(e.key === 'ArrowLeft'){ e.preventDefault(); moveFocus('left'); }
@@ -912,8 +875,8 @@ document.addEventListener('keydown', e => {
   else if(e.key === 'Enter'){ e.preventDefault(); activateFocus(); }
   else if(e.key === 'Escape' || e.key === 'Backspace'){
     e.preventDefault();
-    if($('#searchWrap').classList.contains('open')) { $('#searchWrap').classList.remove('open'); return; }
-    if($('#sidebar').classList.contains('open')) { closeSidebar(); return; }
+    if($('#searchWrap').classList.contains('open')){ $('#searchWrap').classList.remove('open'); return; }
+    if($('#sidebar').classList.contains('open')){ closeSidebar(); return; }
     closePlayer();
   }
 });
@@ -928,7 +891,6 @@ document.addEventListener('keydown', e => {
     renderContent();
     console.log(`✅ ${channels.length} canales · ${getCategories().length} categorías`);
     setTimeout(() => $('#loading').classList.add('hidden'), 400);
-    // Foco inicial
     setTimeout(() => {
       rebuildFocusList();
       if(focusList.length) setFocus(focusList[0], false);
