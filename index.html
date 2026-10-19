@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>EL ATALAYA STREAMING TV</title>
+<title>ATALAYA STREAMING TV</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
@@ -189,7 +189,7 @@ body.tv-mode .poster-play span{font-size:32px}
     <div class="sidebar-head">
       <img src="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png" alt="">
       <div>
-        <h1>EL ATALAYA</h1>
+        <h1>ATALAYA</h1>
         <span>STREAMING TV</span>
       </div>
     </div>
@@ -689,7 +689,18 @@ function openPlayer(id){
   }
   
   if(isHls && window.Hls && Hls.isSupported()){
-    hls = new Hls({ enableWorker: true, lowLatencyMode: true, maxBufferLength: 30 });
+    /* ═══ CONFIGURACIÓN OPTIMIZADA PARA CANALES LENTOS ═══ */
+    hls = new Hls({
+        enableWorker: true,
+        lowLatencyMode: false,           // Desactivado para dar más margen de carga
+        maxBufferLength: 60,             // Carga 60 segundos de video de antemano
+        maxMaxBufferLength: 120,         // Permite hasta 2 minutos de buffer
+        liveSyncDurationCount: 3,        // Se sincroniza a 3 segmentos del vivo
+        manifestLoadingTimeOut: 20000,   // Espera hasta 20 segundos al manifiesto
+        manifestLoadingMaxRetry: 4,      // Reintenta 4 veces si falla
+        levelLoadingTimeOut: 20000,
+        levelLoadingMaxRetry: 4
+    });
     hls.loadSource(finalUrl);
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, startPlay);
