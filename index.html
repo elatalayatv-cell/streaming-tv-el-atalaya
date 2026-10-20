@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -288,7 +287,9 @@ let currentCh = null;
 let hls = null;
 let currentCat = '__all__';
 let currentPage = 0;
-const PAGE = 60;
+
+/* ═══ OPTIMIZACIÓN 1: Menos posters para no saturar la TV ═══ */
+const PAGE = 20; 
 
 function save(){
   localStorage.setItem(KEYS.favorites, JSON.stringify(favorites));
@@ -617,10 +618,14 @@ function posterHtml(c){
     ? `<img src="${esc(c.logo)}" loading="lazy" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=\\'ph\\'>${c.emoji||'📺'}</span>'">` 
     : `<span class="ph">${c.emoji||'📺'}</span>`;
   const isFav = favorites.includes(c.id);
+  
+  /* ═══ OPTIMIZACIÓN 3: Ocultar LIVE en películas y comedias ═══ */
+  const mostrarLive = c.live && !/pelic|movie|cine|comedia|comed/i.test(c.cat);
+
   return `<div class="poster" data-id="${c.id}">
     <div class="poster-img">
       ${logo}
-     ${(c.live && !/pelic|movie|cine|comedia|comed/i.test(c.cat)) ? '<span class="poster-badge"><span class="dot"></span>LIVE</span>' : ''}
+      ${mostrarLive ? '<span class="poster-badge"><span class="dot"></span>LIVE</span>' : ''}
       <button class="poster-fav ${isFav?'on':''}" data-fav="${c.id}">${isFav?'★':'☆'}</button>
       <div class="poster-play"><span>▶</span></div>
     </div>
@@ -689,15 +694,15 @@ function openPlayer(id){
   }
   
   if(isHls && window.Hls && Hls.isSupported()){
-    /* ═══ CONFIGURACIÓN OPTIMIZADA PARA CANALES LENTOS ═══ */
+    /* ═══ OPTIMIZACIÓN 2: Buffer más liviano para la TV ═══ */
     hls = new Hls({
         enableWorker: true,
-        lowLatencyMode: false,           // Desactivado para dar más margen de carga
-        maxBufferLength: 60,             // Carga 60 segundos de video de antemano
-        maxMaxBufferLength: 120,         // Permite hasta 2 minutos de buffer
-        liveSyncDurationCount: 3,        // Se sincroniza a 3 segmentos del vivo
-        manifestLoadingTimeOut: 20000,   // Espera hasta 20 segundos al manifiesto
-        manifestLoadingMaxRetry: 4,      // Reintenta 4 veces si falla
+        lowLatencyMode: false,
+        maxBufferLength: 30,             
+        maxMaxBufferLength: 60,          
+        liveSyncDurationCount: 3,
+        manifestLoadingTimeOut: 20000,
+        manifestLoadingMaxRetry: 4,
         levelLoadingTimeOut: 20000,
         levelLoadingMaxRetry: 4
     });
