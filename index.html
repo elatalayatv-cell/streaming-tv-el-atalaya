@@ -287,8 +287,6 @@ let currentCh = null;
 let hls = null;
 let currentCat = '__all__';
 let currentPage = 0;
-
-/* ═══ OPTIMIZACIÓN 1: Menos posters para no saturar la TV ═══ */
 const PAGE = 20; 
 
 function save(){
@@ -495,6 +493,7 @@ function buildSidebar(){
   html += `<div class="cat-title">CATEGORÍAS</div>`;
   
   cats.forEach(({cat, n, icon}) => {
+    if(esCategoriaAdulto(cat) && !adultUnlocked) return;
     html += `
       <button class="cat-btn ${currentCat===cat?'active':''}" data-cat="${esc(cat)}">
         <span class="ico">${icon}</span>
@@ -586,6 +585,12 @@ function getFiltered(){
   if(currentCat === '__fav__') list = favorites.map(id => channels.find(c => c.id === id)).filter(Boolean);
   else if(currentCat === '__all__') list = channels;
   else list = channels.filter(c => c.cat === currentCat);
+
+  /* ═══ FILTRO PARA OCULTAR ADULTOS EN LA PANTALLA PRINCIPAL ═══ */
+  if(!adultUnlocked){
+    list = list.filter(c => !esCategoriaAdulto(c.cat));
+  }
+  
   return list;
 }
 
@@ -619,7 +624,6 @@ function posterHtml(c){
     : `<span class="ph">${c.emoji||'📺'}</span>`;
   const isFav = favorites.includes(c.id);
   
-  /* ═══ OPTIMIZACIÓN 3: Ocultar LIVE en películas y comedias ═══ */
   const mostrarLive = c.live && !/pelic|movie|cine|comedia|comed/i.test(c.cat);
 
   return `<div class="poster" data-id="${c.id}">
@@ -694,7 +698,6 @@ function openPlayer(id){
   }
   
   if(isHls && window.Hls && Hls.isSupported()){
-    /* ═══ OPTIMIZACIÓN 2: Buffer más liviano para la TV ═══ */
     hls = new Hls({
         enableWorker: true,
         lowLatencyMode: false,
@@ -821,7 +824,9 @@ $('#searchBtn').onclick = () => {
 $('#searchInput').addEventListener('input', e => {
   const q = e.target.value.trim().toLowerCase();
   if(!q){ renderContent(); return; }
-  const m = channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q)).slice(0, 200);
+  let m = channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q));
+  if(!adultUnlocked) m = m.filter(c => !esCategoriaAdulto(c.cat));
+  m = m.slice(0, 200);
   $('#viewTitle').textContent = `🔍 "${e.target.value}"`;
   const content = $('#content');
   if(!m.length){
