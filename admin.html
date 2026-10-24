@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Atalaya Tv</title>
+<title>Atalaya TV</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,29 +28,28 @@
 </head>
 <body class="bg-gray-950 text-gray-100 h-screen flex overflow-hidden">
 
-  <!-- SIDEBAR -->
   <aside class="w-64 bg-brand-900 border-r border-gray-800 flex flex-col h-full shrink-0">
     <div class="p-6 flex items-center gap-3 border-b border-gray-800">
       <div class="w-10 h-10 bg-accent-500 rounded-xl flex items-center justify-center text-brand-900">
         <i data-lucide="radio" class="w-6 h-6"></i>
       </div>
       <div>
-        <h1 class="font-bold text-lg leading-tight">Atalaya Tv</h1>
+        <h1 class="font-bold text-lg leading-tight">Atalaya TV</h1>
         <p class="text-xs text-accent-500 font-medium tracking-wide">ADMIN PANEL</p>
       </div>
     </div>
     
     <nav class="flex-1 p-4 space-y-2">
-      <button onclick="switchTab('general')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-accent-500 text-brand-900 font-semibold transition-all">
+      <button onclick="switchTab('general', event)" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-accent-500 text-brand-900 font-semibold transition-all">
         <i data-lucide="layout-dashboard" class="w-5 h-5"></i> General
       </button>
-      <button onclick="switchTab('streams')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+      <button onclick="switchTab('streams', event)" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
         <i data-lucide="signal" class="w-5 h-5"></i> Señales (TV/Radio)
       </button>
-      <button onclick="switchTab('redes')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+      <button onclick="switchTab('redes', event)" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
         <i data-lucide="share-2" class="w-5 h-5"></i> Redes Sociales
       </button>
-      <button onclick="switchTab('programas')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+      <button onclick="switchTab('programas', event)" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
         <i data-lucide="calendar" class="w-5 h-5"></i> Programación
       </button>
     </nav>
@@ -61,14 +60,11 @@
           <i data-lucide="lock" class="w-3 h-3"></i> GitHub Token
         </label>
         <input type="password" id="ghToken" placeholder="ghp_..." oninput="localStorage.setItem('gh_token', this.value)" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all">
-        <p class="text-[10px] text-gray-500 mt-2">Solo necesario para guardar.</p>
       </div>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <main class="flex-1 flex flex-col h-full overflow-hidden">
-    <!-- HEADER -->
     <header class="h-16 border-b border-gray-800 flex items-center justify-between px-8 bg-gray-950/80 backdrop-blur">
       <h2 class="text-lg font-medium" id="pageTitle">Configuración General</h2>
       <button id="saveBtn" onclick="saveConfig()" class="bg-accent-500 hover:bg-accent-400 text-brand-900 px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-accent-500/20">
@@ -76,12 +72,10 @@
       </button>
     </header>
 
-    <!-- SCROLLABLE FORM AREA -->
     <div class="flex-1 overflow-y-auto p-8">
       <div class="max-w-4xl mx-auto">
         
-        <!-- TAB: GENERAL -->
-        <div id="tab-general" class="tab-content space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div id="tab-general" class="tab-content space-y-6">
           <div class="glass p-6 rounded-2xl space-y-4">
             <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Información del Sitio</h3>
             <div>
@@ -93,14 +87,13 @@
               <input type="text" id="tagline" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-400 mb-1">url logo</label>
+              <label class="block text-sm font-medium text-gray-400 mb-1">URL del Logo</label>
               <input type="url" id="logo" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
             </div>
           </div>
         </div>
 
-        <!-- TAB: STREAMS -->
-        <div id="tab-streams" class="tab-content hidden space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div id="tab-streams" class="tab-content hidden space-y-6">
           <div class="glass p-6 rounded-2xl space-y-4">
             <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Enlaces de Transmisión</h3>
             <div>
@@ -114,8 +107,7 @@
           </div>
         </div>
 
-        <!-- TAB: REDES -->
-        <div id="tab-redes" class="tab-content hidden space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div id="tab-redes" class="tab-content hidden space-y-6">
           <div class="glass p-6 rounded-2xl space-y-4">
             <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Redes y Contacto</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -143,8 +135,7 @@
           </div>
         </div>
 
-        <!-- TAB: PROGRAMAS -->
-        <div id="tab-programas" class="tab-content hidden space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div id="tab-programas" class="tab-content hidden space-y-6">
           <div class="glass p-6 rounded-2xl space-y-4">
             <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Programación y Bloques (Avanzado)</h3>
             <div>
@@ -162,7 +153,6 @@
     </div>
   </main>
 
-  <!-- TOAST NOTIFICATION -->
   <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-800 border border-gray-700 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50">
     <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
     <span id="toastMsg" class="font-medium text-sm">Cambios guardados</span>
@@ -174,9 +164,10 @@
 
   const REPO = "elatalayatv-cell/streaming-tv-el-atalaya";
   const FILE = "atalaya-config.json";
+  const BRANCH = "main"; 
   const urlApi = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
 
-  function switchTab(tabId) {
+  function switchTab(tabId, event) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     document.getElementById(`tab-${tabId}`).classList.remove('hidden');
     
@@ -203,7 +194,7 @@
     setTimeout(() => {
       toast.classList.replace('translate-y-0', 'translate-y-20');
       toast.classList.replace('opacity-100', 'opacity-0');
-    }, 3000);
+    }, 4000);
   }
 
   async function cargarConfig() {
@@ -270,26 +261,54 @@
       return;
     }
 
-    const encodedContent = btoa(unescape(encodeURIComponent(JSON.stringify(newConfig, null, 2))));
+    // Asegurar codificación Base64 compatible con acentos y eñes
+    const jsonString = JSON.stringify(newConfig, null, 2);
+    const encodedContent = btoa(unescape(encodeURIComponent(jsonString)));
 
     try {
       let sha = null;
-      const getRes = await fetch(urlApi, { headers: { 'Authorization': `token ${token}` } });
-      if (getRes.ok) sha = (await getRes.json()).sha;
+      
+      // 1. Intentar obtener el SHA actual
+      const getRes = await fetch(urlApi, { 
+        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } 
+      });
+      
+      if (getRes.ok) {
+        const fileData = await getRes.json();
+        sha = fileData.sha;
+      } else if (getRes.status === 404) {
+        console.log("El archivo no existe aún. Se creará nuevo.");
+      } else {
+        throw new Error(`Error ${getRes.status}: Token inválido o sin permisos.`);
+      }
+
+      // 2. Subir o actualizar el archivo
+      const payload = {
+        message: "Update via Admin Dashboard",
+        content: encodedContent,
+        branch: BRANCH 
+      };
+      if (sha) payload.sha = sha;
 
       const putRes = await fetch(urlApi, {
         method: 'PUT',
-        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: "Update via Admin Dashboard", content: encodedContent, sha: sha })
+        headers: { 
+          'Authorization': `token ${token}`, 
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github.v3+json' 
+        },
+        body: JSON.stringify(payload)
       });
 
       if (putRes.ok) {
         showToast('✅ Cambios guardados correctamente');
       } else {
-        throw new Error((await putRes.json()).message || 'Error de credenciales');
+        const errorData = await putRes.json();
+        throw new Error(errorData.message || `Error ${putRes.status} al guardar`);
       }
     } catch (error) {
       showToast('Error: ' + error.message, true);
+      console.error(error);
     } finally {
       btn.innerHTML = originalText; btn.disabled = false;
     }
