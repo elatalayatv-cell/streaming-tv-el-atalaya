@@ -1,576 +1,301 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATALAYA STREAMING TV · Panel</title>
-<link rel="icon" type="image/png" href="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png">
-<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Atalaya Tv</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          brand: { 900: '#071525', 800: '#0b1e3a', 700: '#16345e' },
+          accent: { 500: '#c9932f', 400: '#e5b95f' }
+        },
+        fontFamily: { sans: ['Inter', 'sans-serif'] }
+      }
+    }
+  }
+</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#08090f;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.08);--border:rgba(255,255,255,.08);--text:#f5f7ff;--muted:#7b89ad;--accent:#ffb800;--red:#ff3d5e;--ease:cubic-bezier(.16,1,.3,1)}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:10px}
-.login{position:fixed;inset:0;z-index:999;background:radial-gradient(circle at 30% 30%,rgba(255,184,0,.1),transparent 60%),var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
-.login.hidden{display:none}
-.login-box{width:100%;max-width:380px;padding:38px 30px;text-align:center;background:linear-gradient(160deg,#0d1019,#08090f);border:1px solid var(--border);border-radius:22px;box-shadow:0 40px 100px rgba(0,0,0,.85);position:relative;overflow:hidden}
-.login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ffb800,#ff8a00,transparent)}
-.login-box img{width:80px;height:80px;object-fit:contain;margin-bottom:16px;filter:drop-shadow(0 8px 24px rgba(255,184,0,.5))}
-.login-box h2{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(90deg,#fff,#ffd97a);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
-.login-box p{color:var(--muted);font-size:12.5px;margin-bottom:24px}
-.app{display:none}
-.app.active{display:block}
-.top{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:14px;padding:14px 24px;background:rgba(8,9,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.top-brand{display:flex;align-items:center;gap:10px;flex:1}
-.top-brand img{width:36px;height:36px;object-fit:contain}
-.top-brand h1{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;background:linear-gradient(90deg,#fff,#ffd97a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.top-brand span{font-size:9px;letter-spacing:2.5px;color:var(--muted);font-weight:700}
-.content{max-width:1200px;margin:0 auto;padding:24px}
-.tabs{display:flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:22px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:10px 18px;border:none;background:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;border-radius:9px;white-space:nowrap;transition:.25s var(--ease);display:flex;align-items:center;gap:6px}
-.tab:hover{color:#fff;background:var(--surface2)}
-.tab.active{background:linear-gradient(135deg,#ffb800,#ff8a00);color:#08090f;box-shadow:0 6px 18px rgba(255,184,0,.35)}
-.panel{display:none}
-.panel.active{display:block;animation:fade .35s var(--ease)}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.block{background:linear-gradient(140deg,var(--surface2),var(--surface));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px}
-.block h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.block h3 .ic{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,rgba(255,184,0,.25),rgba(255,138,0,.15));border:1px solid rgba(255,184,0,.25);display:grid;place-items:center;font-size:14px}
-.block .desc{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.65}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
-.stat{background:linear-gradient(140deg,var(--surface2),var(--surface));border:1px solid var(--border);border-radius:14px;padding:18px}
-.stat .lbl{font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
-.stat .val{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;background:linear-gradient(90deg,#fff,#ffd97a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stat .sub{font-size:11px;color:var(--muted);margin-top:6px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:1.3px;margin-bottom:6px;text-transform:uppercase}
-.field input,.field select,.field textarea{width:100%;padding:12px 14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:.25s}
-.field input:focus,.field textarea:focus{border-color:rgba(255,184,0,.5);box-shadow:0 0 0 4px rgba(255,184,0,.08);background:rgba(255,255,255,.06)}
-.field textarea{resize:vertical;min-height:80px;line-height:1.5}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
-.hint{font-size:11.5px;color:#5a6684;padding:12px 14px;background:rgba(255,255,255,.025);border-radius:10px;border-left:2px solid rgba(255,184,0,.4);line-height:1.7;margin-top:10px}
-.hint b{color:var(--accent)}
-.btn{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:11px 18px;border-radius:11px;cursor:pointer;font-size:12.5px;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:7px;transition:.25s var(--ease);white-space:nowrap;text-decoration:none}
-.btn:hover{background:var(--surface2);transform:translateY(-1px)}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.btn-primary{background:linear-gradient(135deg,#ffb800,#ff8a00);border:none;color:#08090f;box-shadow:0 8px 22px rgba(255,184,0,.3)}
-.btn-primary:hover{filter:brightness(1.08)}
-.btn-danger{background:rgba(255,61,94,.14);border-color:rgba(255,61,94,.35);color:#ff6b94}
-.btn-danger:hover{background:rgba(255,61,94,.28);color:#fff}
-.list{display:flex;flex-direction:column;gap:8px;max-height:600px;overflow-y:auto;padding-right:4px}
-.item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;transition:.25s}
-.item:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.055);transform:translateX(3px)}
-.item .av{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:linear-gradient(140deg,rgba(255,184,0,.2),rgba(255,138,0,.15));border:1px solid rgba(255,184,0,.2);display:grid;place-items:center;font-size:18px;overflow:hidden}
-.item .av img{width:80%;height:80%;object-fit:contain}
-.item .txt{flex:1;min-width:0}
-.item .txt b{font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;margin-bottom:2px}
-.item .txt small{font-size:10.5px;color:var(--muted);font-family:monospace}
-.item .acts{display:flex;gap:6px;flex-shrink:0}
-.icon-btn{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:12px;display:grid;place-items:center;transition:.2s}
-.icon-btn:hover{background:var(--surface2);color:#fff}
-.icon-btn.del:hover{background:var(--red);border-color:var(--red);color:#fff}
-.pagination{display:flex;gap:8px;justify-content:center;align-items:center;padding:18px 0;flex-wrap:wrap;border-top:1px solid var(--border);margin-top:12px}
-.pagination .info{padding:10px 16px;color:var(--muted);font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace}
-.progress{height:7px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;margin-top:12px;display:none}
-.progress.on{display:block}
-.progress .bar{height:100%;width:0;background:linear-gradient(90deg,#ffb800,#ff8a00,#ff2d78);background-size:200% 100%;transition:width .4s;border-radius:100px;animation:grad 2s linear infinite}
-@keyframes grad{to{background-position:200% 0}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:linear-gradient(140deg,#0d1019,#08090f);border:1px solid var(--border);border-left:3px solid var(--accent);padding:13px 20px;border-radius:12px;font-size:12.5px;font-weight:600;z-index:1000;opacity:0;transition:.4s var(--ease);box-shadow:0 20px 50px rgba(0,0,0,.8);pointer-events:none;display:flex;align-items:center;gap:10px}
-.toast.show{transform:translate(-50%,0);opacity:1}
-.empty{text-align:center;padding:60px 20px;color:var(--muted);border:1px dashed var(--border);border-radius:14px;background:var(--surface)}
-.empty .big{font-size:56px;margin-bottom:14px;opacity:.4;display:block}
-@media(max-width:700px){.content{padding:18px 14px}.top{padding:12px 16px}.row2{grid-template-columns:1fr}.stat .val{font-size:24px}}
+  body { font-family: 'Inter', sans-serif; }
+  .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
 </style>
 </head>
-<body>
+<body class="bg-gray-950 text-gray-100 h-screen flex overflow-hidden">
 
-<div class="login" id="login">
-  <div class="login-box">
-    <img src="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png" alt="">
-    <h2>PANEL ADMIN</h2>
-    <p>ATALAYA STREAMING TV · Acceso restringido</p>
-    <div class="field"><input type="password" id="pass" placeholder="Contraseña"></div>
-    <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;padding:14px">🔓 Entrar</button>
-    <div class="hint" style="text-align:center;margin-top:16px"><b>Contraseña:</b> atalaya2026</div>
-  </div>
-</div>
-
-<div class="app" id="app">
-  <div class="top">
-    <div class="top-brand">
-      <img src="https://i.postimg.cc/cLJKFQby/Emblema-futurista-EL-Atalaya-TV-Streaming-removebg-preview.png" alt="">
-      <div><h1>ATALAYA</h1><span>PANEL ADMIN</span></div>
-    </div>
-    <a href="index.html" class="btn">▶ Streaming</a>
-    <button class="btn btn-danger" id="logout">🔒 Salir</button>
-  </div>
-  <div class="content">
-    <div class="tabs">
-      <button class="tab active" data-tab="overview">📊 Resumen</button>
-      <button class="tab" data-tab="channels">📺 Canales</button>
-      <button class="tab" data-tab="import">📥 Importar M3U</button>
-      <button class="tab" data-tab="backup">💾 Backup</button>
-    </div>
-
-    <div class="panel active" data-panel="overview">
-      <div class="stats">
-        <div class="stat"><div class="lbl">Total canales</div><div class="val" id="sTotal">0</div><div class="sub">En biblioteca</div></div>
-        <div class="stat"><div class="lbl">En vivo</div><div class="val" id="sLive">0</div><div class="sub">Transmitiendo</div></div>
-        <div class="stat"><div class="lbl">Categorías</div><div class="val" id="sCats">0</div><div class="sub">Grupos</div></div>
-        <div class="stat"><div class="lbl">Favoritos</div><div class="val" id="sFavs">0</div><div class="sub">Marcados</div></div>
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-brand-900 border-r border-gray-800 flex flex-col h-full shrink-0">
+    <div class="p-6 flex items-center gap-3 border-b border-gray-800">
+      <div class="w-10 h-10 bg-accent-500 rounded-xl flex items-center justify-center text-brand-900">
+        <i data-lucide="radio" class="w-6 h-6"></i>
       </div>
-      <div class="block"><h3><span class="ic">📈</span> Canales por categoría</h3><div id="chart"></div></div>
+      <div>
+        <h1 class="font-bold text-lg leading-tight">El Atalaya</h1>
+        <p class="text-xs text-accent-500 font-medium tracking-wide">ADMIN PANEL</p>
+      </div>
     </div>
+    
+    <nav class="flex-1 p-4 space-y-2">
+      <button onclick="switchTab('general')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-accent-500 text-brand-900 font-semibold transition-all">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i> General
+      </button>
+      <button onclick="switchTab('streams')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+        <i data-lucide="signal" class="w-5 h-5"></i> Señales (TV/Radio)
+      </button>
+      <button onclick="switchTab('redes')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+        <i data-lucide="share-2" class="w-5 h-5"></i> Redes Sociales
+      </button>
+      <button onclick="switchTab('programas')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+        <i data-lucide="calendar" class="w-5 h-5"></i> Programación
+      </button>
+    </nav>
 
-    <div class="panel" data-panel="channels">
-      <div class="block">
-        <h3><span class="ic" id="formIcon">➕</span> <span id="formTitle">Agregar canal</span></h3>
-        <form id="chForm">
-          <div class="row2">
-            <div class="field"><label>Nombre</label><input type="text" id="fName" required placeholder="Ej: Telefe"></div>
-            <div class="field"><label>Categoría</label><input type="text" id="fCat" required list="catsList" placeholder="Ej: Argentina"><datalist id="catsList"></datalist></div>
+    <div class="p-4 border-t border-gray-800">
+      <div class="bg-gray-900/50 p-4 rounded-xl">
+        <label class="text-xs font-semibold text-gray-400 flex items-center gap-2 mb-2">
+          <i data-lucide="lock" class="w-3 h-3"></i> GitHub Token
+        </label>
+        <input type="password" id="ghToken" placeholder="ghp_..." oninput="localStorage.setItem('gh_token', this.value)" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all">
+        <p class="text-[10px] text-gray-500 mt-2">Solo necesario para guardar.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 flex flex-col h-full overflow-hidden">
+    <!-- HEADER -->
+    <header class="h-16 border-b border-gray-800 flex items-center justify-between px-8 bg-gray-950/80 backdrop-blur">
+      <h2 class="text-lg font-medium" id="pageTitle">Configuración General</h2>
+      <button id="saveBtn" onclick="saveConfig()" class="bg-accent-500 hover:bg-accent-400 text-brand-900 px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-accent-500/20">
+        <i data-lucide="save" class="w-4 h-4"></i> Guardar Cambios
+      </button>
+    </header>
+
+    <!-- SCROLLABLE FORM AREA -->
+    <div class="flex-1 overflow-y-auto p-8">
+      <div class="max-w-4xl mx-auto">
+        
+        <!-- TAB: GENERAL -->
+        <div id="tab-general" class="tab-content space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div class="glass p-6 rounded-2xl space-y-4">
+            <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Información del Sitio</h3>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Nombre del Sitio</label>
+              <input type="text" id="siteName" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Eslogan</label>
+              <input type="text" id="tagline" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">URL del Logo</label>
+              <input type="url" id="logo" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+            </div>
           </div>
-          <div class="row2">
-            <div class="field"><label>Emoji</label><input type="text" id="fEmoji" maxlength="4" value="📺"></div>
-            <div class="field"><label>Estado</label><select id="fLive"><option value="true">🔴 En vivo</option><option value="false">⚪ VOD</option></select></div>
-          </div>
-          <div class="field"><label>URL del stream</label><input type="url" id="fUrl" required placeholder="https://.../stream.m3u8"></div>
-          <div class="field"><label>URL del logo (opcional)</label><input type="url" id="fLogo" placeholder="https://.../logo.png"></div>
-          <div class="field"><label>Descripción</label><textarea id="fDesc" placeholder="Descripción..."></textarea></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;min-width:160px" id="submitBtn">➕ Agregar canal</button>
-            <button type="button" class="btn" id="cancelEdit" style="display:none">Cancelar</button>
-          </div>
-        </form>
-      </div>
-      <div class="block">
-        <h3><span class="ic">📋</span> Canales (<span id="listCount">0</span>)</h3>
-        <div class="field"><input type="text" id="searchList" placeholder="🔍 Filtrar por nombre o categoría..."></div>
-        <div class="list" id="list"></div>
-        <div id="pagination"></div>
-      </div>
-    </div>
-
-    <div class="panel" data-panel="import">
-      <div class="block">
-        <h3><span class="ic">📥</span> Importar lista M3U</h3>
-        <div class="desc">Cargá tu lista desde archivo, URL o pegando el contenido. Los datos se comprimen automáticamente.</div>
-        <div class="field"><label>Opción 1: Cargar archivo .m3u</label><input type="file" id="m3uFile" accept=".m3u,.m3u8,.txt"></div>
-        <div class="field"><label>Opción 2: Pegar contenido M3U</label><textarea id="m3uText" placeholder="#EXTM3U&#10;#EXTINF:-1 tvg-logo=&quot;...&quot; group-title=&quot;Argentina&quot;,Telefe&#10;https://.../stream.m3u8" style="min-height:140px;font-family:monospace;font-size:11.5px"></textarea></div>
-        <button type="button" class="btn btn-primary" id="parseBtn" style="width:100%;justify-content:center">📋 Procesar y agregar</button>
-        <div class="progress" id="prog"><div class="bar" id="progBar"></div></div>
-        <div class="hint"><b>Compresión activada:</b> Ahora caben 60.000+ canales sin errores de cuota.</div>
-      </div>
-    </div>
-
-    <div class="panel" data-panel="backup">
-      <div class="block">
-        <h3><span class="ic">💾</span> Guardar y Respaldar</h3>
-        <div class="desc">Guardá los cambios en el servidor para que todos los usuarios los vean, o descargá un backup completo.</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
-          <button class="btn btn-primary" id="publishBtn">💾 Guardar en servidor</button>
-          <button class="btn" id="exportBtn">📤 Exportar backup</button>
-          <button class="btn" id="importBtn">📥 Importar backup</button>
-          <input type="file" id="importFile" accept=".json" style="display:none">
         </div>
-        <div class="hint">
-          <b>Guardar en servidor</b> publica los cambios en <code>channels.json</code> al instante. Los usuarios los ven al recargar la app.
+
+        <!-- TAB: STREAMS -->
+        <div id="tab-streams" class="tab-content hidden space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div class="glass p-6 rounded-2xl space-y-4">
+            <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Enlaces de Transmisión</h3>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">URL de la Radio (Stream MP3)</label>
+              <input type="url" id="radioUrl" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">URL de la TV (M3U8)</label>
+              <input type="url" id="tvUrl" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+            </div>
+          </div>
         </div>
-        <h3 style="margin-top:22px"><span class="ic">⚠️</span> Zona de peligro</h3>
-        <div class="desc">Acciones irreversibles.</div>
-        <button class="btn btn-danger" id="wipeBtn">🗑️ Borrar TODOS los canales</button>
+
+        <!-- TAB: REDES -->
+        <div id="tab-redes" class="tab-content hidden space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div class="glass p-6 rounded-2xl space-y-4">
+            <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Redes y Contacto</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">WhatsApp (ej: 549299...)</label>
+                <input type="text" id="whatsapp" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Facebook</label>
+                <input type="url" id="facebook" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Instagram</label>
+                <input type="url" id="instagram" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">YouTube</label>
+                <input type="url" id="youtube" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">TikTok</label>
+                <input type="url" id="tiktok" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PROGRAMAS -->
+        <div id="tab-programas" class="tab-content hidden space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div class="glass p-6 rounded-2xl space-y-4">
+            <h3 class="text-xl font-semibold mb-4 border-b border-gray-800 pb-2">Programación y Bloques (Avanzado)</h3>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Lista de Programas (JSON)</label>
+              <textarea id="programas" spellcheck="false" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 h-64 font-mono text-sm focus:ring-2 focus:ring-accent-500 focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Bloques Musicales (JSON)</label>
+              <textarea id="bloques" spellcheck="false" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 h-32 font-mono text-sm focus:ring-2 focus:ring-accent-500 focus:outline-none"></textarea>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-</div>
+  </main>
 
-<div class="toast" id="toast"></div>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-800 border border-gray-700 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50">
+    <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+    <span id="toastMsg" class="font-medium text-sm">Cambios guardados</span>
+  </div>
 
 <script>
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const KEYS = {channels:'atalaya_channels',favorites:'atalaya_favorites',recents:'atalaya_recents',settings:'atalaya_settings'};
-const PASS = 'atalaya2026';
-const PAGE_SIZE = 100;
-const LZ = '__LZ__';
-const SAVE_URL = 'https://elatalayatvoficial.elatalaya.com.ar/admin/save-channels';
-const SAVE_TOKEN = 'Atalaya2026AdminToken!xyz';
+  lucide.createIcons();
+  document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
 
-function saveRaw(key, data){
-  try {
-    const json = JSON.stringify(data);
-    const comp = LZ + LZString.compressToUTF16(json);
-    if(comp.length < 4 * 1024 * 1024){ localStorage.setItem(key, comp); return true; }
-    return false;
-  } catch(e){ console.error('Error guardando:', e); return false; }
-}
+  const REPO = "elatalayatv-cell/streaming-tv-el-atalaya";
+  const FILE = "atalaya-config.json";
+  const urlApi = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
 
-function loadRaw(key, fallback){
-  try {
-    const raw = localStorage.getItem(key);
-    if(!raw) return fallback;
-    if(raw.startsWith(LZ)){
-      const d = LZString.decompressFromUTF16(raw.slice(LZ.length));
-      return d ? JSON.parse(d) : fallback;
-    }
-    return JSON.parse(raw);
-  } catch(e){ console.error('Error cargando:', e); return fallback; }
-}
-
-let channels = loadRaw(KEYS.channels, []);
-let favorites = loadRaw(KEYS.favorites, []);
-let editingId = null;
-let listPage = 0;
-let lastFiltered = [];
-
-async function seedFromJSON(){
-  if(channels.length > 0) return;
-  try {
-    const r = await fetch('https://elatalayatvoficial.elatalaya.com.ar/channels.json', { cache: 'no-store' });
-    if(!r.ok) return;
-    const data = await r.json();
-    const arr = Array.isArray(data) ? data : (data.channels || []);
-    if(!arr.length) return;
-    channels = arr;
-    saveCh();
-    toast(`📦 ${arr.length} canales cargados desde el servidor`, '⬇️');
-  } catch(e){ console.warn('No se pudo cargar channels.json:', e); }
-}
-
-function saveCh(){
-  if(saveRaw(KEYS.channels, channels)) return;
-  const reducido = channels.map(c => ({id: c.id, name: c.name, cat: c.cat, emoji: c.emoji, url: c.url, live: c.live}));
-  if(saveRaw(KEYS.channels, reducido)){ channels = reducido; toast('Guardado en modo reducido (sin logos)', '⚠️'); return; }
-  if(channels.length > 30000){
-    const subset = channels.slice(0, 30000).map(c => ({id: c.id, name: c.name, cat: c.cat, emoji: c.emoji, url: c.url, live: c.live}));
-    if(saveRaw(KEYS.channels, subset)){ channels = subset; toast('Solo se guardaron 30.000 canales', '⚠️'); return; }
-  }
-  toast('ERROR: Lista demasiado grande', '❌');
-}
-
-function saveAll(){ saveCh(); localStorage.setItem(KEYS.favorites, JSON.stringify(favorites)); }
-
-let toastTimer;
-function toast(msg, icon='✅'){
-  const t = $('#toast');
-  t.innerHTML = `<span>${icon}</span> ${msg}`;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-}
-function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-$('#loginBtn').onclick = () => {
-  if($('#pass').value === PASS){
-    sessionStorage.setItem('atalaya_admin', '1');
-    $('#login').classList.add('hidden');
-    $('#app').classList.add('active');
-    init();
-  } else toast('Contraseña incorrecta', '⛔');
-};
-$('#pass').onkeydown = e => { if(e.key === 'Enter') $('#loginBtn').click(); };
-$('#logout').onclick = () => { sessionStorage.removeItem('atalaya_admin'); location.reload(); };
-
-function checkLogin(){
-  if(sessionStorage.getItem('atalaya_admin') === '1'){
-    $('#login').classList.add('hidden');
-    $('#app').classList.add('active');
-    init();
-  }
-}
-
-$$('.tab').forEach(t => t.onclick = () => {
-  $$('.tab').forEach(x => x.classList.toggle('active', x === t));
-  $$('.panel').forEach(p => p.classList.toggle('active', p.dataset.panel === t.dataset.tab));
-  if(t.dataset.tab === 'overview') updateStats();
-  if(t.dataset.tab === 'channels') renderList();
-});
-
-function updateStats(){
-  $('#sTotal').textContent = channels.length;
-  $('#sLive').textContent = channels.filter(c => c.live).length;
-  $('#sCats').textContent = new Set(channels.map(c => c.cat)).size;
-  $('#sFavs').textContent = favorites.length;
-  const counts = {};
-  channels.forEach(c => counts[c.cat] = (counts[c.cat]||0) + 1);
-  const max = Math.max(...Object.values(counts), 1);
-  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 30);
-  $('#chart').innerHTML = sorted.length ? sorted.map(([cat, n]) => `
-    <div style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px">
-        <span style="font-weight:700">${esc(cat)}</span>
-        <span style="color:var(--muted);font-family:monospace">${n}</span>
-      </div>
-      <div style="height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
-        <div style="height:100%;width:${(n/max)*100}%;background:linear-gradient(90deg,#ffb800,#ff8a00);border-radius:100px"></div>
-      </div>
-    </div>
-  `).join('') : '<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">Sin canales</div>';
-}
-
-function renderList(){
-  const q = ($('#searchList')?.value || '').toLowerCase();
-  lastFiltered = q ? channels.filter(c => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q)) : channels;
-  $('#listCount').textContent = lastFiltered.length;
-  $('#catsList').innerHTML = [...new Set(channels.map(c => c.cat))].sort().map(c => `<option value="${esc(c)}">`).join('');
-  const list = $('#list');
-  if(!lastFiltered.length){
-    list.innerHTML = '<div class="empty"><span class="big">📭</span><p>No hay canales.</p></div>';
-    $('#pagination').innerHTML = '';
-    return;
-  }
-  const totalPages = Math.ceil(lastFiltered.length / PAGE_SIZE);
-  if(listPage >= totalPages) listPage = totalPages - 1;
-  if(listPage < 0) listPage = 0;
-  const start = listPage * PAGE_SIZE;
-  const page = lastFiltered.slice(start, start + PAGE_SIZE);
-  list.innerHTML = page.map(c => `
-    <div class="item">
-      <div class="av">${c.logo ? `<img src="${esc(c.logo)}" loading="lazy" onerror="this.style.display='none';this.parentNode.textContent='${c.emoji||'📺'}'">` : (c.emoji||'📺')}</div>
-      <div class="txt"><b>${esc(c.name)}</b><small>${esc(c.cat)} · ${c.live?'🔴 LIVE':'⚪ VOD'}</small></div>
-      <div class="acts">
-        <button class="icon-btn" data-edit="${c.id}">✏️</button>
-        <button class="icon-btn del" data-del="${c.id}">🗑️</button>
-      </div>
-    </div>
-  `).join('');
-  $$('[data-edit]').forEach(b => b.onclick = () => editChannel(b.dataset.edit));
-  $$('[data-del]').forEach(b => b.onclick = () => deleteChannel(b.dataset.del));
-  if(totalPages > 1){
-    $('#pagination').innerHTML = `
-      <div class="pagination">
-        <button class="btn" onclick="changePage(0)" ${listPage === 0 ? 'disabled' : ''}>« Primera</button>
-        <button class="btn" onclick="changePage(-1)" ${listPage === 0 ? 'disabled' : ''}>← Anterior</button>
-        <span class="info">${listPage + 1} / ${totalPages}</span>
-        <button class="btn" onclick="changePage(1)" ${listPage >= totalPages - 1 ? 'disabled' : ''}>Siguiente →</button>
-        <button class="btn" onclick="changePage(999)" ${listPage >= totalPages - 1 ? 'disabled' : ''}>Última »</button>
-      </div>`;
-  } else { $('#pagination').innerHTML = ''; }
-}
-
-function changePage(delta){
-  if(delta === 0) listPage = 0;
-  else if(delta === 999) listPage = Math.ceil(lastFiltered.length / PAGE_SIZE) - 1;
-  else listPage = Math.max(0, listPage + delta);
-  renderList();
-  $('#list').scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-$('#searchList').oninput = () => { listPage = 0; renderList(); };
-
-$('#chForm').onsubmit = e => {
-  e.preventDefault();
-  const data = {name:$('#fName').value.trim(),cat:$('#fCat').value.trim(),emoji:$('#fEmoji').value.trim()||'📺',url:$('#fUrl').value.trim(),logo:$('#fLogo').value.trim(),desc:$('#fDesc').value.trim(),live:$('#fLive').value==='true'};
-  if(!data.name || !data.cat || !data.url) return;
-  if(editingId){
-    const i = channels.findIndex(c => c.id === editingId);
-    channels[i] = {...channels[i], ...data};
-    editingId = null;
-    toast('Canal actualizado', '💾');
-  } else {
-    channels.push({id:'ch_'+Date.now()+Math.random().toString(36).slice(2,6),...data});
-    toast('Canal agregado', '➕');
-  }
-  saveCh(); resetForm(); listPage = 0; renderList(); updateStats();
-};
-
-function editChannel(id){
-  const c = channels.find(x => x.id === id);
-  if(!c) return;
-  editingId = id;
-  $('#fName').value = c.name; $('#fCat').value = c.cat; $('#fEmoji').value = c.emoji||'📺';
-  $('#fUrl').value = c.url; $('#fLogo').value = c.logo||''; $('#fDesc').value = c.desc||'';
-  $('#fLive').value = c.live ? 'true' : 'false';
-  $('#formTitle').textContent = 'Editar canal'; $('#formIcon').textContent = '✏️';
-  $('#submitBtn').innerHTML = '💾 Guardar'; $('#cancelEdit').style.display = 'inline-flex';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function resetForm(){
-  editingId = null;
-  $('#chForm').reset(); $('#fEmoji').value = '📺';
-  $('#formTitle').textContent = 'Agregar canal'; $('#formIcon').textContent = '➕';
-  $('#submitBtn').innerHTML = '➕ Agregar canal'; $('#cancelEdit').style.display = 'none';
-}
-$('#cancelEdit').onclick = resetForm;
-
-function deleteChannel(id){
-  const c = channels.find(x => x.id === id);
-  if(!c || !confirm(`¿Eliminar "${c.name}"?`)) return;
-  channels = channels.filter(x => x.id !== id);
-  favorites = favorites.filter(f => f !== id);
-  if(editingId === id) resetForm();
-  saveAll(); renderList(); updateStats();
-  toast('Eliminado', '🗑️');
-}
-
-function parseM3U(text){
-  const lines = text.split(/\r?\n/);
-  const out = []; let pending = null;
-  for(const raw of lines){
-    const line = raw.trim();
-    if(!line) continue;
-    if(line.startsWith('#EXTINF')){
-      const attrs = {};
-      const re = /([a-zA-Z0-9-]+)="([^"]*)"/g;
-      let m;
-      while((m = re.exec(line)) !== null) attrs[m[1]] = m[2];
-      const sinAttrs = line.replace(/[a-zA-Z0-9-]+="[^"]*"/g, '');
-      const nm = sinAttrs.match(/,(.+)$/);
-      const name = (nm ? nm[1] : attrs['tvg-name'] || 'Canal').trim();
-      pending = {name:name||'Canal',cat:attrs['group-title']||'General',emoji:guessEmoji(attrs['group-title']||'',name),logo:attrs['tvg-logo']||'',live:true,desc:'Importado · '+(attrs['group-title']||'General')};
-    } else if(!line.startsWith('#') && pending){
-      pending.url = line; pending.id = 'm3u_'+Math.random().toString(36).slice(2,9);
-      out.push(pending); pending = null;
-    }
-  }
-  return out;
-}
-
-function guessEmoji(cat, name){
-  const c = (cat+' '+name).toLowerCase();
-  if(/argentina|telefe|trece|tyc/.test(c)) return '🇦🇷';
-  if(/retro|años 80|años 90/.test(c)) return '📼';
-  if(/pelic|movie|cine|film/.test(c)) return '🎬';
-  if(/serie|show|netflix|hbo/.test(c)) return '📽️';
-  if(/deport|futbol|fútbol|espn|fox sport/.test(c)) return '⚽';
-  if(/noticia|news|cnn|bbc|tn|a24|c5n/.test(c)) return '📰';
-  if(/infant|kids|disney|nick/.test(c)) return '🧒';
-  if(/music|música|mtv/.test(c)) return '🎵';
-  if(/document|discovery|natgeo/.test(c)) return '🌎';
-  if(/anime/.test(c)) return '🌀';
-  if(/novela|telenovela/.test(c)) return '💔';
-  if(/live|vivo|24\/7/.test(c)) return '🔴';
-  if(/xxx|adult|\+18/.test(c)) return '🔞';
-  if(/relig|igles/.test(c)) return '⛪';
-  if(/mexico|méxico/.test(c)) return '🇲🇽';
-  if(/chile/.test(c)) return '🇨🇱';
-  if(/colombia/.test(c)) return '🇨🇴';
-  if(/peru|perú/.test(c)) return '🇵🇪';
-  if(/españa/.test(c)) return '🇪🇸';
-  if(/usa/.test(c)) return '🇺🇸';
-  return '📺';
-}
-
-function processM3U(text){
-  const parsed = parseM3U(text);
-  if(!parsed.length){ toast('No se encontraron canales', '⚠️'); return; }
-  const prog = $('#prog'), bar = $('#progBar');
-  prog.classList.add('on'); bar.style.width = '20%';
-  setTimeout(() => {
-    let added = 0;
-    const ex = new Set(channels.map(c => c.name.toLowerCase()+'|'+c.url));
-    bar.style.width = '50%';
-    if(channels.length > 0) saveCh();
-    parsed.forEach(c => {
-      const k = c.name.toLowerCase()+'|'+c.url;
-      if(!ex.has(k)){ channels.push(c); ex.add(k); added++; }
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+    
+    document.querySelectorAll('.tab-btn').forEach(el => {
+      el.className = "tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all";
     });
-    bar.style.width = '75%';
-    saveCh();
-    bar.style.width = '100%';
-    setTimeout(() => { prog.classList.remove('on'); bar.style.width = '0'; }, 800);
-    toast(`${added} canales agregados · Total: ${channels.length}`, '📥');
-    listPage = 0;
-    renderList(); updateStats();
-  }, 100);
-}
-
-$('#parseBtn').onclick = () => {
-  const t = $('#m3uText').value.trim();
-  if(!t){ toast('Pegá el contenido M3U', '⚠️'); return; }
-  processM3U(t);
-  $('#m3uText').value = '';
-};
-
-$('#m3uFile').onchange = e => {
-  const f = e.target.files[0];
-  if(!f) return;
-  const r = new FileReader();
-  r.onload = ev => processM3U(ev.target.result);
-  r.readAsText(f);
-  e.target.value = '';
-};
-
-$('#publishBtn').onclick = async () => {
-  if(!channels.length){ toast('No hay canales para guardar', '⚠️'); return; }
-  const btn = $('#publishBtn');
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Guardando...';
-  try {
-    const r = await fetch(SAVE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: SAVE_TOKEN, channels })
-    });
-    if(!r.ok){
-      const txt = await r.text();
-      throw new Error('HTTP ' + r.status + ' - ' + txt);
-    }
-    const data = await r.json();
-    toast(`✅ ${data.count} canales guardados en el servidor`, '🌐');
-    btn.innerHTML = '✅ Guardado';
-    setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 2000);
-  } catch(err){
-    console.error('Error guardando:', err);
-    toast('❌ Error: ' + err.message, '⚠️');
-    btn.innerHTML = originalText;
-    btn.disabled = false;
+    event.currentTarget.className = "tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-accent-500 text-brand-900 font-semibold transition-all";
+    
+    const titles = { general: 'Configuración General', streams: 'Señales en Vivo', redes: 'Redes Sociales', programas: 'Programación' };
+    document.getElementById('pageTitle').innerText = titles[tabId];
   }
-};
 
-$('#exportBtn').onclick = () => {
-  const data = {channels, favorites:loadRaw(KEYS.favorites,[]), recents:loadRaw(KEYS.recents,[]), settings:loadRaw(KEYS.settings,{}), exportedAt:new Date().toISOString(), version:2};
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `atalaya_backup_${Date.now()}.json`;
-  a.click(); URL.revokeObjectURL(url);
-  toast('Backup exportado', '📤');
-};
+  function showToast(msg, isError = false) {
+    const toast = document.getElementById('toast');
+    const icon = toast.querySelector('svg');
+    document.getElementById('toastMsg').innerText = msg;
+    if(isError) {
+      toast.className = "fixed bottom-6 right-6 transform translate-y-0 opacity-100 transition-all duration-300 bg-red-900/90 border border-red-700 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50";
+      icon.classList.replace('text-green-400', 'text-red-400');
+    } else {
+      toast.className = "fixed bottom-6 right-6 transform translate-y-0 opacity-100 transition-all duration-300 bg-gray-800 border border-gray-700 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50";
+      icon.classList.replace('text-red-400', 'text-green-400');
+    }
+    setTimeout(() => {
+      toast.classList.replace('translate-y-0', 'translate-y-20');
+      toast.classList.replace('opacity-100', 'opacity-0');
+    }, 3000);
+  }
 
-$('#importBtn').onclick = () => $('#importFile').click();
-$('#importFile').onchange = e => {
-  const f = e.target.files[0];
-  if(!f) return;
-  const r = new FileReader();
-  r.onload = ev => {
+  async function cargarConfig() {
     try {
-      const d = JSON.parse(ev.target.result);
-      if(d.channels) channels = d.channels;
-      if(d.favorites) localStorage.setItem(KEYS.favorites, JSON.stringify(d.favorites));
-      if(d.recents) localStorage.setItem(KEYS.recents, JSON.stringify(d.recents));
-      if(d.settings) localStorage.setItem(KEYS.settings, JSON.stringify(d.settings));
-      saveCh(); listPage = 0; renderList(); updateStats();
-      toast('Backup importado', '📥');
-    } catch(err){ toast('Archivo inválido', '⚠️'); }
-  };
-  r.readAsText(f);
-  e.target.value = '';
-};
+      const res = await fetch('atalaya-config.json?_=' + Date.now());
+      if (res.ok) {
+        const data = await res.json();
+        if(data.general) {
+          document.getElementById('siteName').value = data.general.siteName || 'El Atalaya';
+          document.getElementById('tagline').value = data.general.tagline || '';
+          document.getElementById('logo').value = data.general.logo || '';
+        }
+        if(data.streams) {
+          document.getElementById('radioUrl').value = data.streams.radioUrl || '';
+          document.getElementById('tvUrl').value = data.streams.tvUrl || '';
+        }
+        if(data.redes) {
+          document.getElementById('whatsapp').value = data.redes.whatsapp || '';
+          document.getElementById('facebook').value = data.redes.facebook || '';
+          document.getElementById('instagram').value = data.redes.instagram || '';
+          document.getElementById('youtube').value = data.redes.youtube || '';
+          document.getElementById('tiktok').value = data.redes.tiktok || '';
+        }
+        if(data.programas) document.getElementById('programas').value = JSON.stringify(data.programas, null, 2);
+        if(data.bloques) document.getElementById('bloques').value = JSON.stringify(data.bloques, null, 2);
+      }
+    } catch(e) { console.log("No hay config previa."); }
+  }
 
-$('#wipeBtn').onclick = () => {
-  if(!confirm('¿Borrar TODOS los canales?')) return;
-  if(!confirm('¿Estás seguro?')) return;
-  channels = []; favorites = [];
-  localStorage.removeItem(KEYS.channels);
-  localStorage.removeItem(KEYS.favorites);
-  localStorage.removeItem(KEYS.recents);
-  listPage = 0;
-  renderList(); updateStats();
-  toast('Todo borrado', '🗑️');
-};
+  async function saveConfig() {
+    const token = document.getElementById('ghToken').value.trim();
+    if(!token) return showToast('Falta el Token de GitHub', true);
 
-async function init(){
-  await seedFromJSON();
-  updateStats();
-  renderList();
-}
-checkLogin();
+    const btn = document.getElementById('saveBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Guardando...';
+    btn.disabled = true;
+
+    let newConfig = {
+      general: {
+        siteName: document.getElementById('siteName').value,
+        tagline: document.getElementById('tagline').value,
+        logo: document.getElementById('logo').value,
+        liveLabel: 'En vivo ahora', newsTitle: 'Últimas noticias', newsSub: 'Cobertura del mundo evangélico.', programsTitle: 'Nuestros Programas'
+      },
+      streams: {
+        radioUrl: document.getElementById('radioUrl').value,
+        tvUrl: document.getElementById('tvUrl').value,
+        tvPage: 'TV.html'
+      },
+      redes: {
+        whatsapp: document.getElementById('whatsapp').value, whatsappMsg: 'Hola El Atalaya, quisiera consultar...',
+        facebook: document.getElementById('facebook').value, instagram: document.getElementById('instagram').value, youtube: document.getElementById('youtube').value, tiktok: document.getElementById('tiktok').value
+      },
+      programas: [], bloques: []
+    };
+
+    try {
+      if(document.getElementById('programas').value.trim()) newConfig.programas = JSON.parse(document.getElementById('programas').value);
+      if(document.getElementById('bloques').value.trim()) newConfig.bloques = JSON.parse(document.getElementById('bloques').value);
+    } catch(err) {
+      showToast('Error de sintaxis en el JSON de Programas', true);
+      btn.innerHTML = originalText; btn.disabled = false;
+      return;
+    }
+
+    const encodedContent = btoa(unescape(encodeURIComponent(JSON.stringify(newConfig, null, 2))));
+
+    try {
+      let sha = null;
+      const getRes = await fetch(urlApi, { headers: { 'Authorization': `token ${token}` } });
+      if (getRes.ok) sha = (await getRes.json()).sha;
+
+      const putRes = await fetch(urlApi, {
+        method: 'PUT',
+        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: "Update via Admin Dashboard", content: encodedContent, sha: sha })
+      });
+
+      if (putRes.ok) {
+        showToast('✅ Cambios guardados correctamente');
+      } else {
+        throw new Error((await putRes.json()).message || 'Error de credenciales');
+      }
+    } catch (error) {
+      showToast('Error: ' + error.message, true);
+    } finally {
+      btn.innerHTML = originalText; btn.disabled = false;
+    }
+  }
+
+  cargarConfig();
 </script>
 </body>
 </html>
